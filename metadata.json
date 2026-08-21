@@ -1,0 +1,6 @@
+{
+  "name": "ILM Foundation",
+  "description": "An education-focused NGO providing libraries and scholarships for children.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
