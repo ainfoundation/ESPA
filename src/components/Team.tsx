@@ -3,13 +3,13 @@ import { User, Linkedin } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const teamMembers = [
-  { name: "Shabbir Ahmed", role: "Founder | Chief-in-Patron", bio: "Guides the strategic vision and provides foundational support for ESPA's overarching mission.", linkedin: "https://www.linkedin.com/in/shaaaaabbir/" },
+  { name: "Shabbir Ahmed", role: "Founder | Chief-in-Patron", bio: "Guides the strategic vision and provides foundational support for ESPA's overarching mission.", linkedin: "https://www.linkedin.com/in/shaaaaabbir/", image: "https://i.postimg.cc/jqntzBxg/shabbir.png" },
   { name: "Rameez Taj", role: "General Secretary", bio: "Oversees all operational initiatives and ensures smooth execution of programs across the foundation.", linkedin: "https://www.linkedin.com/in/rameez-taj-962a4a28a/" },
   { name: "Ashfaq Jan", role: "Assistant General Sec.", bio: "Supports day-to-day operations and coordinates closely with the General Secretary on key programs.", linkedin: "https://www.linkedin.com/in/ashaq-jan-738723287" },
   { name: "Ali Hasnain", role: "Treasurer", bio: "Manages financial planning, transparent fund allocation, and the organization's fiscal health.", linkedin: "https://www.linkedin.com/in/ali-hasnain-695b88257/" },
   { name: "Aitzaz Rahim", role: "Information Secretary", bio: "Directs internal and external communications, public relations, and media outreach.", linkedin: "https://www.linkedin.com/in/aitzaz-rahim-551777213/" },
   { name: "Azhan Khan", role: "Member", bio: "Actively contributes to the foundation's core initiatives and community outreach projects.", linkedin: "#" },
-  { name: "Akbar Ali", role: "Member", bio: "Dedicated team member supporting various educational and organizational activities.", linkedin: "#" }
+  { name: "Ali Shan", role: "Member", bio: "Dedicated team member supporting various educational and organizational activities.", linkedin: "https://www.linkedin.com/in/ali-shan-b037a6269/", image: "https://i.postimg.cc/pV5RD3WZ/ali.png" }
 ];
 
 export default function Team() {
@@ -31,8 +31,12 @@ export default function Team() {
                   : 'flex flex-col items-center text-center'
               }`}
             >
-              <div className={`flex items-center justify-center rounded-full shrink-0 bg-neutral-200 border-4 border-[#004B36] shadow-sm ${i === 0 ? 'w-40 h-40 md:w-56 md:h-56' : 'w-40 h-40 mb-4 md:mb-6'}`}>
-                <User className="text-[#004B36]/30 w-1/2 h-1/2" />
+              <div className={`flex overflow-hidden items-center justify-center rounded-full shrink-0 bg-neutral-200 border-4 border-[#004B36] shadow-sm ${i === 0 ? 'w-40 h-40 md:w-56 md:h-56' : 'w-40 h-40 mb-4 md:mb-6'}`}>
+                {member.image ? (
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                ) : (
+                  <User className="text-[#004B36]/30 w-1/2 h-1/2" />
+                )}
               </div>
               <div className={i === 0 ? 'text-center sm:text-left flex-1' : 'flex flex-col items-center'}>
                 <h3 className={`font-display font-bold text-white mb-1 ${i === 0 ? 'text-2xl md:text-3xl' : 'text-xl'}`}>{member.name}</h3>

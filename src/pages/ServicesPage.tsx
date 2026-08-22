@@ -46,6 +46,8 @@ export default function ServicesPage() {
       <Helmet>
         <title>Services | ESPA Foundation</title>
         <meta name="description" content="Explore the services provided by ESPA Foundation." />
+        <meta property="og:title" content="Services | ESPA Foundation" />
+        <meta property="og:description" content="Explore the services provided by ESPA Foundation." />
       </Helmet>
 
       <div className="pt-24 pb-12 bg-white text-center px-4">

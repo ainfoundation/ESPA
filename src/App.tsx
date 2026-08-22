@@ -1,5 +1,6 @@
 import { Toaster } from 'react-hot-toast';
 import React, { Suspense, lazy } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -48,6 +49,7 @@ function AnimatedRoutes() {
   const location = useLocation();
   return (
     
+      <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
         <Route path="/services" element={<PageWrapper><ServicesPage /></PageWrapper>} />
@@ -63,17 +65,22 @@ function AnimatedRoutes() {
         <Route path="/privacy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
         <Route path="/terms" element={<PageWrapper><TermsOfService /></PageWrapper>} />
       </Routes>
+      </AnimatePresence>
     
   );
 }
 
 function PageWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
       className="w-full h-full"
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 
