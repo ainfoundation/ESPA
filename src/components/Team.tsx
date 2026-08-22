@@ -5,7 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 const teamMembers = [
   { name: "Shabbir Ahmed", role: "Founder | Chief-in-Patron", bio: "Guides the strategic vision and provides foundational support for ESPA's overarching mission.", linkedin: "https://www.linkedin.com/in/shaaaaabbir/" },
   { name: "Rameez Taj", role: "General Secretary", bio: "Oversees all operational initiatives and ensures smooth execution of programs across the foundation.", linkedin: "https://www.linkedin.com/in/rameez-taj-962a4a28a/" },
-  { name: "Ashfaq Jan", role: "Assistant General Sec.", bio: "Supports day-to-day operations and coordinates closely with the General Secretary on key programs.", linkedin: "#" },
+  { name: "Ashfaq Jan", role: "Assistant General Sec.", bio: "Supports day-to-day operations and coordinates closely with the General Secretary on key programs.", linkedin: "https://www.linkedin.com/in/ashaq-jan-738723287" },
   { name: "Ali Hasnain", role: "Treasurer", bio: "Manages financial planning, transparent fund allocation, and the organization's fiscal health.", linkedin: "https://www.linkedin.com/in/ali-hasnain-695b88257/" },
   { name: "Aitzaz Rahim", role: "Information Secretary", bio: "Directs internal and external communications, public relations, and media outreach.", linkedin: "https://www.linkedin.com/in/aitzaz-rahim-551777213/" },
   { name: "Azhan Khan", role: "Member", bio: "Actively contributes to the foundation's core initiatives and community outreach projects.", linkedin: "#" },

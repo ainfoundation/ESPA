@@ -22,7 +22,7 @@ export default function TermsOfService() {
             
             <section>
               <h2 className="text-2xl font-bold text-[#004B36] mt-8 mb-4">1. Agreement to Terms</h2>
-              <p>By accessing our website and using our digital services (including the Management Portal, Digital Library, POS, and Digital Card services), you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access our services.</p>
+              <p>By accessing our website and using our digital services (including the Management Portal, Digital Library, POS, and Virtual Card services), you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access our services.</p>
             </section>
             
             <section>

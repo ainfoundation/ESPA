@@ -28,14 +28,14 @@ export default function Programs() {
 
  <div className="flex flex-col gap-12 md:gap-20">
  {programs.map((program, idx) => (
-          <div key={idx} className={`flex flex-col md:flex-row gap-4 md:gap-6 items-center ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+          <div key={idx} className={`flex flex-col md:flex-row gap-8 md:gap-16 items-center ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
             <div className="w-full md:w-1/2 aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-[#004B36]/5 transition-all duration-300 relative group cursor-pointer">
               <img src={program.img} alt={program.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-[#004B36]/0 group-hover:bg-[#004B36]/10 transition-colors duration-300"></div>
             </div>
             
             <div className="w-full md:w-1/2">
-              <h3 className="font-display text-2xl font-bold tracking-tight mb-2 md:mb-3 text-[#004B36] transition-colors duration-300">{program.title}</h3>
+              <h3 className="font-display text-3xl md:text-4xl font-bold tracking-tight mb-4 text-[#004B36] transition-colors duration-300">{program.title}</h3>
               <p className="text-justify font-sans text-xl font-normal text-[#004B36]/70 leading-relaxed transition-colors duration-300">{program.desc}</p>
             </div>
           </div>

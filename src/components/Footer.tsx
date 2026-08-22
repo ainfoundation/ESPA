@@ -28,7 +28,7 @@ export default function Footer() {
             <a href="/pos" className="hover:text-white transition-colors">Point-of-Sale</a>
             <a href="/library/login" className="hover:text-white transition-colors">Digital Library</a>
             <a href="/login" className="hover:text-white transition-colors">Management Portal</a>
-            <a href="/vcard/login" className="hover:text-white transition-colors">Digital Card</a>
+            <a href="/vcard/login" className="hover:text-white transition-colors">Virtual Card</a>
             <a href="/signature" className="hover:text-white transition-colors">Digital Signature</a>
           </div>
         </div>

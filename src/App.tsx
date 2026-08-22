@@ -43,12 +43,14 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 
 
+const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 function AnimatedRoutes() {
   const location = useLocation();
   return (
     
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+        <Route path="/services" element={<PageWrapper><ServicesPage /></PageWrapper>} />
         <Route path="/about" element={<PageWrapper><AboutUs /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><ContactUs /></PageWrapper>} />
         <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />

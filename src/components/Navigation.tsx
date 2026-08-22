@@ -59,15 +59,15 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
       <div className="flex items-center gap-4 md:gap-8">
         <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
           <div className="relative group">
-            <button className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
+            <Link to="/services" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
               Services
               <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
-            </button>
+            </Link>
             <div className="absolute top-full left-0 mt-0 w-48 bg-white border border-[#004B36]/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2 flex flex-col overflow-hidden z-[100]">
               <Link to="/pos" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">Point-of-Sale</Link>
               <Link to="/library/login" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">Digital Library</Link>
               <Link to="/login" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">Management Portal</Link>
-              <Link to="/vcard/login" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">Digital Card</Link>
+              <Link to="/vcard/login" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">Virtual Card</Link>
               <Link to="/signature" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">Digital Signature</Link>
             </div>
           </div>
@@ -104,11 +104,13 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-xl hover:bg-[#003828] transition-colors text-center mb-2">
               {isAuthenticated ? "Dashboard" : "Login"}
             </Link>
-            <span className="text-xs font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">Services</span>
+            <span className="text-xs font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">
+              <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#004B36] transition-colors">Services</Link>
+            </span>
             <Link to="/pos" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Point-of-Sale</Link>
             <Link to="/library/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Digital Library</Link>
             <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Management Portal</Link>
-            <Link to="/vcard/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Digital Card</Link>
+            <Link to="/vcard/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Virtual Card</Link>
             <Link to="/signature" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Digital Signature</Link>
           </div>
           
