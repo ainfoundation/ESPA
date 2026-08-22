@@ -54,9 +54,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 <rect width="512" height="512" fill="white"/>
 </clipPath>
 </defs>
-</svg>
-<span className="font-outfit font-bold text-xl text-[#004B36]">ESPA Foundation</span>
-</Link>
+</svg></Link>
 
       <div className="flex items-center gap-4 md:gap-8">
         <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
