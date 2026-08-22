@@ -59,12 +59,12 @@ app.post('/api/login', loginLimiter, (req, res) => {
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')));
-  app.get('*', (req, res) => {
+  app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
 } else {
   // Development fallback for unhandled API routes
-  app.get('/api/*', (req, res) => {
+  app.use('/api', (req, res) => {
     res.status(404).json({ error: 'API route not found' });
   });
 }

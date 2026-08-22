@@ -1,6 +1,6 @@
 {
-  "name": "ILM Foundation",
-  "description": "An education-focused NGO providing libraries and scholarships for children.",
+  "name": "ESPA Foundation",
+  "description": "ESPA Foundation - From Exclusion to Education",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
