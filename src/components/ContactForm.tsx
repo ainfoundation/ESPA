@@ -20,15 +20,13 @@ export default function ContactForm() {
     };
 
     try {
-      const { db } = await import('../lib/firebase');
-      const { initFirebase } = await import('../lib/firebase');
-      const { db: firestoreDb } = await initFirebase();
-      const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
-      
-      await addDoc(collection(firestoreDb, 'contacts'), {
-        ...data,
-        createdAt: serverTimestamp()
-      });
+      const emailjs = (await import('@emailjs/browser')).default;
+      await emailjs.sendForm(
+        'service_a6vnazj', 
+        'template_srw36xh', 
+        e.currentTarget, 
+        'VWIOEceK5_7FFg6Np'
+      );
 
       setStatus('success');
       toast.success('Message sent successfully!');
