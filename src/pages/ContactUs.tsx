@@ -16,17 +16,47 @@ export default function ContactUs() {
           Have questions or want to get involved? We'd love to hear from you.
         </p>
         
-        <div className="bg-[#004B36]/5 p-8 rounded-3xl border border-[#004B36]/10 text-left">
-          <div className="mb-6">
-            <h3 className="text-sm font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">Email</h3>
-            <a href="mailto:espafoundation@outlook.com" className="text-xl font-medium text-[#004B36] hover:text-[#004B36]/70 transition-colors">espafoundation@outlook.com</a>
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">Address</h3>
-            <p className="text-lg font-medium text-[#004B36]">
-              A-36, CS-58, Bhai Jan Chowk,<br/>Aisha Manzil, FB Area<br/>Karachi, Pakistan
-            </p>
-          </div>
+        <div className="bg-[#004B36] p-8 rounded-3xl border border-[#004B36]/10 text-left shadow-lg">
+          <form className="flex flex-col gap-6" onSubmit={async (e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) btn.textContent = 'Sending...';
+            try {
+              const emailjs = (await import('@emailjs/browser')).default;
+              await emailjs.sendForm(
+                'service_a6vnazj', 
+                'template_srw36xh', 
+                form, 
+                'VWIOEceK5_7FFg6Np'
+              );
+              form.reset();
+              if (btn) btn.textContent = 'Message Sent Successfully!';
+              setTimeout(() => {
+                if (btn) btn.textContent = 'Send Message';
+              }, 3000);
+            } catch (err) {
+              console.error(err);
+              alert('Something went wrong. Please try again.');
+              if (btn) btn.textContent = 'Send Message';
+            }
+          }}>
+            <div>
+              <label className="block text-sm font-bold text-white/70 uppercase tracking-wider mb-2">Name</label>
+              <input type="text" name="name" required className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors" placeholder="Your Name" />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-white/70 uppercase tracking-wider mb-2">Email Address</label>
+              <input type="email" name="email" required className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors" placeholder="Your Email Address" />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-white/70 uppercase tracking-wider mb-2">Message</label>
+              <textarea name="message" required rows={5} className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors resize-none" placeholder="How can we help?"></textarea>
+            </div>
+            <button type="submit" className="w-full bg-white text-[#004B36] py-4 rounded-xl font-bold hover:bg-neutral-200 transition-colors mt-2">
+              Send Message
+            </button>
+          </form>
         </div>
       </div>
     </div>

@@ -220,10 +220,30 @@ function VolunteerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
                 <>
                   <h2 className="font-display text-2xl font-bold mb-2 text-[#004B36]">Volunteer With Us</h2>
                   <p className="text-[#004B36]/60 text-sm mb-8">Fill out the form below to express your interest.</p>
-                  <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); toast.success('Submitted successfully!'); }} className="flex flex-col gap-4">
+                  <form onSubmit={async (e) => { 
+                    e.preventDefault(); 
+                    const form = e.currentTarget;
+                    const btn = form.querySelector('button[type="submit"]');
+                    if (btn) btn.textContent = 'Submitting...';
+                    try {
+                      const emailjs = (await import('@emailjs/browser')).default;
+                      await emailjs.sendForm(
+                        'service_a6vnazj', 
+                        'template_sh6mtae', 
+                        form, 
+                        'VWIOEceK5_7FFg6Np'
+                      );
+                      setSubmitted(true);
+                    } catch (err) {
+                      console.error(err);
+                      toast.error('Something went wrong. Please try again.');
+                      if (btn) btn.textContent = 'Submit';
+                    }
+                  }} className="flex flex-col gap-4">
                     <div>
                       <input 
                         type="text" 
+                        name="name"
                         placeholder="Full Name" 
                         required
                         className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors"
@@ -232,17 +252,28 @@ function VolunteerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
                     <div>
                       <input 
                         type="email" 
+                        name="email"
                         placeholder="Email Address" 
                         required
                         className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors"
                       />
                     </div>
                     <div>
-                      <textarea 
-                        placeholder="Tell us a little about yourself and how you'd like to help" 
-                        rows={4}
+                      <input 
+                        type="text" 
+                        name="area_of_interest"
+                        placeholder="Area of Interest" 
                         required
-                        className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors resize-none"
+                        className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <input 
+                        type="text" 
+                        name="availability"
+                        placeholder="Availability" 
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors"
                       />
                     </div>
                     <button 

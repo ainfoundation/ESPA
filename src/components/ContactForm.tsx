@@ -12,29 +12,34 @@ export default function ContactForm() {
     setStatus('submitting');
     
     const formData = new FormData(e.currentTarget);
-    formData.append("access_key", "d1101fbe-2fae-4c4f-8fa1-c096c2e57702");
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      message: formData.get('message') as string,
+      createdAt: new Date().toISOString() // Fallback to ISO string, or better we could use serverTimestamp but this is fine
+    };
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
+      const { db } = await import('../lib/firebase');
+      const { initFirebase } = await import('../lib/firebase');
+      const { db: firestoreDb } = await initFirebase();
+      const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
+      
+      await addDoc(collection(firestoreDb, 'contacts'), {
+        ...data,
+        createdAt: serverTimestamp()
       });
-      const data = await response.json();
 
-      if (data.success) {
-        setStatus('success');
-        toast.success('Message sent successfully!');
-        (e.target as HTMLFormElement).reset();
-        
-        setTimeout(() => {
-          setStatus('idle');
-        }, 3000);
-      } else {
-        toast.error('Something went wrong. Please try again.');
+      setStatus('success');
+      toast.success('Message sent successfully!');
+      (e.target as HTMLFormElement).reset();
+      
+      setTimeout(() => {
         setStatus('idle');
-      }
+      }, 3000);
     } catch (error) {
-      toast.error('Network error. Please try again.');
+      console.error('Error submitting form:', error);
+      toast.error('Something went wrong. Please try again.');
       setStatus('idle');
     }
   };
