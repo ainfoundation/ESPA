@@ -7,21 +7,36 @@ export default function ContactForm() {
   const { t } = useLanguage();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('submitting');
     
-    // Simulate network request
-    setTimeout(() => {
-      setStatus('success');
-      toast.success('Message sent successfully!');
-      (e.target as HTMLFormElement).reset();
-      
-      // Reset success message after 3 seconds
-      setTimeout(() => {
+    const formData = new FormData(e.currentTarget);
+    formData.append("access_key", "d1101fbe-2fae-4c4f-8fa1-c096c2e57702");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus('success');
+        toast.success('Message sent successfully!');
+        (e.target as HTMLFormElement).reset();
+        
+        setTimeout(() => {
+          setStatus('idle');
+        }, 3000);
+      } else {
+        toast.error('Something went wrong. Please try again.');
         setStatus('idle');
-      }, 3000);
-    }, 1000);
+      }
+    } catch (error) {
+      toast.error('Network error. Please try again.');
+      setStatus('idle');
+    }
   };
 
   return (

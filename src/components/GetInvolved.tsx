@@ -35,15 +35,33 @@ export default function GetInvolved() {
                       </div>
                     )}
                     {isVolunteerForm && !isVolunteerSuccess && (
-                      <form className="flex-grow flex flex-col gap-4 text-sm mt-4" onSubmit={(e) => { e.preventDefault(); setIsVolunteerSuccess(true); }}>
-                        <input type="email" placeholder="Email Address" required className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors" />
-                        <select required className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors bg-[#004B36] text-white">
+                      <form className="flex-grow flex flex-col gap-4 text-sm mt-4" onSubmit={async (e) => { 
+                        e.preventDefault(); 
+                        const form = e.currentTarget;
+                        const formData = new FormData(form);
+                        formData.append("access_key", "d1101fbe-2fae-4c4f-8fa1-c096c2e57702");
+                        formData.append("subject", "New Volunteer Application");
+                        
+                        try {
+                          const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
+                          const data = await res.json();
+                          if (data.success) {
+                            setIsVolunteerSuccess(true);
+                          } else {
+                            alert("Something went wrong. Please try again.");
+                          }
+                        } catch (err) {
+                          alert("Network error. Please try again.");
+                        }
+                      }}>
+                        <input type="email" name="email" placeholder="Email Address" required className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors" />
+                        <select name="area_of_interest" required className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors bg-[#004B36] text-white">
                           <option value="">Area of Interest</option>
                           <option value="mentoring">Virtual Mentoring</option>
                           <option value="logistics">Library Logistics</option>
                           <option value="teaching">On-ground Teaching</option>
                         </select>
-                        <select required className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors bg-[#004B36] text-white">
+                        <select name="availability" required className="w-full px-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-white/50 focus:outline-none focus:border-white transition-colors bg-[#004B36] text-white">
                           <option value="">Availability</option>
                           <option value="2-4">2-4 hours/week</option>
                           <option value="5-10">5-10 hours/week</option>
