@@ -45,7 +45,10 @@ export default function ContactUs() {
                 })
               });
 
-              if (!response.ok) throw new Error('Network response was not ok');
+              if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error || 'Server connection failed');
+              }
               
               form.reset();
               recaptchaRef.current?.reset();
@@ -53,10 +56,11 @@ export default function ContactUs() {
               setTimeout(() => {
                 if (btn) btn.textContent = 'Send Message';
               }, 3000);
-            } catch (err) {
+            } catch (err: any) {
               console.error(err);
-              alert('Something went wrong. Please try again.');
+              alert(err.message || 'Something went wrong. Please try again.');
               if (btn) btn.textContent = 'Send Message';
+              recaptchaRef.current?.reset();
             }
           }}>
             <div>

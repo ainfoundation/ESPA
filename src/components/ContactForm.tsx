@@ -35,7 +35,10 @@ export default function ContactForm() {
         body: JSON.stringify(data)
       });
 
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || 'Server connection failed');
+      }
 
       setStatus('success');
       toast.success('Message sent successfully!');
@@ -45,9 +48,9 @@ export default function ContactForm() {
       setTimeout(() => {
         setStatus('idle');
       }, 3000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting form:', error);
-      toast.error('Something went wrong. Please try again.');
+      toast.error(error.message || 'Something went wrong. Please try again.');
       setStatus('idle');
       recaptchaRef.current?.reset();
     }

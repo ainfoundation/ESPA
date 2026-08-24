@@ -25,12 +25,12 @@ function DonationModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => vo
             onClick={onClose}
           />
           <div 
-            className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl border border-[#004B36]/5"
+            className="relative w-full max-w-[500px] h-[500px] max-h-[90vh] bg-white rounded-3xl overflow-y-auto shadow-2xl border border-[#004B36]/5 flex flex-col"
           >
             <button onClick={onClose} className="absolute top-6 right-6 text-[#004B36]/50 hover:text-[#004B36] transition-colors z-10">
               <X size={20} />
             </button>
-            <div className="p-8 md:p-10">
+            <div className="p-8 md:p-10 flex flex-col flex-1">
               {submitted ? (
                 <div className="text-center py-10">
                   <div className="w-16 h-16 bg-[#004B36] text-white rounded-full flex items-center justify-center mx-auto mb-6">
@@ -49,7 +49,7 @@ function DonationModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => vo
                   <p className="text-[#004B36]/80 text-xs font-semibold mb-8 p-3 bg-[#004B36]/5 rounded-lg border border-[#004B36]/10">
                     ESPA Foundation is a registered tax-exempt non-profit organization. All donations are tax-deductible.
                   </p>
-                  <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); toast.success('Donation processed!'); }} className="flex flex-col gap-6">
+                  <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); toast.success('Donation processed!'); }} className="flex flex-col gap-6 flex-1">
                     <div className="grid grid-cols-3 gap-3">
                       {['25', '50', '100'].map(val => (
                         <button 
@@ -74,7 +74,7 @@ function DonationModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => vo
                     <button 
                       type="submit" 
                       disabled={!amount} 
-                      className="w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-2"
+                      className="mt-auto w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       Donate {amount ? `$${amount}` : ''}
                     </button>
@@ -111,12 +111,12 @@ function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
             onClick={onClose} 
           />
           <div 
-            className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl border border-[#004B36]/5"
+            className="relative w-full max-w-[500px] h-[500px] max-h-[90vh] bg-white rounded-3xl overflow-y-auto shadow-2xl border border-[#004B36]/5 flex flex-col"
           >
             <button onClick={onClose} className="absolute top-6 right-6 text-[#004B36]/50 hover:text-[#004B36] transition-colors z-10">
               <X size={20} />
             </button>
-            <div className="p-8 md:p-10">
+            <div className="p-8 md:p-10 flex flex-col flex-1">
               {submitted ? (
                 <div className="text-center py-10">
                   <div className="w-16 h-16 bg-[#004B36] text-white rounded-full flex items-center justify-center mx-auto mb-6">
@@ -159,17 +159,20 @@ function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                         })
                       });
 
-                      if (!response.ok) throw new Error('Network response was not ok');
+                      if (!response.ok) {
+                        const errData = await response.json().catch(() => ({}));
+                        throw new Error(errData.error || 'Server connection failed');
+                      }
                       
                       setSubmitted(true);
                       toast.success('Submitted successfully!');
-                    } catch (err) {
+                    } catch (err: any) {
                       console.error(err);
-                      toast.error('Something went wrong. Please try again.');
+                      toast.error(err.message || 'Something went wrong. Please try again.');
                       if (btn) btn.textContent = 'Submit Proposal';
                       recaptchaRef.current?.reset();
                     }
-                  }} className="flex flex-col gap-4">
+                  }} className="flex flex-col gap-4 flex-1">
                     <div>
                       <input 
                         type="text" 
@@ -214,7 +217,7 @@ function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                     </div>
                     <button 
                       type="submit"
-                      className="mt-2 w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] transition-colors"
+                      className="mt-auto w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] transition-colors"
                     >
                       Submit Proposal
                     </button>
@@ -251,12 +254,12 @@ function VolunteerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
             onClick={onClose} 
           />
           <div 
-            className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl border border-[#004B36]/5"
+            className="relative w-full max-w-[500px] h-[500px] max-h-[90vh] bg-white rounded-3xl overflow-y-auto shadow-2xl border border-[#004B36]/5 flex flex-col"
           >
             <button onClick={onClose} className="absolute top-6 right-6 text-[#004B36]/50 hover:text-[#004B36] transition-colors z-10">
               <X size={20} />
             </button>
-            <div className="p-8 md:p-10">
+            <div className="p-8 md:p-10 flex flex-col flex-1">
               {submitted ? (
                 <div className="text-center py-10">
                   <div className="w-16 h-16 bg-[#004B36] text-white rounded-full flex items-center justify-center mx-auto mb-6">
@@ -299,17 +302,20 @@ function VolunteerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
                         })
                       });
 
-                      if (!response.ok) throw new Error('Network response was not ok');
+                      if (!response.ok) {
+                        const errData = await response.json().catch(() => ({}));
+                        throw new Error(errData.error || 'Server connection failed');
+                      }
 
                       setSubmitted(true);
                       toast.success('Submitted successfully!');
-                    } catch (err) {
+                    } catch (err: any) {
                       console.error(err);
-                      toast.error('Something went wrong. Please try again.');
+                      toast.error(err.message || 'Something went wrong. Please try again.');
                       if (btn) btn.textContent = 'Submit';
                       recaptchaRef.current?.reset();
                     }
-                  }} className="flex flex-col gap-4">
+                  }} className="flex flex-col gap-4 flex-1">
                     <div>
                       <input 
                         type="text" 
@@ -354,7 +360,7 @@ function VolunteerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
                     </div>
                     <button 
                       type="submit"
-                      className="mt-2 w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] transition-colors"
+                      className="mt-auto w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] transition-colors"
                     >
                       Submit
                     </button>
