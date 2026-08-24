@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       subject: `New Volunteer Application from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\nArea of Interest: ${area_of_interest}\nAvailability: ${availability}`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+        <div style="font-family: 'Poppins'; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
           <div style="background-color: #004B36; padding: 20px; text-align: center; color: white;">
             <h2 style="margin: 0;">New Volunteer Application</h2>
           </div>

@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       subject: `New Partnership Proposal from ${organization}`,
       text: `Name: ${name}\nOrganization: ${organization}\nEmail: ${email}\n\nProposal:\n${proposal}`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+        <div style="font-family: 'Poppins'; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
           <div style="background-color: #004B36; padding: 20px; text-align: center; color: white;">
             <h2 style="margin: 0;">New Partnership Proposal</h2>
           </div>

@@ -82,13 +82,13 @@ app.post('/api/contact', apiLimiter, async (req, res) => {
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body style="margin: 0; padding: 20px; background-color: #f3f4f6;">
-<div style="font-family: 'Poppins', Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+<div style="font-family: 'Poppins'; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
   
   <!-- Text-Based Logo Header -->
   <div style="background-color: #ffffff; padding: 35px 20px; text-align: center; border-bottom: 1px solid #f3f4f6;">
     <div style="color: #004B36; margin: 0; padding: 0;">
-      <div style="font-family: 'Poppins', Arial, sans-serif; font-weight: 700; font-size: 50px; line-height: 1; margin: 0; letter-spacing: -1px;">ESPA</div>
-      <div style="font-family: 'Poppins', Arial, sans-serif; font-weight: 400; font-size: 32px; line-height: 1; margin: 0;">Foundation</div>
+      <div style="font-family: 'Poppins'; font-weight: 700; font-size: 50px; line-height: 1; margin: 0; letter-spacing: -1px;">ESPA</div>
+      <div style="font-family: 'Poppins'; font-weight: 400; font-size: 32px; line-height: 1; margin: 0;">Foundation</div>
     </div>
   </div>
 
@@ -163,7 +163,7 @@ app.post('/api/volunteer', apiLimiter, async (req, res) => {
       subject: `New Volunteer Application from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\nArea of Interest: ${area_of_interest}\nAvailability: ${availability}`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+        <div style="font-family: 'Poppins'; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
           <div style="background-color: #004B36; padding: 20px; text-align: center; color: white;">
             <h2 style="margin: 0;">New Volunteer Application</h2>
           </div>
@@ -214,7 +214,7 @@ app.post('/api/partner', apiLimiter, async (req, res) => {
       subject: `New Partnership Proposal from ${organization}`,
       text: `Name: ${name}\nOrganization: ${organization}\nEmail: ${email}\n\nProposal:\n${proposal}`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+        <div style="font-family: 'Poppins'; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
           <div style="background-color: #004B36; padding: 20px; text-align: center; color: white;">
             <h2 style="margin: 0;">New Partnership Proposal</h2>
           </div>
