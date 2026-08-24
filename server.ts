@@ -4,6 +4,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
@@ -25,9 +26,104 @@ const loginLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30, // 30 form submissions per 15 minutes
+  message: { error: 'Too many requests, please try again later.' }
+});
+
 app.use(express.json());
 
+// Nodemailer & reCAPTCHA Setup
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'foundationespa@gmail.com',
+    pass: 'xzxp ilzw hiwu sjcr',
+  },
+});
+
+const RECAPTCHA_SECRET = '6LfwCZYtAAAAAE8SIlpjwy7rLKMSekesYdxK9asA';
+
+async function verifyRecaptcha(token: string) {
+  try {
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `secret=${RECAPTCHA_SECRET}&response=${token}`,
+    });
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error('reCAPTCHA verification error:', error);
+    return false;
+  }
+}
+
 // API Routes
+app.post('/api/contact', apiLimiter, async (req, res) => {
+  const { name, email, message, recaptchaToken } = req.body;
+  if (!name || !email || !message || !recaptchaToken) return res.status(400).json({ error: 'All fields are required' });
+  
+  const isValid = await verifyRecaptcha(recaptchaToken);
+  if (!isValid) return res.status(400).json({ error: 'reCAPTCHA verification failed' });
+
+  try {
+    await transporter.sendMail({
+      from: '"ESPA Website" <foundationespa@gmail.com>',
+      to: 'foundationespa@gmail.com',
+      replyTo: email,
+      subject: `New Contact Form Submission from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to send email' });
+  }
+});
+
+app.post('/api/volunteer', apiLimiter, async (req, res) => {
+  const { name, email, area_of_interest, availability, recaptchaToken } = req.body;
+  if (!name || !email || !area_of_interest || !availability || !recaptchaToken) return res.status(400).json({ error: 'All fields are required' });
+  
+  const isValid = await verifyRecaptcha(recaptchaToken);
+  if (!isValid) return res.status(400).json({ error: 'reCAPTCHA verification failed' });
+
+  try {
+    await transporter.sendMail({
+      from: '"ESPA Website" <foundationespa@gmail.com>',
+      to: 'foundationespa@gmail.com',
+      replyTo: email,
+      subject: `New Volunteer Application from ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\nArea of Interest: ${area_of_interest}\nAvailability: ${availability}`
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to send email' });
+  }
+});
+
+app.post('/api/partner', apiLimiter, async (req, res) => {
+  const { name, organization, email, proposal, recaptchaToken } = req.body;
+  if (!name || !organization || !email || !proposal || !recaptchaToken) return res.status(400).json({ error: 'All fields are required' });
+  
+  const isValid = await verifyRecaptcha(recaptchaToken);
+  if (!isValid) return res.status(400).json({ error: 'reCAPTCHA verification failed' });
+
+  try {
+    await transporter.sendMail({
+      from: '"ESPA Website" <foundationespa@gmail.com>',
+      to: 'foundationespa@gmail.com',
+      replyTo: email,
+      subject: `New Partnership Proposal from ${organization}`,
+      text: `Name: ${name}\nOrganization: ${organization}\nEmail: ${email}\n\nProposal:\n${proposal}`
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to send email' });
+  }
+});
+
 app.post('/api/login', loginLimiter, (req, res) => {
   const { email, password } = req.body;
 

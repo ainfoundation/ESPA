@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Send, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useLanguage } from '../contexts/LanguageContext';
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function ContactForm() {
   const { t } = useLanguage();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    const recaptchaToken = recaptchaRef.current?.getValue();
+    if (!recaptchaToken) {
+      toast.error("Please verify that you are not a robot.");
+      return;
+    }
+
     setStatus('submitting');
     
     const formData = new FormData(e.currentTarget);
@@ -16,21 +25,22 @@ export default function ContactForm() {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
       message: formData.get('message') as string,
-      createdAt: new Date().toISOString() // Fallback to ISO string, or better we could use serverTimestamp but this is fine
+      recaptchaToken
     };
 
     try {
-      const emailjs = (await import('@emailjs/browser')).default;
-      await emailjs.sendForm(
-        'service_a6vnazj', 
-        'template_srw36xh', 
-        e.currentTarget, 
-        'VWIOEceK5_7FFg6Np'
-      );
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
 
       setStatus('success');
       toast.success('Message sent successfully!');
       (e.target as HTMLFormElement).reset();
+      recaptchaRef.current?.reset();
       
       setTimeout(() => {
         setStatus('idle');
@@ -39,6 +49,7 @@ export default function ContactForm() {
       console.error('Error submitting form:', error);
       toast.error('Something went wrong. Please try again.');
       setStatus('idle');
+      recaptchaRef.current?.reset();
     }
   };
 
@@ -86,6 +97,13 @@ export default function ContactForm() {
                 placeholder="How can we help?"
                 rows={3}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all resize-none"
+              />
+            </div>
+            <div className="flex justify-center my-1 scale-90 origin-left">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6LfwCZYtAAAAAJfP8Lp_sa-rZjiIEFbC8SIhi0EW"
+                theme="dark"
               />
             </div>
             <button

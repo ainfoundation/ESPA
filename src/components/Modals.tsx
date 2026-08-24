@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import ReCAPTCHA from "react-google-recaptcha";
 
 function DonationModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const [amount, setAmount] = useState<string>('');
@@ -90,11 +91,13 @@ function DonationModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => vo
 
 function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   useEffect(() => {
     if (!isOpen) {
       setTimeout(() => {
         setSubmitted(false);
+        recaptchaRef.current?.reset();
       }, 300);
     }
   }, [isOpen]);
@@ -129,10 +132,48 @@ function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                 <>
                   <h2 className="font-display text-2xl font-bold mb-2 text-[#004B36]">Partner With Us</h2>
                   <p className="text-[#004B36]/60 text-sm mb-8">Let's collaborate to make a lasting impact.</p>
-                  <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); toast.success('Submitted successfully!'); }} className="flex flex-col gap-4">
+                  <form onSubmit={async (e) => { 
+                    e.preventDefault(); 
+                    
+                    const recaptchaToken = recaptchaRef.current?.getValue();
+                    if (!recaptchaToken) {
+                      toast.error("Please verify that you are not a robot.");
+                      return;
+                    }
+
+                    const form = e.currentTarget;
+                    const btn = form.querySelector('button[type="submit"]');
+                    if (btn) btn.textContent = 'Submitting...';
+                    
+                    try {
+                      const formData = new FormData(form);
+                      const response = await fetch('/api/partner', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          name: formData.get('name'),
+                          organization: formData.get('organization'),
+                          email: formData.get('email'),
+                          proposal: formData.get('proposal'),
+                          recaptchaToken
+                        })
+                      });
+
+                      if (!response.ok) throw new Error('Network response was not ok');
+                      
+                      setSubmitted(true);
+                      toast.success('Submitted successfully!');
+                    } catch (err) {
+                      console.error(err);
+                      toast.error('Something went wrong. Please try again.');
+                      if (btn) btn.textContent = 'Submit Proposal';
+                      recaptchaRef.current?.reset();
+                    }
+                  }} className="flex flex-col gap-4">
                     <div>
                       <input 
                         type="text" 
+                        name="name"
                         placeholder="Full Name" 
                         required
                         className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors"
@@ -141,6 +182,7 @@ function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                     <div>
                       <input 
                         type="text" 
+                        name="organization"
                         placeholder="Organization Name" 
                         required
                         className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors"
@@ -149,6 +191,7 @@ function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                     <div>
                       <input 
                         type="email" 
+                        name="email"
                         placeholder="Email Address" 
                         required
                         className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors"
@@ -156,15 +199,22 @@ function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
                     </div>
                     <div>
                       <textarea 
+                        name="proposal"
                         placeholder="How would you like to partner?" 
                         rows={3}
                         required
                         className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors resize-none"
                       />
                     </div>
+                    <div className="flex justify-center my-1 scale-90 origin-left">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey="6LfwCZYtAAAAAJfP8Lp_sa-rZjiIEFbC8SIhi0EW"
+                      />
+                    </div>
                     <button 
                       type="submit"
-                      className="mt-4 w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] transition-colors"
+                      className="mt-2 w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] transition-colors"
                     >
                       Submit Proposal
                     </button>
@@ -181,11 +231,13 @@ function PartnerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => voi
 
 function VolunteerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   useEffect(() => {
     if (!isOpen) {
       setTimeout(() => {
         setSubmitted(false);
+        recaptchaRef.current?.reset();
       }, 300);
     }
   }, [isOpen]);
@@ -222,22 +274,40 @@ function VolunteerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
                   <p className="text-[#004B36]/60 text-sm mb-8">Fill out the form below to express your interest.</p>
                   <form onSubmit={async (e) => { 
                     e.preventDefault(); 
+                    
+                    const recaptchaToken = recaptchaRef.current?.getValue();
+                    if (!recaptchaToken) {
+                      toast.error("Please verify that you are not a robot.");
+                      return;
+                    }
+
                     const form = e.currentTarget;
                     const btn = form.querySelector('button[type="submit"]');
                     if (btn) btn.textContent = 'Submitting...';
+                    
                     try {
-                      const emailjs = (await import('@emailjs/browser')).default;
-                      await emailjs.sendForm(
-                        'service_a6vnazj', 
-                        'template_sh6mtae', 
-                        form, 
-                        'VWIOEceK5_7FFg6Np'
-                      );
+                      const formData = new FormData(form);
+                      const response = await fetch('/api/volunteer', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          name: formData.get('name'),
+                          email: formData.get('email'),
+                          area_of_interest: formData.get('area_of_interest'),
+                          availability: formData.get('availability'),
+                          recaptchaToken
+                        })
+                      });
+
+                      if (!response.ok) throw new Error('Network response was not ok');
+
                       setSubmitted(true);
+                      toast.success('Submitted successfully!');
                     } catch (err) {
                       console.error(err);
                       toast.error('Something went wrong. Please try again.');
                       if (btn) btn.textContent = 'Submit';
+                      recaptchaRef.current?.reset();
                     }
                   }} className="flex flex-col gap-4">
                     <div>
@@ -276,9 +346,15 @@ function VolunteerModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => v
                         className="w-full px-4 py-3 rounded-xl border border-[#004B36]/10 bg-transparent text-[#004B36] focus:outline-none focus:border-[#004B36] transition-colors"
                       />
                     </div>
+                    <div className="flex justify-center my-1 scale-90 origin-left">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey="6LfwCZYtAAAAAJfP8Lp_sa-rZjiIEFbC8SIhi0EW"
+                      />
+                    </div>
                     <button 
                       type="submit"
-                      className="mt-4 w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] transition-colors"
+                      className="mt-2 w-full bg-[#004B36] text-white py-4 rounded-full font-bold hover:bg-[#003828] transition-colors"
                     >
                       Submit
                     </button>
