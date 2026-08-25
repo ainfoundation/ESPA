@@ -15,9 +15,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
+const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } }) : null;
 
 // Security Middleware: Helmet for secure HTTP headers
 app.use(helmet());
@@ -304,7 +304,12 @@ app.post('/api/election', apiLimiter, async (req, res) => {
       const { error: dbError } = await supabase
         .from('election_votes')
         .insert(votes);
-      if (dbError) console.error('Supabase error (election):', dbError);
+      if (dbError) {
+        console.error('Supabase error (election):', dbError);
+        return res.status(500).json({ error: 'Database error: ' + dbError.message });
+      }
+    } else {
+      return res.status(500).json({ error: 'Supabase credentials missing on server' });
     }
 
     await transporter.sendMail({
