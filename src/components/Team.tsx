@@ -3,13 +3,13 @@ import { User, Linkedin } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const teamMembers = [
-  { name: "Shabbir Ahmed", role: "Founder | Chief-in-Patron", bio: "Guides the strategic vision and provides foundational support for ESPA's overarching mission.", linkedin: "https://www.linkedin.com/in/shaaaaabbir/", image: "https://i.postimg.cc/85GDNmft/Shabbir-Ahmed.png" },
-  { name: "Rameez Taj", role: "General Secretary", bio: "Oversees all operational initiatives and ensures smooth execution of programs across the foundation.", linkedin: "https://www.linkedin.com/in/rameez-taj-962a4a28a/", image: "https://i.postimg.cc/8PqrLsFJ/Rameez-Taj.png" },
-  { name: "Ashfaq Jan", role: "Assistant General Sec.", bio: "Supports day-to-day operations and coordinates closely with the General Secretary on key programs.", linkedin: "https://www.linkedin.com/in/ashaq-jan-738723287", image: "https://i.postimg.cc/HxmHd98Q/Ashfaq-Jan.png" },
-  { name: "Ali Hasnain", role: "Treasurer", bio: "Manages financial planning, transparent fund allocation, and the organization's fiscal health.", linkedin: "https://www.linkedin.com/in/ali-hasnain-695b88257/", image: "https://i.postimg.cc/mD4RBy19/Ali-Hasnain.png" },
-  { name: "Aitzaz Rahim", role: "Information Secretary", bio: "Directs internal and external communications, public relations, and media outreach.", linkedin: "https://www.linkedin.com/in/aitzaz-rahim-551777213/", image: "https://i.postimg.cc/rpxcBPsq/Aitzaz-Rahim.png" },
-  { name: "Azhan Khan", role: "Member", bio: "Actively contributes to the foundation's core initiatives and community outreach projects.", linkedin: "https://www.linkedin.com/in/azhan-khan-a3962b325", image: "https://i.postimg.cc/wTSsD3tT/Azhan-Khan.png" },
-  { name: "Ali Shan", role: "Member", bio: "Dedicated team member supporting various educational and organizational activities.", linkedin: "https://www.linkedin.com/in/ali-shan-b037a6269/", image: "https://i.postimg.cc/XJW34kBF/Ali-Shan.png" }
+  { name: "Shabbir Ahmed", role: "President", bio: "Guides the strategic vision and provides foundational support for ESPA's overarching mission.", linkedin: "https://www.linkedin.com/in/shaaaaabbir/", image: "https://i.postimg.cc/85GDNmft/Shabbir-Ahmed.png" },
+  { name: "Rameez Taj", role: "Vice President", bio: "Oversees all operational initiatives and ensures smooth execution of programs across the foundation.", linkedin: "https://www.linkedin.com/in/rameez-taj-962a4a28a/", image: "https://i.postimg.cc/8PqrLsFJ/Rameez-Taj.png" },
+  { name: "Ashfaq Jan", role: "General Secretary", bio: "Supports day-to-day operations and coordinates closely with the General Secretary on key programs.", linkedin: "https://www.linkedin.com/in/ashaq-jan-738723287", image: "https://i.postimg.cc/HxmHd98Q/Ashfaq-Jan.png" },
+  { name: "Ali Hasnain", role: "Joint Secretary", bio: "Manages financial planning, transparent fund allocation, and the organization's fiscal health.", linkedin: "https://www.linkedin.com/in/ali-hasnain-695b88257/", image: "https://i.postimg.cc/mD4RBy19/Ali-Hasnain.png" },
+  { name: "Aitzaz Rahim", role: "Treasurer", bio: "Directs internal and external communications, public relations, and media outreach.", linkedin: "https://www.linkedin.com/in/aitzaz-rahim-551777213/", image: "https://i.postimg.cc/rpxcBPsq/Aitzaz-Rahim.png" },
+  { name: "Azhan Khan", role: "Executive Member", bio: "Actively contributes to the foundation's core initiatives and community outreach projects.", linkedin: "https://www.linkedin.com/in/azhan-khan-a3962b325", image: "https://i.postimg.cc/wTSsD3tT/Azhan-Khan.png" },
+  { name: "Ali Shan", role: "Executive Member", bio: "Dedicated team member supporting various educational and organizational activities.", linkedin: "https://www.linkedin.com/in/ali-shan-b037a6269/", image: "https://i.postimg.cc/XJW34kBF/Ali-Shan.png" }
 ];
 
 export default function Team() {
@@ -18,7 +18,7 @@ export default function Team() {
     <section id="team" className="bg-[#004B36] py-16 md:py-24 transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 md:px-16">
         <div className="text-center mb-12 md:mb-20">
-          <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight mb-2 md:mb-3 text-white">Meet Our Team</h2>
+          <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tight mb-2 md:mb-3 text-white">Meet the Founding Members</h2>
           <p className="text-justify font-sans text-xl text-white/80 max-w-3xl mx-auto">The dedicated individuals behind ESPA Foundation's mission.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
