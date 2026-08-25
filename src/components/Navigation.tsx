@@ -58,6 +58,9 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
       <div className="flex items-center gap-4 md:gap-8">
         <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+          <Link to="/election" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors py-2">
+            Election
+          </Link>
           <div className="relative group">
             <Link to="/services" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
               Services
@@ -103,6 +106,9 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
           <div className="flex flex-col gap-2">
             <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-xl hover:bg-[#003828] transition-colors text-center mb-2">
               {isAuthenticated ? "Dashboard" : "Login"}
+            </Link>
+            <Link to="/election" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors py-2 font-bold">
+              Election
             </Link>
             <span className="text-xs font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">
               <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#004B36] transition-colors">Services</Link>

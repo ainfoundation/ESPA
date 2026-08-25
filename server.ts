@@ -276,6 +276,63 @@ app.post('/api/partner', apiLimiter, async (req, res) => {
   }
 });
 
+// Election Endpoint
+app.post('/api/election', apiLimiter, async (req, res) => {
+  const { 
+    voterName, 
+    president, 
+    vicePresident, 
+    generalSecretary, 
+    jointSecretary, 
+    treasurer, 
+    executiveMember1, 
+    executiveMember2 
+  } = req.body;
+
+  try {
+    if (supabase) {
+      const votes = [
+        { voter_name: voterName, title: 'President', nominee_name: president },
+        { voter_name: voterName, title: 'Vice President', nominee_name: vicePresident },
+        { voter_name: voterName, title: 'General Secretary', nominee_name: generalSecretary },
+        { voter_name: voterName, title: 'Joint Secretary', nominee_name: jointSecretary },
+        { voter_name: voterName, title: 'Treasurer', nominee_name: treasurer },
+        { voter_name: voterName, title: 'Executive Member 1', nominee_name: executiveMember1 },
+        { voter_name: voterName, title: 'Executive Member 2', nominee_name: executiveMember2 }
+      ];
+      
+      const { error: dbError } = await supabase
+        .from('election_votes')
+        .insert(votes);
+      if (dbError) console.error('Supabase error (election):', dbError);
+    }
+
+    await transporter.sendMail({
+      from: '"ESPA Website" <foundationespa@gmail.com>',
+      to: 'foundationespa@gmail.com',
+      subject: `New Election Ballot Submitted by ${voterName}`,
+      text: `Voter Name: ${voterName}\n\nPresident: ${president}\nVice President: ${vicePresident}\nGeneral Secretary: ${generalSecretary}\nJoint Secretary: ${jointSecretary}\nTreasurer: ${treasurer}\nExecutive Member 1: ${executiveMember1}\nExecutive Member 2: ${executiveMember2}`,
+      html: `
+        <h3>New Election Ballot</h3>
+        <p><strong>Voter Name:</strong> ${voterName}</p>
+        <hr />
+        <p><strong>President:</strong> ${president}</p>
+        <p><strong>Vice President:</strong> ${vicePresident}</p>
+        <p><strong>General Secretary:</strong> ${generalSecretary}</p>
+        <p><strong>Joint Secretary:</strong> ${jointSecretary}</p>
+        <p><strong>Treasurer:</strong> ${treasurer}</p>
+        <p><strong>Executive Member 1:</strong> ${executiveMember1}</p>
+        <p><strong>Executive Member 2:</strong> ${executiveMember2}</p>
+      `
+    });
+
+    res.json({ success: true, message: 'Votes submitted successfully' });
+  } catch (error) {
+    console.error('Election error:', error);
+    res.status(500).json({ error: 'Failed to process votes' });
+  }
+});
+
 app.post('/api/login', loginLimiter, (req, res) => {
   const { email, password } = req.body;
 

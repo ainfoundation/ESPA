@@ -42,7 +42,7 @@ const DigitalSignature = lazy(() => import('./pages/DigitalSignature'));
 const POSPlaceholder = lazy(() => import('./pages/POSPlaceholder'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
-
+const ElectionPage = lazy(() => import('./pages/ElectionPage'));
 
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 function AnimatedRoutes() {
@@ -52,6 +52,7 @@ function AnimatedRoutes() {
       <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+        <Route path="/election" element={<PageWrapper><ElectionPage /></PageWrapper>} />
         <Route path="/services" element={<PageWrapper><ServicesPage /></PageWrapper>} />
         <Route path="/about" element={<PageWrapper><AboutUs /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><ContactUs /></PageWrapper>} />
