@@ -1,4 +1,9 @@
 import nodemailer from 'nodemailer';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -20,6 +25,13 @@ export default async function handler(req, res) {
     
     if (!verifyData.success) {
       return res.status(400).json({ error: 'reCAPTCHA validation failed.' });
+    }
+
+    if (supabase) {
+      const { error: dbError } = await supabase
+        .from('contact_messages')
+        .insert([{ name, email, message }]);
+      if (dbError) console.error('Supabase error (contact):', dbError);
     }
 
     await transporter.sendMail({

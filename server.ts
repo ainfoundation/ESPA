@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import nodemailer from 'nodemailer';
+import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
@@ -13,6 +14,10 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
 
 // Security Middleware: Helmet for secure HTTP headers
 app.use(helmet());
@@ -69,6 +74,13 @@ app.post('/api/contact', apiLimiter, async (req, res) => {
   if (!isValid) return res.status(400).json({ error: 'reCAPTCHA verification failed' });
 
   try {
+    if (supabase) {
+      const { error: dbError } = await supabase
+        .from('contact_messages')
+        .insert([{ name, email, message }]);
+      if (dbError) console.error('Supabase error (contact):', dbError);
+    }
+
     await transporter.sendMail({
       from: '"ESPA Website" <foundationespa@gmail.com>',
       to: 'foundationespa@gmail.com',
@@ -156,6 +168,13 @@ app.post('/api/volunteer', apiLimiter, async (req, res) => {
   if (!isValid) return res.status(400).json({ error: 'reCAPTCHA verification failed' });
 
   try {
+    if (supabase) {
+      const { error: dbError } = await supabase
+        .from('volunteer_applications')
+        .insert([{ name, email, area_of_interest, availability }]);
+      if (dbError) console.error('Supabase error (volunteer):', dbError);
+    }
+
     await transporter.sendMail({
       from: '"ESPA Website" <foundationespa@gmail.com>',
       to: 'foundationespa@gmail.com',
@@ -207,6 +226,13 @@ app.post('/api/partner', apiLimiter, async (req, res) => {
   if (!isValid) return res.status(400).json({ error: 'reCAPTCHA verification failed' });
 
   try {
+    if (supabase) {
+      const { error: dbError } = await supabase
+        .from('partner_proposals')
+        .insert([{ organization, name, email, proposal }]);
+      if (dbError) console.error('Supabase error (partner):', dbError);
+    }
+
     await transporter.sendMail({
       from: '"ESPA Website" <foundationespa@gmail.com>',
       to: 'foundationespa@gmail.com',
