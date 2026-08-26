@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -58,9 +59,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
       <div className="flex items-center gap-4 md:gap-8">
         <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-          <Link to="/election" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors py-2">
-            Election
-          </Link>
+          {/*
           <div className="relative group">
             <Link to="/services" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
               Services
@@ -74,18 +73,18 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
               <Link to="/signature" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">Digital Signature</Link>
             </div>
           </div>
+          */}
           
-          <div className="relative group">
-            <button className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
-              More
-              <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
-            </button>
-            <div className="absolute top-full left-0 mt-0 w-48 bg-white border border-[#004B36]/10 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2 flex flex-col overflow-hidden z-[100]">
-              <Link to="/about" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">About Us</Link>
-              <Link to="/contact" className="px-4 py-2.5 text-sm hover:bg-[#004B36]/5 transition-colors">Contact Us</Link>
-            </div>
-          </div>
-
+          <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
+            <Link to="/about" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
+              About Us
+            </Link>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}>
+            <Link to="/contact" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
+              Contact Us
+            </Link>
+          </motion.div>
         </div>
 
         <div className="flex items-center gap-3">
@@ -107,9 +106,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-xl hover:bg-[#003828] transition-colors text-center mb-2">
               {isAuthenticated ? "Dashboard" : "Login"}
             </Link>
-            <Link to="/election" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors py-2 font-bold">
-              Election
-            </Link>
+            {/*
             <span className="text-xs font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">
               <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#004B36] transition-colors">Services</Link>
             </span>
@@ -118,12 +115,16 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Management Portal</Link>
             <Link to="/vcard/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Virtual Card</Link>
             <Link to="/signature" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Digital Signature</Link>
+            */}
           </div>
           
           <div className="flex flex-col gap-4 mt-2">
-            <span className="text-xs font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">More</span>
-            <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">About Us</Link>
-            <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Contact Us</Link>
+            <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: 0.1 }}>
+              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors font-bold">About Us</Link>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors font-bold">Contact Us</Link>
+            </motion.div>
           </div>
         </div>
       )}

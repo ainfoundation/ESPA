@@ -52,7 +52,7 @@ function AnimatedRoutes() {
       <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
-        <Route path="/election" element={<PageWrapper><ElectionPage /></PageWrapper>} />
+        {/* <Route path="/election" element={<PageWrapper><ElectionPage /></PageWrapper>} /> */}
         <Route path="/services" element={<PageWrapper><ServicesPage /></PageWrapper>} />
         <Route path="/about" element={<PageWrapper><AboutUs /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><ContactUs /></PageWrapper>} />

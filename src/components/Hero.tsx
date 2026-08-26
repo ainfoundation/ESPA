@@ -19,6 +19,7 @@ export default function Hero() {
        </div>
      </div>
      
+     {/* Hidden for now: Stats Section
      <div className="relative w-full px-4 md:px-16">
        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between md:items-center gap-8 bg-[#004B36]/40 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:px-12 text-[#004B36]">
          <div className="flex flex-col items-center text-center">
@@ -35,6 +36,7 @@ export default function Hero() {
          </div>
        </div>
      </div>
+     */}
      
    </section>
  );

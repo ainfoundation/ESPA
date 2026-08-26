@@ -26,7 +26,7 @@ export default function Home() {
       
       <Programs />
       <Team />
-      <Partners />
+      {/* Hidden for now: <Partners /> */}
       <GetInvolved />
       <FAQ />
       </div>
