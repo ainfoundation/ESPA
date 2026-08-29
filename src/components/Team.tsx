@@ -5,11 +5,11 @@ import { useLanguage } from '../contexts/LanguageContext';
 const teamMembers = [
   { name: "Shabbir Ahmed", role: "President", bio: "Guides the strategic vision and provides foundational support for ESPA's overarching mission.", linkedin: "https://www.linkedin.com/in/shaaaaabbir/", image: "https://i.postimg.cc/4x72Y0jx/Shabbir-Ahmed.png" },
   { name: "Rameez Taj", role: "Vice President", bio: "Oversees all operational initiatives and ensures smooth execution of programs across the foundation.", linkedin: "https://www.linkedin.com/in/rameez-taj-962a4a28a/", image: "https://i.postimg.cc/CL66L0rx/Rameez-Taj.png" },
-  { name: "Ashfaq Jan", role: "General Secretary", bio: "Supports day-to-day operations and coordinates closely with the General Secretary on key programs.", linkedin: "https://www.linkedin.com/in/ashaq-jan-738723287", image: "https://i.postimg.cc/qMZZMrDV/Ashfaq-Jan.png" },
-  { name: "Ali Hasnain", role: "Joint Secretary", bio: "Manages financial planning, transparent fund allocation, and the organization's fiscal health.", linkedin: "https://www.linkedin.com/in/ali-hasnain-695b88257/", image: "https://i.postimg.cc/DyYYyhjH/Ali-Hasnain.png" },
-  { name: "Aitzaz Rahim", role: "Treasurer", bio: "Directs internal and external communications, public relations, and media outreach.", linkedin: "https://www.linkedin.com/in/aitzaz-rahim-551777213/", image: "https://i.postimg.cc/5NtRVy3T/Aitzaz-Rahim.png" },
+  { name: "Aitzaz Rahim", role: "General Secretary", bio: "Directs internal and external communications, public relations, and media outreach.", linkedin: "https://www.linkedin.com/in/aitzaz-rahim-551777213/", image: "https://i.postimg.cc/5NtRVy3T/Aitzaz-Rahim.png" },
+  { name: "Ali Hasnain", role: "Joint Secretary", bio: "Supports day-to-day operations and coordinates closely with the General Secretary on key programs.", linkedin: "https://www.linkedin.com/in/ali-hasnain-695b88257/", image: "https://i.postimg.cc/DyYYyhjH/Ali-Hasnain.png" },
+  { name: "Ashfaq Ullah Jan", role: "Treasurer", bio: "Manages financial planning, transparent fund allocation, and the organization's fiscal health.", linkedin: "https://www.linkedin.com/in/ashaq-jan-738723287", image: "https://i.postimg.cc/qMZZMrDV/Ashfaq-Jan.png" },
   { name: "Azhan Khan", role: "Executive Member", bio: "Actively contributes to the foundation's core initiatives and community outreach projects.", linkedin: "https://www.linkedin.com/in/azhan-khan-a3962b325", image: "https://i.postimg.cc/FsnnsvCX/Azhan-Khan.png" },
-  { name: "Ali Shan", role: "Executive Member", bio: "Dedicated team member supporting various educational and organizational activities.", linkedin: "https://www.linkedin.com/in/ali-shan-b037a6269/", image: "https://i.postimg.cc/qMZZMrDd/Ali-Shan.png" }
+  { name: "Ali Shan Sahib Khan", role: "Executive Member", bio: "Dedicated team member supporting various educational and organizational activities.", linkedin: "https://www.linkedin.com/in/ali-shan-b037a6269/", image: "https://i.postimg.cc/qMZZMrDd/Ali-Shan.png" }
 ];
 
 export default function Team() {

@@ -10,10 +10,11 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
+app.set("trust proxy", 1);
 const port = process.env.PORT || 3e3;
-const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } }) : null;
 app.use(helmet());
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1e3,
@@ -257,6 +258,68 @@ ${proposal}`,
     res.status(500).json({ error: "Failed to send email" });
   }
 });
+app.post("/api/ambassador", apiLimiter, async (req, res) => {
+  const { name, email, phone, social, motivation, recaptchaToken } = req.body;
+  if (!name || !email || !phone || !social || !motivation || !recaptchaToken) return res.status(400).json({ error: "All fields are required" });
+  const isValid = await verifyRecaptcha(recaptchaToken);
+  if (!isValid) return res.status(400).json({ error: "reCAPTCHA verification failed" });
+  try {
+    if (supabase) {
+      const { error: dbError } = await supabase.from("ambassador_applications").insert([{ name, email, phone, social, motivation }]);
+      if (dbError) console.error("Supabase error (ambassador):", dbError);
+    }
+    await transporter.sendMail({
+      from: '"ESPA Website" <foundationespa@gmail.com>',
+      to: "foundationespa@gmail.com",
+      replyTo: email,
+      subject: `New Ambassador Application from ${name}`,
+      text: `Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Social Media: ${social}
+
+Motivation:
+${motivation}`,
+      html: `
+        <div style="font-family: 'Poppins'; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+          <div style="background-color: #004B36; padding: 20px; text-align: center; color: white;">
+            <h2 style="margin: 0;">New Ambassador Application</h2>
+          </div>
+          <div style="padding: 20px; background-color: #f9f9f9;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eeeeee;"><strong>Name:</strong></td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eeeeee;">${name}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eeeeee;"><strong>Email:</strong></td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eeeeee;"><a href="mailto:${email}" style="color: #004B36;">${email}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eeeeee;"><strong>Phone:</strong></td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eeeeee;">${phone}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eeeeee;"><strong>Social Media:</strong></td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #eeeeee;"><a href="${social}" target="_blank" style="color: #004B36;">${social}</a></td>
+              </tr>
+            </table>
+            <div style="background-color: white; padding: 15px; border-radius: 6px; border: 1px solid #eeeeee;">
+              <h4 style="margin-top: 0; color: #004B36;">Motivation</h4>
+              <p style="white-space: pre-wrap; font-size: 14px; line-height: 1.6; color: #333;">${motivation}</p>
+            </div>
+          </div>
+          <div style="background-color: #eeeeee; padding: 15px; text-align: center; font-size: 12px; color: #888;">
+            This email was automatically generated from the ESPA Foundation Website.
+          </div>
+        </div>
+      `
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to send email" });
+  }
+});
 app.post("/api/election", apiLimiter, async (req, res) => {
   const {
     voterName,
@@ -280,7 +343,12 @@ app.post("/api/election", apiLimiter, async (req, res) => {
         { voter_name: voterName, title: "Executive Member 2", nominee_name: executiveMember2 }
       ];
       const { error: dbError } = await supabase.from("election_votes").insert(votes);
-      if (dbError) console.error("Supabase error (election):", dbError);
+      if (dbError) {
+        console.error("Supabase error (election):", dbError);
+        return res.status(500).json({ error: "Database error: " + dbError.message });
+      }
+    } else {
+      return res.status(500).json({ error: "Supabase credentials missing on server" });
     }
     await transporter.sendMail({
       from: '"ESPA Website" <foundationespa@gmail.com>',

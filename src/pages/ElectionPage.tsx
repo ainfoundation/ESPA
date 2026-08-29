@@ -4,8 +4,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 const INITIAL_MEMBERS = [
   "Aitzaz Rahim",
   "Ali Hasnain",
-  "Ali Shan",
-  "Ashfaq Jan",
+  "Ali Shan Sahib Khan",
+  "Ashfaq Ullah Jan",
   "Azhan Khan",
   "Rameez Taj",
   "Shabbir Ahmed"

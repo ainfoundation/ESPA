@@ -45,6 +45,8 @@ const TermsOfService = lazy(() => import('./pages/TermsOfService'));
 const ElectionPage = lazy(() => import('./pages/ElectionPage'));
 
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
+const ManagementApp = lazy(() => import('./pages/ManagementApp'));
+const ManagementLogin = lazy(() => import('./pages/ManagementLogin'));
 function AnimatedRoutes() {
   const location = useLocation();
   return (
@@ -65,6 +67,7 @@ function AnimatedRoutes() {
         <Route path="/pos" element={<PageWrapper><POSPlaceholder /></PageWrapper>} />
         <Route path="/privacy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
         <Route path="/terms" element={<PageWrapper><TermsOfService /></PageWrapper>} />
+        <Route path="/management/*" element={<PageWrapper><ManagementApp /></PageWrapper>} />
       </Routes>
       </AnimatePresence>
     
