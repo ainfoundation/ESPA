@@ -1,4 +1,12 @@
 {
+  "buildCommand": "vite build",
+  "outputDirectory": "dist",
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "0 0 */3 * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/).*)",

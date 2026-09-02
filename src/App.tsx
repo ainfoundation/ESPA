@@ -15,7 +15,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const isLoginPage = location.pathname.includes('/login') || location.pathname === '/pos' || location.pathname === '/signature';
-  const hideFooter = location.pathname.includes('/login') || location.pathname.startsWith('/dashboard');
+  const hideFooter = location.pathname.includes('/login') || location.pathname.includes('/dashboard') || location.pathname.includes('/management');
   
   return (
     <div className={`bg-white min-h-screen selection:bg-[#004B36] selection:text-white dark:bg-white dark:text-[#004B36] font-sans transition-colors duration-300 ${isLoginPage ? "h-screen overflow-hidden" : ""}`}>
