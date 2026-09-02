@@ -89,7 +89,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
         <div className="flex items-center gap-3">
           <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/management"} className="hidden md:flex text-sm font-medium tracking-wide text-white bg-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#003828] transition-colors items-center gap-2">
-            {isAuthenticated ? "Dashboard" : "Login"}
+            {isAuthenticated ? (user?.name || "Dashboard") : "Login"}
           </Link>
           <button className="md:hidden ml-2 p-2 rounded-lg transition-colors text-[#004B36] hover:bg-[#004B36]/5" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X size={24} color="#004B36" /> : <Menu size={24} color="#004B36" />}
@@ -104,7 +104,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
         >
           <div className="flex flex-col gap-2">
             <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/management"} onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-xl hover:bg-[#003828] transition-colors text-center mb-2">
-              {isAuthenticated ? "Dashboard" : "Login"}
+              {isAuthenticated ? (user?.name || "Dashboard") : "Login"}
             </Link>
             {/*
             <span className="text-xs font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">

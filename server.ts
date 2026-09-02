@@ -21,7 +21,13 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABAS
 const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } }) : null;
 
 // Security Middleware: Helmet for secure HTTP headers
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: false,
+  crossOriginResourcePolicy: false,
+  frameguard: false,
+}));
 
 // Security Middleware: Rate Limiting
 const loginLimiter = rateLimit({
@@ -430,18 +436,20 @@ app.post('/api/login', loginLimiter, (req, res) => {
 });
 
 // Serve static files in production
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
+  const { createServer: createViteServer } = await import('vite');
+  const vite = await createViteServer({
+    server: { middlewareMode: true },
+    appType: 'spa',
+  });
+  app.use(vite.middlewares);
+} else {
   app.use(express.static(path.join(__dirname, 'dist')));
   app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
   });
-} else {
-  // Development fallback for unhandled API routes
-  app.use('/api', (req, res) => {
-    res.status(404).json({ error: 'API route not found' });
-  });
 }
 
-app.listen(port, () => {
+app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Server is running on port ${port}`);
 });

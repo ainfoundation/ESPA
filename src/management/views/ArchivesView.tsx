@@ -57,7 +57,7 @@ export default function ArchivesView({
               </tr>
             ))}
             {(!archivedUsers || archivedUsers.length === 0) && (
-              <tr><td colSpan="2" className="px-6 py-8 text-center text-stone-500 text-sm">No Data Available.</td></tr>
+              <tr><td colSpan={2} className="px-6 py-8 text-center text-stone-500 text-sm">No Data Available.</td></tr>
             )}
           </tbody>
         </table>

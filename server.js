@@ -15,7 +15,13 @@ const port = process.env.PORT || 3e3;
 const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey, { auth: { persistSession: false } }) : null;
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: false,
+  crossOriginResourcePolicy: false,
+  frameguard: false
+}));
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1e3,
   // 15 minutes
@@ -402,16 +408,19 @@ app.post("/api/login", loginLimiter, (req, res) => {
   }
   return res.status(401).json({ error: "Invalid credentials" });
 });
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV !== "production") {
+  const { createServer: createViteServer } = await import("vite");
+  const vite = await createViteServer({
+    server: { middlewareMode: true },
+    appType: "spa"
+  });
+  app.use(vite.middlewares);
+} else {
   app.use(express.static(path.join(__dirname, "dist")));
   app.use((req, res) => {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
-} else {
-  app.use("/api", (req, res) => {
-    res.status(404).json({ error: "API route not found" });
-  });
 }
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on port ${port}`);
 });

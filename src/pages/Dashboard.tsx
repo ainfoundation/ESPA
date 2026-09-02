@@ -111,7 +111,7 @@ export default function Dashboard() {
  const encodedUri = encodeURI(csvContent);
  const link = document.createElement("a");
  link.setAttribute("href", encodedUri);
- link.setAttribute("download", "AIN_Foundation_Donations.csv");
+ link.setAttribute("download", "ESPA_Foundation_Donations.csv");
  document.body.appendChild(link);
  link.click();
  link.remove();

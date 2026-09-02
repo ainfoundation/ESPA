@@ -17,7 +17,7 @@ export default function FAQ() {
  },
  { 
  q: 'Is my donation tax-deductible?', 
- a: 'Yes. ESPA Foundation is a registered 501(c)(3) non-profit organization (or your local equivalent), making all financial contributions fully tax-deductible to the extent allowed by law. You will automatically receive a tax receipt via email and in your Donor Dashboard.' 
+ a: 'Yes. ESPA Foundation is a registered 501(c)(3) non-profit organization (or your local equivalent), making all financial contributions fully tax-deductible to the extent allowed by law. You will automatically receive a tax receipt via email and in your User Dashboard.' 
  },
  { 
  q: 'Can I set up a recurring/monthly donation?', 
@@ -25,7 +25,7 @@ export default function FAQ() {
  },
  { 
  q: 'How can I see where my money went?', 
- a: 'We believe in complete transparency. Once you donate, you will gain access to a private Donor Dashboard where you can view your lifetime giving, track exact fund allocations (e.g., Library vs. Scholarship funds), and read organizational updates showing the impact of your gifts.' 
+ a: 'We believe in complete transparency. Once you donate, you will gain access to a private User Dashboard where you can view your lifetime giving, track exact fund allocations (e.g., Library vs. Scholarship funds), and read organizational updates showing the impact of your gifts.' 
  },
  { 
  q: 'Can I volunteer with ESPA Foundation?', 

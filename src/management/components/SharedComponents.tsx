@@ -91,7 +91,7 @@ export const DataModal = ({ isOpen, onClose, title, data, onImport, dateField, s
   return createPortal(
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
       <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm animate-in fade-in" onClick={onClose} />
-      <DraggableModal className="bg-white rounded-3xl p-8 max-w-2xl w-full shadow-2xl z-10 relative flex flex-col max-h-[90vh]">
+      <div className="bg-white rounded-3xl p-8 max-w-2xl w-full shadow-2xl z-10 relative flex flex-col max-h-[90vh]">
         <h3 className="text-xl font-bold text-stone-900 mb-6 flex items-center gap-3 drag-handle cursor-grab">
            Import Data to {title}
         </h3>
@@ -120,7 +120,7 @@ export const DataModal = ({ isOpen, onClose, title, data, onImport, dateField, s
             Import
           </button>
         </div>
-      </DraggableModal>
+      </div>
     </div>,
     document.body
   );

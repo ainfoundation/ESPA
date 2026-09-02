@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Settings, Save, Shield, Key, Info, CheckCircle2, AlertCircle, Mail, Smartphone, QrCode, Globe } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import { AinManagementLogo, AINFoundationLogo } from '../../pages/ManagementApp';
 
 const verifyTOTP = async (code) => code === '123456';
 import { ToggleSwitch } from '../components/SharedComponents';
@@ -208,7 +207,7 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
             </h2>
             <div className="flex-1 flex flex-col items-center justify-center text-center">
                 <div className="flex flex-col items-center justify-center">
-                    <AinManagementLogo className="w-32 sm:w-40 h-auto" />
+                    <h2 className="text-2xl font-bold text-[#004B36]">ESPA Management</h2>
                     <p className="text-sm text-stone-500 mt-4">Software Version 1.0.1</p>
                 </div>
                 
@@ -217,7 +216,7 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
                 <div className="flex flex-col items-center justify-center pb-2">
                     <p className="text-sm text-stone-500 mb-4">An Initiative Of</p>
                     
-                    <AINFoundationLogo className="w-32 sm:w-40 h-auto mb-6" />
+                    <div className="w-32 sm:w-40 h-auto mb-6 font-bold text-xl text-[#004B36]">ESPA Foundation</div>
                     
                     <a href="https://linktr.ee/shaaaaabbir" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-stone-100 bg-stone-50 hover:bg-stone-100 transition-colors flex items-center justify-center text-[#004B36]">
                         <Globe size={20} strokeWidth={2} />

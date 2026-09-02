@@ -9,7 +9,7 @@ import 'react-quill/dist/quill.snow.css';
 export default function GeneralAgreementsView({ agreements, setAgreements, currentUser, users, showToast, addLog, setActiveTab }) {
   const canAdd = currentUser && ['Admin', 'In-Country Coordinator', 'Deputy Lead Coordinator', 'Lead Coordinator'].includes(currentUser.role);
   const isParticipant = currentUser && ['Intern', 'Camper'].includes(currentUser.role);
-  const cohortAgreements = agreements ? agreements.filter(a => a.isCohort).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
+  const cohortAgreements = agreements ? agreements.filter(a => a.isCohort).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) : [];
   
   const [searchTerm, setSearchTerm] = useState('');
   const [activeDropdown, setActiveDropdown] = useState(null);

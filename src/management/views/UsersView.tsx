@@ -15,7 +15,7 @@ export default function UsersView({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [newUser, setNewUser] = useState({});
+  const [newUser, setNewUser] = useState<any>({});
   const [isEditingUser, setIsEditingUser] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -231,7 +231,7 @@ export default function UsersView({
                 );
               })}
               {filteredUsers.length === 0 && (
-                <tr><td colSpan="3" className="py-20 text-center text-sm text-stone-500">No Data Available.</td></tr>
+                <tr><td colSpan={3} className="py-20 text-center text-sm text-stone-500">No Data Available.</td></tr>
               )}
             </tbody>
           </table>
@@ -334,7 +334,7 @@ export default function UsersView({
                     <span className="px-4 py-2.5 bg-stone-50 border-r border-stone-200 text-stone-500 text-sm font-normal rounded-l-xl">
                       {countryCodes[newUser.nativeCountry] || '+'}
                     </span>
-                    <input type="tel" placeholder="Enter Home Number" maxLength="15" value={newUser.contact || ''} onChange={e => setNewUser({...newUser, contact: e.target.value.replace(/\D/g, '')})} className="flex-1 w-full px-4 py-2.5 bg-transparent outline-none text-sm font-normal text-stone-800 placeholder:font-normal placeholder:text-stone-400 rounded-r-xl" />
+                    <input type="tel" placeholder="Enter Home Number" maxLength={15} value={newUser.contact || ''} onChange={e => setNewUser({...newUser, contact: e.target.value.replace(/\D/g, '')})} className="flex-1 w-full px-4 py-2.5 bg-transparent outline-none text-sm font-normal text-stone-800 placeholder:font-normal placeholder:text-stone-400 rounded-r-xl" />
                   </div>
                 </div>
                 
@@ -344,7 +344,7 @@ export default function UsersView({
                     <span className="px-4 py-2.5 bg-stone-50 border-r border-stone-200 text-stone-500 text-sm font-normal rounded-l-xl">
                       {newUser.hostCountry && countryCodes[newUser.hostCountry] ? countryCodes[newUser.hostCountry] : '+'}
                     </span>
-                    <input type="tel" placeholder="Enter Host Number" maxLength="15" value={newUser.hostNumber || ''} onChange={e => setNewUser({...newUser, hostNumber: e.target.value.replace(/\D/g, '')})} className="flex-1 w-full px-4 py-2.5 bg-transparent outline-none text-sm font-normal text-stone-800 placeholder:font-normal placeholder:text-stone-400 rounded-r-xl" />
+                    <input type="tel" placeholder="Enter Host Number" maxLength={15} value={newUser.hostNumber || ''} onChange={e => setNewUser({...newUser, hostNumber: e.target.value.replace(/\D/g, '')})} className="flex-1 w-full px-4 py-2.5 bg-transparent outline-none text-sm font-normal text-stone-800 placeholder:font-normal placeholder:text-stone-400 rounded-r-xl" />
                   </div>
                 </div>
               </div>
@@ -465,7 +465,7 @@ export default function UsersView({
 
               <div className="col-span-1">
                 <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">ALLERGIES</label>
-                <textarea rows="3" placeholder="List any known allergies..." value={newUser.allergies || ''} onChange={e => setNewUser({...newUser, allergies: e.target.value})} className="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-normal text-stone-800 resize-none"></textarea>
+                <textarea rows={3} placeholder="List any known allergies..." value={newUser.allergies || ''} onChange={e => setNewUser({...newUser, allergies: e.target.value})} className="w-full px-4 py-3 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-normal text-stone-800 resize-none"></textarea>
               </div>
 
               <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-stone-100 shrink-0">
