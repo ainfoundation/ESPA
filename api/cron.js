@@ -8,25 +8,23 @@ export default async function handler(req, res) {
   if (req.method !== 'GET' && req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
-
-  // To secure the cron job, Vercel sends a specific authorization header.
-  // We can optionally verify it using `process.env.CRON_SECRET` if the user set it up,
-  // but for simplicity and safety, we'll just allow it to execute.
   
   if (!supabase) {
     return res.status(500).json({ error: 'Supabase credentials missing.' });
   }
 
   try {
-    // Ping Supabase to keep it awake
-    const { data, error } = await supabase.from('contact_messages').select('id').limit(1);
+    // Insert a daily activity log into the hidden 'keepalive_logs' table
+    const { error } = await supabase
+      .from('keepalive_logs')
+      .insert([{ message: 'Daily keepalive ping' }]);
     
     if (error) {
       console.error('Keepalive ping error:', error);
-      return res.status(500).json({ error: 'Failed to ping database', details: error.message });
+      return res.status(500).json({ error: 'Failed to log activity to database', details: error.message });
     }
     
-    return res.status(200).json({ success: true, message: 'Supabase keepalive ping successful' });
+    return res.status(200).json({ success: true, message: 'Supabase daily keepalive logged successfully' });
   } catch (error) {
     return res.status(500).json({ error: 'Internal server error', details: error.message });
   }
