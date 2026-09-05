@@ -34,6 +34,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 const Home = lazy(() => import('./pages/Home'));
 const AboutUs = lazy(() => import('./pages/AboutUs'));
 const ContactUs = lazy(() => import('./pages/ContactUs'));
+const Donate = lazy(() => import('./pages/Donate'));
 const Login = lazy(() => import('./pages/Login'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const LibraryLogin = lazy(() => import('./pages/LibraryLogin'));
@@ -59,6 +60,7 @@ function AnimatedRoutes() {
         <Route path="/services" element={<PageWrapper><ServicesPage /></PageWrapper>} />
         <Route path="/about" element={<PageWrapper><AboutUs /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><ContactUs /></PageWrapper>} />
+        <Route path="/donate" element={<PageWrapper><Donate /></PageWrapper>} />
         <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
         <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
         <Route path="/library/login" element={<PageWrapper><LibraryLogin /></PageWrapper>} />

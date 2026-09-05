@@ -88,7 +88,8 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
         </div>
 
         <div className="flex items-center gap-3">
-          <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/management"} className="hidden md:flex text-sm font-medium tracking-wide text-white bg-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#003828] transition-colors items-center gap-2">
+          <Link to="/donate" className="hidden md:flex text-sm font-medium tracking-wide text-white bg-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#003828] transition-colors items-center gap-2">Donate</Link>
+          <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/management"} className="hidden md:flex text-sm font-medium tracking-wide text-[#004B36] bg-white border border-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#004B36]/5 transition-colors items-center gap-2">
             {isAuthenticated ? (user?.name || "Dashboard") : "Login"}
           </Link>
           <button className="md:hidden ml-2 p-2 rounded-lg transition-colors text-[#004B36] hover:bg-[#004B36]/5" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -103,7 +104,8 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
           className="absolute top-full left-0 right-0 bg-white border-b border-[#004B36]/10 shadow-xl flex flex-col py-4 px-6 gap-4 md:hidden"
         >
           <div className="flex flex-col gap-2">
-            <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/management"} onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-xl hover:bg-[#003828] transition-colors text-center mb-2">
+            <Link to="/donate" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-xl hover:bg-[#003828] transition-colors text-center mb-2 block">Donate</Link>
+            <Link to={isAuthenticated ? (user?.role?.includes("library") ? "/library/dashboard" : "/dashboard") : "/management"} onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] bg-white border border-[#004B36] px-4 py-3 rounded-xl hover:bg-[#004B36]/5 transition-colors text-center mb-2">
               {isAuthenticated ? (user?.name || "Dashboard") : "Login"}
             </Link>
             {/*
