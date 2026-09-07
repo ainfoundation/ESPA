@@ -27,7 +27,7 @@ export default function Footer() {
           <div className="flex flex-col gap-3 text-white/50 text-sm">
             <a href="/pos" className="hover:text-white transition-colors">Point-of-Sale</a>
             <a href="/library/login" className="hover:text-white transition-colors">Digital Library</a>
-            <a href="/login" className="hover:text-white transition-colors">Management Portal</a>
+            <a href="/management" className="hover:text-white transition-colors">Management Portal</a>
             <a href="/vcard/login" className="hover:text-white transition-colors">Virtual Card</a>
             <a href="/signature" className="hover:text-white transition-colors">Digital Signature</a>
           </div>
@@ -35,8 +35,8 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-base mb-6 text-white/90">Connect</h4>
           <div className="flex flex-col gap-3 text-white/50 text-sm">
-            <a href="mailto:espafoundation@outlook.com" className="hover:text-white transition-colors">espafoundation@outlook.com</a>
-            <p>A-36, CS-58, Bhai Jan Chowk,<br/>Aisha Manzil, FB Area</p>
+            <a href="mailto:info@espafoundation.social" className="hover:text-white transition-colors">info@espafoundation.social</a>
+            <p>CS-58, Bhai Jan Chowk,<br/>Aisha Manzil, FB Area</p>
             <div className="flex gap-4 mt-2">
               <a href="https://www.linkedin.com/company/espafoundation" className="hover:text-white transition-colors">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>

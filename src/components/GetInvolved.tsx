@@ -6,10 +6,9 @@ export default function GetInvolved() {
   const [isVolunteerForm, setIsVolunteerForm] = useState(false);
   const [isVolunteerSuccess, setIsVolunteerSuccess] = useState(false);
   const cards = [
-    { title: t('getInvolved.c1.title'), desc: t('getInvolved.c1.desc'), btn: t('getInvolved.c1.btn'), action: 'open-donation' },
     { title: t('getInvolved.c2.title'), desc: t('getInvolved.c2.desc'), btn: t('getInvolved.c2.btn'), action: 'open-volunteer' },
-    { title: t('getInvolved.c3.title'), desc: t('getInvolved.c3.desc'), btn: t('getInvolved.c3.btn'), action: 'open-partner' },
-    { title: 'Ambassador', desc: 'Represent ESPA Foundation in your community and help us spread awareness and raise funds.', btn: 'Become an Ambassador', action: 'open-ambassador' }
+    { title: 'Ambassador', desc: 'Represent ESPA Foundation in your community and help us spread awareness and raise funds.', btn: 'Become an Ambassador', action: 'open-ambassador' },
+    { title: t('getInvolved.c3.title'), desc: t('getInvolved.c3.desc'), btn: t('getInvolved.c3.btn'), action: 'open-partner' }
   ];
 
   return (
@@ -20,7 +19,7 @@ export default function GetInvolved() {
           <p className="text-justify font-sans text-xl font-normal text-white/70 max-w-3xl mx-auto">{t('getInvolved.subtitle')}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {cards.map((card, i) => (
             <div key={i} className="bg-[#003828] p-8 lg:p-6 xl:p-10 rounded-3xl shadow-sm border border-white/5 flex flex-col h-full overflow-hidden transition-colors duration-300">
               <h3 className="text-center font-display text-xl font-bold mb-4 text-white transition-colors duration-300">{card.title}</h3>

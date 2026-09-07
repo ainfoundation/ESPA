@@ -391,10 +391,10 @@ Executive Member 2: ${executiveMember2}`,
 app.post("/api/login", loginLimiter, (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required" });
+    return res.status(400).json({ error: "Username and password are required" });
   }
-  const validEmail = process.env.ADMIN_EMAIL || "admin@espafoundation.org";
-  const validPassword = process.env.ADMIN_PASSWORD || "securepassword123";
+  const validEmail = process.env.ADMIN_EMAIL || "admin";
+  const validPassword = process.env.ADMIN_PASSWORD || "12345";
   if (email === validEmail && password === validPassword) {
     return res.json({
       success: true,

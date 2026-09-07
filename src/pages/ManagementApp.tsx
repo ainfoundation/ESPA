@@ -101,6 +101,7 @@ export default function ManagementApp() {
   
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isOpen, setIsOpen] = useState(true);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const showToast = (msg, type = 'success') => {
     console.log(`[${type}] ${msg}`);
@@ -133,35 +134,56 @@ export default function ManagementApp() {
 
   return (
     <div className="flex flex-col h-[100dvh] bg-[#FDFCFB] text-stone-800 antialiased font-sans">
+      {/* Mobile Header */}
+      <div className="md:hidden flex items-center justify-between h-16 px-4 bg-white border-b border-stone-200">
+        <div className="font-bold text-[#004B36] text-xl">ESPA</div>
+        <button onClick={() => setIsMobileOpen(!isMobileOpen)} className="p-2 text-stone-600">
+          {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
       <div className="flex flex-1 overflow-hidden relative">
         {/* Sidebar */}
-        <div className={`bg-white border-r border-stone-200 flex flex-col transition-all duration-300 ${isOpen ? 'w-64' : 'w-20'}`}>
-            <div className="h-20 flex items-center justify-center border-b border-stone-200">
+        <div className={`
+          absolute z-50 md:relative bg-white border-r border-stone-200 flex flex-col transition-all duration-300 h-full
+          ${isMobileOpen ? 'translate-x-0 w-64' : '-translate-x-full md:translate-x-0'}
+          ${isOpen ? 'md:w-64' : 'md:w-20'}
+          w-64
+        `}>
+            <div className="hidden md:flex h-20 items-center justify-center border-b border-stone-200 relative">
                 <div className={`font-bold text-[#004B36] ${isOpen ? 'text-xl' : 'text-sm'}`}>ESPA</div>
+                <button onClick={() => setIsOpen(!isOpen)} className="absolute -right-3 top-1/2 -translate-y-1/2 bg-white border border-stone-200 rounded-full p-1 shadow-sm text-stone-400 hover:text-[#004B36]">
+                  <Menu size={14} />
+                </button>
             </div>
             <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
             {navItems.map(item => (
                 <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => { setActiveTab(item.id); setIsMobileOpen(false); }}
                 className={`w-full flex items-center py-2.5 px-3 rounded-xl text-sm font-medium transition-colors ${activeTab === item.id ? 'bg-[#E4E2DC] text-[#004B36]' : 'text-stone-900 hover:bg-stone-200 hover:text-[#004B36]'}`}
                 >
                 <item.icon size={20} className="text-[#004B36] flex-shrink-0" />
-                {isOpen && <span className="ml-3">{item.label}</span>}
+                <span className={`ml-3 transition-opacity duration-300 ${isOpen || isMobileOpen ? 'opacity-100' : 'md:hidden opacity-0'}`}>{item.label}</span>
                 </button>
             ))}
             </nav>
             <div className="p-4 border-t border-stone-200">
                 <button onClick={executeLogout} className="w-full flex items-center py-2.5 px-3 rounded-xl text-sm font-medium text-stone-900 hover:bg-stone-200">
                     <LogOut size={20} className="text-[#004B36] flex-shrink-0" />
-                    {isOpen && <span className="ml-3">Sign Out</span>}
+                    <span className={`ml-3 transition-opacity duration-300 ${isOpen || isMobileOpen ? 'opacity-100' : 'md:hidden opacity-0'}`}>Sign Out</span>
                 </button>
             </div>
         </div>
 
+        {/* Mobile Overlay */}
+        {isMobileOpen && (
+          <div className="fixed inset-0 bg-black/20 z-40 md:hidden" onClick={() => setIsMobileOpen(false)} />
+        )}
+
         {/* Main Content */}
         <div className="flex-1 overflow-y-auto bg-stone-50">
-          <div className="p-8">
+          <div className="p-4 md:p-8">
             {activeTab === 'dashboard' && (
               <div>
                 <h1 className="text-3xl font-bold text-stone-900 mb-6">Dashboard</h1>

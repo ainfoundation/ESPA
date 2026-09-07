@@ -412,12 +412,12 @@ app.post('/api/login', loginLimiter, (req, res) => {
 
   // Extremely basic validation, relying on Zod/Yup on frontend as well
   if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
+    return res.status(400).json({ error: 'Username and password are required' });
   }
 
   // Check against environment variables
-  const validEmail = process.env.ADMIN_EMAIL || 'admin@espafoundation.org';
-  const validPassword = process.env.ADMIN_PASSWORD || 'securepassword123'; // Fallback for dev only
+  const validEmail = process.env.ADMIN_EMAIL || 'admin';
+  const validPassword = process.env.ADMIN_PASSWORD || '12345'; // Fallback for dev only
 
   if (email === validEmail && password === validPassword) {
     // In a real app, generate JWT here
