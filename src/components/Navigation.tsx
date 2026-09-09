@@ -16,9 +16,10 @@ export default function Navigation() {
   }, []);
 
 const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const { t } = useLanguage();
   const location = useLocation();
 
@@ -89,6 +90,23 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
         <div className="flex items-center gap-3">
           <Link to="/donate" className="hidden md:flex text-sm font-medium tracking-wide text-white bg-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#003828] transition-colors items-center gap-2">Donate</Link>
+          {isAuthenticated ? (
+            <Link 
+              to={user?.role?.includes("library") ? "/library/dashboard" : "/management"}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.localStorage.removeItem('ain_activeTab');
+                }
+              }}
+              className="hidden md:flex text-sm font-medium tracking-wide text-[#004B36] bg-white border border-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#004B36]/5 transition-colors items-center gap-2"
+            >
+              {user?.name ? user.name.split(' ')[0] : "Dashboard"}
+            </Link>
+          ) : (
+            <Link to="/login" className="hidden md:flex text-sm font-medium tracking-wide text-[#004B36] bg-white border border-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#004B36]/5 transition-colors items-center gap-2">
+              Login
+            </Link>
+          )}
           <button className="md:hidden ml-2 p-2 rounded-lg transition-colors text-[#004B36] hover:bg-[#004B36]/5" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X size={24} color="#004B36" /> : <Menu size={24} color="#004B36" />}
           </button>
@@ -102,6 +120,23 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
         >
           <div className="flex flex-col gap-2">
             <Link to="/donate" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-xl hover:bg-[#003828] transition-colors text-center mb-2 block">Donate</Link>
+            {isAuthenticated ? (
+              <div className="flex flex-col gap-2">
+                <Link to={user?.role?.includes("library") ? "/library/dashboard" : "/management"} onClick={() => { setIsMobileMenuOpen(false); if (typeof window !== 'undefined') window.localStorage.removeItem('ain_activeTab'); }} className="text-sm font-medium text-[#004B36] bg-white border border-[#004B36] px-4 py-3 rounded-xl hover:bg-[#004B36]/5 transition-colors text-center">
+                  {user?.name ? user.name.split(' ')[0] + "'s Dashboard" : "Dashboard"}
+                </Link>
+                <button 
+                  onClick={() => { setIsMobileMenuOpen(false); setIsLogoutModalOpen(true); }}
+                  className="text-sm font-medium text-red-600 bg-red-50 px-4 py-3 rounded-xl hover:bg-red-100 transition-colors text-center"
+                >
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] bg-white border border-[#004B36] px-4 py-3 rounded-xl hover:bg-[#004B36]/5 transition-colors text-center mb-2">
+                Login
+              </Link>
+            )}
             {/*
             <span className="text-xs font-bold text-[#004B36]/50 uppercase tracking-wider mb-2">
               <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#004B36] transition-colors">Services</Link>
@@ -124,6 +159,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
           </div>
         </div>
       )}
-    </nav>
+    
+      </nav>
   );
 }

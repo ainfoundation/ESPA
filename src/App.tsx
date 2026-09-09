@@ -1,5 +1,5 @@
 import { Toaster } from 'react-hot-toast';
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
@@ -10,7 +10,6 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Modals from './components/Modals';
 import ScrollToTop from './components/ScrollToTop';
-import LoadingSpinner from './components/LoadingSpinner';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -30,24 +29,22 @@ function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Lazy loaded pages
-const Home = lazy(() => import('./pages/Home'));
-const AboutUs = lazy(() => import('./pages/AboutUs'));
-const ContactUs = lazy(() => import('./pages/ContactUs'));
-const Donate = lazy(() => import('./pages/Donate'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const LibraryLogin = lazy(() => import('./pages/LibraryLogin'));
-const LibraryDashboard = lazy(() => import('./pages/LibraryDashboard'));
-const VCardLogin = lazy(() => import('./pages/VCardLogin'));
-const DigitalSignature = lazy(() => import('./pages/DigitalSignature'));
-const POSPlaceholder = lazy(() => import('./pages/POSPlaceholder'));
-const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
-const TermsOfService = lazy(() => import('./pages/TermsOfService'));
-const ElectionPage = lazy(() => import('./pages/ElectionPage'));
-
-const ServicesPage = lazy(() => import('./pages/ServicesPage'));
-const ManagementApp = lazy(() => import('./pages/ManagementApp'));
-const ManagementLogin = lazy(() => import('./pages/ManagementLogin'));
+import Home from './pages/Home';
+import AboutUs from './pages/AboutUs';
+import ContactUs from './pages/ContactUs';
+import Donate from './pages/Donate';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import LibraryLogin from './pages/LibraryLogin';
+import LibraryDashboard from './pages/LibraryDashboard';
+import VCardLogin from './pages/VCardLogin';
+import DigitalSignature from './pages/DigitalSignature';
+import POSPlaceholder from './pages/POSPlaceholder';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import ElectionPage from './pages/ElectionPage';
+import ServicesPage from './pages/ServicesPage';
+import ManagementApp from './pages/ManagementApp';
 function AnimatedRoutes() {
   const location = useLocation();
   return (
@@ -60,6 +57,7 @@ function AnimatedRoutes() {
         <Route path="/about" element={<PageWrapper><AboutUs /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><ContactUs /></PageWrapper>} />
         <Route path="/donate" element={<PageWrapper><Donate /></PageWrapper>} />
+        <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
         <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
         <Route path="/library/login" element={<PageWrapper><LibraryLogin /></PageWrapper>} />
         <Route path="/library/dashboard" element={<PageWrapper><LibraryDashboard /></PageWrapper>} />
@@ -96,9 +94,7 @@ export default function App() {
         <AuthProvider>
           <BrowserRouter>
             <Layout>
-              <Suspense fallback={<LoadingSpinner />}>
-                <AnimatedRoutes />
-              </Suspense>
+              <AnimatedRoutes />
             </Layout>
           </BrowserRouter>
         </AuthProvider>

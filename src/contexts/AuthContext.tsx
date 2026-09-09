@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 interface AuthContextType {
@@ -11,36 +11,42 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any | null>(null);
 
-  const login = async (email: string, pass: string) => {
+  const syncUser = () => {
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pass }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setIsAuthenticated(true);
-        setUser(data.user);
-        return true;
+      const stored = window.localStorage.getItem('ain_currentUser');
+      if (stored && stored !== 'null') {
+        setUser(JSON.parse(stored));
       } else {
-        toast.error(data.error || 'Invalid credentials');
-        return false;
+        setUser(null);
       }
-    } catch (error) {
-      toast.error('An error occurred while logging in. Please try again.');
-      return false;
+    } catch (e) {
+      setUser(null);
     }
   };
 
+  useEffect(() => {
+    syncUser();
+    window.addEventListener('storage', syncUser);
+    window.addEventListener('ain_user_changed', syncUser);
+    return () => {
+      window.removeEventListener('storage', syncUser);
+      window.removeEventListener('ain_user_changed', syncUser);
+    };
+  }, []);
+
+  const isAuthenticated = !!user;
+
+  const login = async (email: string, pass: string) => {
+    // Legacy API login (mostly unused now)
+    return false;
+  };
+
   const logout = () => {
-    setIsAuthenticated(false);
     setUser(null);
+    window.localStorage.removeItem('ain_currentUser');
+    window.dispatchEvent(new Event('ain_user_changed'));
     toast.success('Logged out successfully');
   };
 
