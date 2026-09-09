@@ -7,4 +7,4 @@
   --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-urdu: "Noto Nastaliq Urdu", serif;
 }
-html, body { overflow-x: hidden; }
+html, body { overflow-x: hidden; scrollbar-gutter: stable; }

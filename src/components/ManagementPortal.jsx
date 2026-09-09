@@ -22,7 +22,7 @@ import {
   User, Lock, PanelLeftClose, PanelLeft, Building, Edit, Info,
   Mail, Copy, MoreVertical, Download, Upload, Trash2, Ban, RefreshCcw, Archive, History, Eye, EyeOff, Database, Layers,
   Shield, DoorOpen, FileText, CheckSquare, Printer, Send, Globe, CalendarDays, ClipboardList, Type, AlignLeft, Hash, Phone, Calendar, ChevronDown, ChevronUp, CircleDot, MousePointerClick, CheckSquare as CheckSquareIcon, Heading2, Minus, LayoutTemplate, UploadCloud, PenTool, Image as ImageIcon, Key, Briefcase, MapPin, Bell
-, Loader2, PenLine } from 'lucide-react';
+, Loader2, PenLine, HeartHandshake, Activity } from 'lucide-react';
 
 export const AinManagementLogo = ({ className = "w-[120px] h-auto" }) => (
   <svg className={className} viewBox="0 0 610 316" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -910,12 +910,16 @@ export default function App() {
 
   const roles = [
     { id: 'Admin' },
-    { id: 'In-Country Coordinator' },
-    { id: 'Deputy Lead Coordinator' },
-    { id: 'Lead Coordinator' },
-    { id: 'Intern' },
-    { id: 'Host' },
-    { id: 'Camper' }
+    { id: 'President' },
+    { id: 'Vice President' },
+    { id: 'General Secretary' },
+    { id: 'Joint Secretary' },
+    { id: 'Treasurer' },
+    { id: 'Executive Member' },
+    { id: 'General Member' },
+    { id: 'Volunteer' },
+    { id: 'Ambassador' },
+    { id: 'Partner' }
   ];
 
   const renderContent = () => {
@@ -926,17 +930,31 @@ export default function App() {
       case 'agreements': return <GeneralAgreementsView agreements={agreements} setAgreements={setAgreements} currentUser={currentUser} users={users} showToast={showToast} addLog={addLog} setActiveTab={setActiveTab} onUserClick={setGlobalUser} />;
       case 'settings': return <SettingsView currentUser={currentUser} globalUsers={users} setUsers={setUsers} showToast={showToast} addLog={addLog} twoFactorConfig={twoFactorConfig} setTwoFactorConfig={setTwoFactorConfig} />;
       case 'archives': return <ArchivesView archivedHosts={archivedHosts} setArchivedHosts={setArchivedHosts} setHosts={setHosts} hosts={hosts} archivedUsers={archivedUsers} setArchivedUsers={setArchivedUsers} setUsers={setUsers} users={users} archivedBatches={archivedBatches} setArchivedBatches={setArchivedBatches} setBatches={setBatches} batches={batches} archivedRooms={archivedRooms} setArchivedRooms={setArchivedRooms} setRooms={setRooms} rooms={rooms} showToast={showToast} addLog={addLog} />;
+      case 'executive': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Executive Committee</h2><p>The only 7 office bearers.</p></div>;
+      case 'general': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">General Committee</h2><p>Registered members of the NGO other than the Office bearers.</p></div>;
+      case 'volunteers': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Volunteers</h2><p>List of all the Volunteers.</p></div>;
+      case 'ambassadors': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Ambassadors</h2><p>List of all the Ambassadors.</p></div>;
+      case 'partners': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Partners</h2><p>List of all the Partners.</p></div>;
+      case 'activity': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Activity Log</h2><p>Every action would be logged to see what is happening.</p></div>;
+      case 'roles': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Roles</h2><p>Role management and permissions.</p></div>;
       default: return <div className="p-8 text-stone-500">Select a valid tab</div>;
     }
   };
 
   const navItems = [
-    { id: 'users', icon: Users, label: 'Management', roles: ['Admin', 'In-Country Coordinator', 'Deputy Lead Coordinator', 'Lead Coordinator', 'Intern', 'Host', 'Camper'] },
+    { id: 'users', icon: Users, label: 'Management', roles: ['Admin', 'President', 'Vice President', 'General Secretary', 'Joint Secretary', 'Treasurer', 'Executive Member', 'General Member', 'Volunteer', 'Ambassador', 'Partner'] },
+    { id: 'executive', icon: Users, label: 'Executive Committee', roles: ['Admin'] },
+    { id: 'general', icon: Users, label: 'General Committee', roles: ['Admin'] },
+    { id: 'volunteers', icon: HeartHandshake, label: 'Volunteers', roles: ['Admin'] },
+    { id: 'ambassadors', icon: Globe, label: 'Ambassadors', roles: ['Admin'] },
+    { id: 'partners', icon: Briefcase, label: 'Partners', roles: ['Admin'] },
+    { id: 'activity', icon: Activity, label: 'Activity Log', roles: ['Admin'] },
+    { id: 'roles', icon: Shield, label: 'Roles', roles: ['Admin'] },
   ];
 
   const adminItems = [
     { id: 'archives', icon: Archive, label: 'Archives', roles: ['Admin'] },
-    { id: 'settings', icon: Settings, label: 'Settings', roles: ['Admin', 'In-Country Coordinator', 'Deputy Lead Coordinator', 'Lead Coordinator', 'Intern', 'Host', 'Camper'] }
+    { id: 'settings', icon: Settings, label: 'Settings', roles: ['Admin', 'President', 'Vice President', 'General Secretary', 'Joint Secretary', 'Treasurer', 'Executive Member', 'General Member', 'Volunteer', 'Ambassador', 'Partner'] }
   ];
 
   return (
@@ -1001,22 +1019,10 @@ export default function App() {
 
       
         <div className="p-4 border-t border-stone-100 shrink-0 bg-stone-50">
-          <div className={`flex items-center ${isSidebarOpen ? 'justify-between' : 'justify-center'}`}>
-            {isSidebarOpen && (
-              <div className="flex items-center gap-3 overflow-hidden">
-                <div className="w-9 h-9 rounded-full bg-[#004B36] text-white flex items-center justify-center font-bold text-sm shrink-0 border-2 border-white shadow-sm">
-                  {currentUser.name.charAt(0)}
-                </div>
-                <div className="truncate pr-2">
-                  <p className="text-sm font-bold text-stone-900 truncate">{currentUser.name}</p>
-                  <p className="text-xs text-stone-500 font-medium truncate">{currentUser.role}</p>
-                </div>
-              </div>
-            )}
-            <button onClick={handleLogout} className="p-2 text-stone-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors shrink-0" title="Logout">
-              <LogOut size={18} />
-            </button>
-          </div>
+          <button onClick={handleLogout} className={`w-full flex items-center ${isSidebarOpen ? 'justify-center px-4 gap-3' : 'justify-center px-0'} py-3 text-rose-600 hover:bg-rose-50 rounded-xl transition-colors font-semibold shadow-sm border border-rose-100 bg-white`}>
+            <LogOut size={18} />
+            {isSidebarOpen && <span>Log Out</span>}
+          </button>
         </div>
       </div>
         {isMobileMenuOpen && (
