@@ -81,6 +81,13 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
               About Us
             </Link>
           </motion.div>
+          {(!isAuthenticated || (user?.role && user.role !== "libraryReader")) && (
+            <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}>
+              <Link to="/library/login" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
+                Digital Library
+              </Link>
+            </motion.div>
+          )}
           <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}>
             <Link to="/contact" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
               Contact Us
@@ -100,7 +107,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
               }}
               className="hidden md:flex text-sm font-medium tracking-wide text-[#004B36] bg-white border border-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#004B36]/5 transition-colors items-center gap-2"
             >
-              {user?.name ? user.name.split(' ')[0] : "Dashboard"}
+              {user?.name || "Dashboard"}
             </Link>
           ) : (
             <Link to="/login" className="hidden md:flex text-sm font-medium tracking-wide text-[#004B36] bg-white border border-[#004B36] px-5 py-2.5 rounded-full hover:bg-[#004B36]/5 transition-colors items-center gap-2">
@@ -123,10 +130,10 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             {isAuthenticated ? (
               <div className="flex flex-col gap-2">
                 <Link to={user?.role?.includes("library") ? "/library/dashboard" : "/management"} onClick={() => { setIsMobileMenuOpen(false); if (typeof window !== 'undefined') window.localStorage.removeItem('ain_activeTab'); }} className="text-sm font-medium text-[#004B36] bg-white border border-[#004B36] px-4 py-3 rounded-xl hover:bg-[#004B36]/5 transition-colors text-center">
-                  {user?.name ? user.name.split(' ')[0] + "'s Dashboard" : "Dashboard"}
+                  {user?.name || "Dashboard"}
                 </Link>
                 <button 
-                  onClick={() => { setIsMobileMenuOpen(false); setIsLogoutModalOpen(true); }}
+                  onClick={() => { setIsMobileMenuOpen(false); logout(); }}
                   className="text-sm font-medium text-red-600 bg-red-50 px-4 py-3 rounded-xl hover:bg-red-100 transition-colors text-center"
                 >
                   Log out
@@ -153,6 +160,11 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: 0.1 }}>
               <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors font-bold">About Us</Link>
             </motion.div>
+            {(!isAuthenticated || (user?.role && user.role !== "libraryReader")) && (
+              <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: 0.12 }}>
+                <Link to="/library/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors font-bold">Digital Library</Link>
+              </motion.div>
+            )}
             <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>
               <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors font-bold">Contact Us</Link>
             </motion.div>

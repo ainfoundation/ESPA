@@ -5,7 +5,8 @@ export interface Book {
  category: string;
  uploadDate: string;
  coverUrl: string;
- driveLink: string;
+ content?: string;
+  driveLink?: string;
 }
 
 const defaultBooks: Book[] = [
@@ -16,7 +17,7 @@ const defaultBooks: Book[] = [
  category: 'Educational',
  uploadDate: '2023-10-01',
  coverUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop',
- driveLink: '1bN1_Tf6D0T3uR-fJ5qTzH_nF_QyM-zJk' // Example ID
+ content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n'.repeat(50) // Example ID
  },
  {
  id: '2',
@@ -25,7 +26,7 @@ const defaultBooks: Book[] = [
  category: "Children's Books",
  uploadDate: '2023-10-15',
  coverUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop',
- driveLink: '1bN1_Tf6D0T3uR-fJ5qTzH_nF_QyM-zJk'
+ content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n'.repeat(50)
  }
 ];
 

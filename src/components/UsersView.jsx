@@ -87,7 +87,7 @@ export default function UsersView({
   }, [users, searchTerm, roleOrder]);
 
   const handleDeleteUser = (id) => {
-    const userToArchive = users.find(u => u.id === id);
+    const userToArchive = users?.find(u => u.id === id);
     if (!userToArchive) return;
     setArchivedUsers([...archivedUsers, { ...userToArchive, archivedAt: new Date().toISOString() }]);
     setUsers(globalUsers.filter(u => u.id !== id));
@@ -141,7 +141,7 @@ export default function UsersView({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-semibold text-stone-900">Users</h1>
-          <p className="text-stone-500 text-sm mt-2 font-medium">Manage Participant Profiles, Account Details, and Batch Classifications.</p>
+          <p className="text-stone-500 text-sm mt-2 font-medium">Manage Participant Profiles and Account Details.</p>
         </div>
         {selectedIds.length > 0 ? (
           <button 
@@ -152,12 +152,7 @@ export default function UsersView({
           </button>
         ) : (
           <div className="flex items-center gap-2">
-            <button 
-              onClick={() => setActiveTab('batches')}
-              className="bg-white text-stone-700 border border-stone-200/80 px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-stone-50 transition-colors shadow-sm flex items-center gap-2"
-            >
-              <Users size={16} className="text-[#004B36]" /> Batch
-            </button>
+            
             <button 
               onClick={() => { setNewUser({}); setIsEditingUser(false); setIsModalOpen(true); }}
               className="bg-[#004B36] text-[#FDFCFB] px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2"
@@ -191,7 +186,7 @@ export default function UsersView({
             </thead>
             <tbody className="divide-y divide-stone-100">
               {filteredUsers.map(user => {
-                const host = hosts.find(h => h.id === user.hostId);
+                const host = hosts?.find(h => h.id === user.hostId);
                 return (
                   <tr key={user.id} className="hover:bg-[#FDFCFB] transition-colors">
                     <td className="pl-12 pr-6 py-4 align-middle">
@@ -249,13 +244,7 @@ export default function UsersView({
             
             <form onSubmit={handleAddUser} className="flex-1 min-h-0 overflow-y-auto space-y-4 p-1 -mx-1 px-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="col-span-1">
-                  <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">BATCH<span className="text-red-500 font-medium">*</span></label>
-                  <select value={newUser.batch || ''} onChange={e => setNewUser({...newUser, batch: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 appearance-none">
-                    <option value="">Select Batch</option>
-                    {batches.filter(b => b.active).map(b => <option key={b.id} value={b.name}>{b.name}</option>)}
-                  </select>
-                </div>
+                
                 <div className="col-span-1">
                   <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">ROLE<span className="text-red-500 font-medium">*</span></label>
                   <select required value={newUser.role || ''} onChange={e => setNewUser({...newUser, role: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 appearance-none">
@@ -318,7 +307,7 @@ export default function UsersView({
                 <div className="col-span-1">
                   <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">HOST COUNTRY<span className="text-red-500 font-medium">*</span></label>
                   <select required value={newUser.hostId || ''} onChange={e => {
-                    const host = hosts.find(h => h.id === e.target.value);
+                    const host = hosts?.find(h => h.id === e.target.value);
                     setNewUser({...newUser, hostId: e.target.value, hostCountry: host ? host.country : ''});
                   }} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 appearance-none">
                     <option value="" disabled>Select Host Country</option>

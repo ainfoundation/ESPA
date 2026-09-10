@@ -87,7 +87,7 @@ export default function UsersView({
   }, [users, searchTerm, roleOrder]);
 
   const handleDeleteUser = (id) => {
-    const userToArchive = users.find(u => u.id === id);
+    const userToArchive = users?.find(u => u.id === id);
     if (!userToArchive) return;
     setArchivedUsers([...archivedUsers, { ...userToArchive, archivedAt: new Date().toISOString() }]);
     setUsers(globalUsers.filter(u => u.id !== id));
@@ -191,7 +191,7 @@ export default function UsersView({
             </thead>
             <tbody className="divide-y divide-stone-100">
               {filteredUsers.map(user => {
-                const host = hosts.find(h => h.id === user.hostId);
+                const host = hosts?.find(h => h.id === user.hostId);
                 return (
                   <tr key={user.id} className="hover:bg-[#FDFCFB] transition-colors">
                     <td className="pl-12 pr-6 py-4 align-middle">
@@ -318,7 +318,7 @@ export default function UsersView({
                 <div className="col-span-1">
                   <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">HOST COUNTRY<span className="text-red-500 font-medium">*</span></label>
                   <select required value={newUser.hostId || ''} onChange={e => {
-                    const host = hosts.find(h => h.id === e.target.value);
+                    const host = hosts?.find(h => h.id === e.target.value);
                     setNewUser({...newUser, hostId: e.target.value, hostCountry: host ? host.country : ''});
                   }} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 appearance-none">
                     <option value="" disabled>Select Host Country</option>

@@ -9,7 +9,7 @@ const teamMembers = [
   { name: "Ali Hasnain", role: "Joint Secretary", bio: "Supports day-to-day operations and coordinates closely with the General Secretary on key programs.", linkedin: "https://www.linkedin.com/in/ali-hasnain-695b88257/", image: "https://i.postimg.cc/DyYYyhjH/Ali-Hasnain.png" },
   { name: "Ashfaq Ullah Jan", role: "Treasurer", bio: "Manages financial planning, transparent fund allocation, and the organization's fiscal health.", linkedin: "https://www.linkedin.com/in/ashaq-jan-738723287", image: "https://i.postimg.cc/qMZZMrDV/Ashfaq-Jan.png" },
   { name: "Azhan Khan", role: "Executive Member", bio: "Actively contributes to the foundation's core initiatives and community outreach projects.", linkedin: "https://www.linkedin.com/in/azhan-khan-a3962b325", image: "https://i.postimg.cc/FsnnsvCX/Azhan-Khan.png" },
-  { name: "Ali Shan Sahib Khan", role: "Executive Member", bio: "Dedicated team member supporting various educational and organizational activities.", linkedin: "https://www.linkedin.com/in/ali-shan-b037a6269/", image: "https://i.postimg.cc/qMZZMrDd/Ali-Shan.png" }
+  { name: "Ali Sana Ullah", role: "Executive Member", bio: "Dedicated team member supporting various educational and organizational activities.", linkedin: "https://www.linkedin.com/in/ali-sanaullah-1254b9203/", image: "https://i.postimg.cc/qMZZMrDd/Ali-Shan.png" }
 ];
 
 export default function Team() {

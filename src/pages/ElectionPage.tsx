@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 const INITIAL_MEMBERS = [
   "Aitzaz Rahim",
   "Ali Hasnain",
-  "Ali Shan Sahib Khan",
+  "Ali Sana Ullah",
   "Ashfaq Ullah Jan",
   "Azhan Khan",
   "Rameez Taj",
@@ -50,8 +50,8 @@ const CustomSelect = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const filteredOptions = options.filter(opt => opt.toLowerCase().includes(search.toLowerCase()));
-  const exactMatch = options.find(opt => opt.toLowerCase() === search.toLowerCase());
+  const filteredOptions = options?.filter(opt => opt.toLowerCase().includes(search.toLowerCase()));
+  const exactMatch = options?.find(opt => opt.toLowerCase() === search.toLowerCase());
 
   return (
     <div ref={wrapperRef} className="relative w-full">

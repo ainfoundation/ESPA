@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Save, Shield, Key, Info, CheckCircle2, AlertCircle, Mail, Smartphone, QrCode, Globe } from 'lucide-react';
+import { Settings, Save, Archive, Shield, Key, Info, CheckCircle2, AlertCircle, Mail, Smartphone, QrCode, Globe } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
 const verifyTOTP = async (code) => code === '123456';
@@ -31,7 +31,7 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
       return;
     }
     
-    const user = globalUsers.find(u => u.id === currentUser.id);
+    const user = globalUsers?.find(u => u.id === currentUser.id);
     if (!user) {
         if (currentUser.id === 'A01' && (oldPassword === 'adminpass' || oldPassword === '12345' || oldPassword === 'admin')) {
             showToast('Admin password changed successfully', 'success');

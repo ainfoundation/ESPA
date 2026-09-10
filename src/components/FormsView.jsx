@@ -416,7 +416,7 @@ export default function FormsView({ forms, setForms, currentUser, globalUsers, a
                 
                 <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-4">
                   {(currentForm.responses || []).map((resp, i) => {
-                    const user = globalUsers.find(u => u.id === resp.userId) || { name: resp.userId, id: resp.userId };
+                    const user = globalUsers?.find(u => u.id === resp.userId) || { name: resp.userId, id: resp.userId };
                     return (
                       <div key={i} className="bg-stone-50 rounded-2xl border border-stone-200 p-6">
                         <div className="flex items-center gap-3 mb-4 border-b border-stone-200 pb-4">

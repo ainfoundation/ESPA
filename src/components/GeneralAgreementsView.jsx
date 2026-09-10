@@ -119,8 +119,7 @@ export default function GeneralAgreementsView({ agreements, setAgreements, curre
     <div className="space-y-8 h-full flex flex-col tracking-tight relative">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">
-            <FileText className="text-[#004B36]" size={28} /> In-House Agreement
+          <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">In-House Agreement
           </h1>
           <p className="text-stone-500 text-sm mt-2 font-medium">View and manage admin-wide agreements.</p>
         </div>

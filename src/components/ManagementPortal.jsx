@@ -1,21 +1,24 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import {  createPortal } from 'react-dom';
+import { createPortal } from 'react-dom';
 import Cropper from 'react-easy-crop';
 
 const Portal = ({ children }) => {
   return createPortal(children, document.body);
 };
-import {  countryCodes } from '../management/countryCodes';
-import {  countries } from '../management/countries';
+import { countryCodes } from '../management/countryCodes';
+import { countries } from '../management/countries';
 import FlightDetailsForm from './FlightDetailsForm';
 import DraggableModal from './DraggableModal';
+import FundsView from './FundsView';
+import SummaryDashboard from './SummaryDashboard';
+import MemberListView from './MemberListView';
 import ItineraryView from './ItineraryView';
 import FormsView from './FormsView';
 import UsersView from './UsersView';
 import SettingsView from "./SettingsView";
 import ArchivesView from "./ArchivesView";
 import GeneralAgreementsView from "./GeneralAgreementsView";
-import {  
+import { Banknote, Heart, HandCoins, ArrowDownRight, ArrowUpRight,  
   ArrowLeft, BookOpen, Users, LayoutDashboard, Search, ArrowRightLeft, 
   Settings, LogOut, Menu, Plus, Filter, AlertCircle, X,
   CheckCircle2, BarChart3, Wallet,
@@ -40,12 +43,10 @@ export const AINFoundationLogo = ({ width = 599, height = 296, className = "" })
 
 
 
-const AINLogo = ({ className = "" }) => (
-  <svg width="184" height="71" viewBox="0 0 184 71" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M55.691 57.8002H29.491L25.291 70.2002H7.39102L32.791 0.000193119H52.591L77.991 70.2002H59.891L55.691 57.8002ZM51.291 44.6002L42.591 18.9002L33.991 44.6002H51.291ZM99.8215 0.000193119V70.2002H82.7215V0.000193119H99.8215ZM172.014 70.2002H154.914L126.314 26.9002V70.2002H109.214V0.000193119H126.314L154.914 43.5002V0.000193119H172.014V70.2002Z" fill="#004B36"/>
-  </svg>
+export const AINLogo = ({ className = "" }) => (
+  <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}><g clipPath="url(#clip0_350_59)"><path d="M188.9 99.9202V203.487H21.8804V299.761H188.9V412.08H0V512H313.618V0H0V99.9202H188.9Z" fill="currentColor"/><path d="M512.211 0V99.9202H303.618V207.863H459.698V304.866H303.618V512H251.001L251 0H512.211Z" fill="currentColor"/></g><defs><clipPath id="clip0_350_59"><rect width="512.211" height="512" fill="white"/></clipPath></defs></svg>
 );
-const FontStyles = () => (
+export const FontStyles = () => (
   <style dangerouslySetInnerHTML={{__html: `
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
     :root {
@@ -225,7 +226,7 @@ export const ConfirmModal = ({ isOpen, title, message, onConfirm, onCancel }) =>
 
 export const UserLink = ({ userId, users, onUserClick, currentUser }) => {
   if (!userId || userId.toLowerCase() === 'admin') return <span className="font-medium text-stone-900">Admin</span>;
-  const user = users.find(u => u.id === userId);
+  const user = users?.find(u => u.id === userId);
   const name = user ? user.name : (userId === 'A01' ? 'Admin' : (userId.toLowerCase() === 'admin' || userId.toLowerCase() === 'admin' ? 'Admin' : userId));
   
   if (name === 'Admin' || name === 'Admin' || name.toLowerCase() === 'admin') {
@@ -636,7 +637,7 @@ function useLocalStorage(key, initialValue) {
     }
     try {
       const item = window.localStorage.getItem(key);
-      if (item !== null) {
+      if (item !== null && item !== 'undefined' && item !== 'null') {
         return JSON.parse(item);
       }
     } catch (error) {
@@ -645,12 +646,40 @@ function useLocalStorage(key, initialValue) {
     return initialValue instanceof Function ? initialValue() : initialValue;
   });
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const handleStorageChange = (e) => {
+      try {
+        const item = window.localStorage.getItem(key);
+        if (item === null || item === 'undefined' || item === 'null') {
+          setStoredValue(initialValue instanceof Function ? initialValue() : initialValue);
+        } else {
+          setStoredValue(JSON.parse(item));
+        }
+      } catch (error) {
+        console.warn(`Error parsing localStorage key "${key}":`, error);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('ain_user_changed', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('ain_user_changed', handleStorageChange);
+    };
+  }, [key, initialValue]);
+
   const setValue = (value) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       if (typeof window !== "undefined") {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        if (valueToStore === null || valueToStore === undefined) {
+           window.localStorage.removeItem(key);
+        } else {
+           window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        }
         if (key === "ain_currentUser") window.dispatchEvent(new Event("ain_user_changed"));
       }
     } catch (error) {
@@ -661,7 +690,8 @@ function useLocalStorage(key, initialValue) {
   return [storedValue, setValue];
 }
 export default function App() {
-  const [activeTab, setActiveTab] = useLocalStorage("ain_activeTab", "users");
+  const [activeTab, setActiveTab] = useLocalStorage("ain_activeTab", "dashboard");
+  const [funds, setFunds] = useLocalStorage("ain_funds", { pkr: 0, usd: 0, transactions: [] });
   const [currentUser, setCurrentUser] = useLocalStorage("ain_currentUser", null);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
   const [logs, setLogs] = useLocalStorage("ain_logs", []);
@@ -721,13 +751,14 @@ export default function App() {
 
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [otpError, setOtpError] = useState('');
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const user = users.find(u => 
+    const user = users?.find(u => 
       (u.email.toLowerCase() === loginEmail.toLowerCase() || 
        (u.username && u.username.toLowerCase() === loginEmail.toLowerCase())) && 
       u.password === loginPassword && u.active !== false
@@ -784,7 +815,7 @@ export default function App() {
                   </div>
                   <h2 className="text-2xl font-bold text-stone-900 mb-2">Two-Factor Auth</h2>
                   <p className="text-stone-500 text-sm mb-6 text-center">
-                      Enter the 6-digit code from your authenticator app or email to continue.
+                      Enter the 6-digit code from your authenticator app or email to continue.<br/><span className="text-xs font-mono mt-2 inline-block bg-stone-100 px-2 py-1 rounded text-stone-600 border border-stone-200">Test OTP: 123456</span>
                   </p>
                   
                   <form onSubmit={handle2FALogin} className="w-full">
@@ -830,7 +861,7 @@ export default function App() {
             <div className="relative z-10">
                <AINLogo className="text-white w-48 mb-8" />
                <h1 className="text-white text-5xl font-semibold leading-tight tracking-tight mt-12 max-w-xl">
-                 Welcome to the Portal.
+                 Welcome to<br/>Management Portal
                </h1>
             </div>
             
@@ -844,10 +875,7 @@ export default function App() {
             <div className="absolute top-[10%] -left-[20%] w-[50%] h-[50%] bg-[#003828] rounded-full blur-[100px] pointer-events-none"></div>
         </div>
         
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-24 relative bg-[#FDFCFB]">
-          <div className="absolute top-8 right-8 text-stone-400 text-xs font-semibold tracking-wider">
-            V 1.0.1
-          </div>
+        <div className="w-full lg:w-[70%] flex items-center justify-center p-8 lg:p-24 relative bg-[#FDFCFB]">
           
           <div className="w-full max-w-[400px]">
             <div className="lg:hidden mb-12 flex justify-center">
@@ -860,14 +888,14 @@ export default function App() {
             
             <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label className="block text-xs font-semibold text-stone-500 mb-2 uppercase tracking-wider">Email or Username</label>
+                <label className="block text-xs font-semibold text-black mb-2 uppercase tracking-wider">Email or Username</label>
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} strokeWidth={1.5} />
                   <input 
                     type="text" 
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-stone-200/80 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36] transition-all text-sm font-medium shadow-sm"
+                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-stone-200/80 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36] transition-all text-sm font-medium shadow-sm placeholder-stone-400"
                     placeholder="Enter email or username"
                     required
                   />
@@ -876,19 +904,26 @@ export default function App() {
               
               <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider">Password</label>
-                    <a href="#" className="text-xs font-semibold text-[#004B36] hover:underline">Forgot password?</a>
+                    <label className="block text-xs font-semibold text-black uppercase tracking-wider">Password</label>
+                    <a href="#" className="text-xs font-semibold text-black hover:underline">Forgot password?</a>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} strokeWidth={1.5} />
                   <input 
-                    type="password" 
+                    type={showLoginPassword ? "text" : "password"} 
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-stone-200/80 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36] transition-all text-sm font-medium shadow-sm"
+                    className="w-full pl-11 pr-12 py-3.5 bg-white border border-stone-200/80 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36] transition-all text-sm font-medium shadow-sm placeholder-stone-400"
                     placeholder="••••••••"
                     required
                   />
+                  <button 
+                    type="button" 
+                    onClick={() => setShowLoginPassword(!showLoginPassword)} 
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                  >
+                    {showLoginPassword ? <EyeOff size={18} strokeWidth={1.5} /> : <Eye size={18} strokeWidth={1.5} />}
+                  </button>
                 </div>
               </div>
 
@@ -922,40 +957,72 @@ export default function App() {
     { id: 'Partner' }
   ];
 
+  
+  const handleUpdateRole = (userId, newRole) => {
+    const userToUpdate = users?.find(u => u.id === userId);
+    if (!userToUpdate) return;
+    setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
+    showToast(`Role updated to ${newRole} for ${userToUpdate.name}`, 'success');
+    addLog(`Changed role of ${userToUpdate.name} to ${newRole}`);
+  };
+
   const renderContent = () => {
     switch (activeTab) {
-      case 'users': return <UsersView currentUser={currentUser} users={users} globalUsers={users} setUsers={setUsers} archivedUsers={archivedUsers} setArchivedUsers={setArchivedUsers} roles={roles} showToast={showToast} addLog={addLog} hosts={hosts} setHosts={setHosts} batches={batches} setBatches={setBatches} rooms={rooms} setRooms={setRooms} onUserClick={setGlobalUser} agreements={agreements} />;
-      case 'itinerary': return <ItineraryView users={users} globalUsers={users} setUsers={setUsers} currentUser={currentUser} showToast={showToast} addLog={addLog} flights={flights} setFlights={setFlights} />;
-      case 'forms': return <FormsView users={users} globalUsers={users} forms={forms} setForms={setForms} archivedForms={archivedForms} setArchivedForms={setArchivedForms} currentUser={currentUser} showToast={showToast} addLog={addLog} onUserClick={setGlobalUser} />;
-      case 'agreements': return <GeneralAgreementsView agreements={agreements} setAgreements={setAgreements} currentUser={currentUser} users={users} showToast={showToast} addLog={addLog} setActiveTab={setActiveTab} onUserClick={setGlobalUser} />;
-      case 'settings': return <SettingsView currentUser={currentUser} globalUsers={users} setUsers={setUsers} showToast={showToast} addLog={addLog} twoFactorConfig={twoFactorConfig} setTwoFactorConfig={setTwoFactorConfig} />;
+      case 'dashboard': return <SummaryDashboard funds={funds} currentUser={currentUser} />;
+      case 'general': return <MemberListView title="General Committee" description="Registered members of the NGO other than the Office bearers." icon={Users} members={users.filter(u => u.role === 'General Member')} onUpdateRole={handleUpdateRole} />;
+      case 'volunteers': return <MemberListView title="Volunteers" description="List of all the Volunteers." icon={HeartHandshake} members={users.filter(u => u.role === 'Volunteer')} onUpdateRole={handleUpdateRole} />;
+      case 'ambassadors': return <MemberListView title="Ambassadors" description="List of all the Ambassadors." icon={Globe} members={users.filter(u => u.role === 'Ambassador')} onUpdateRole={handleUpdateRole} />;
+      case 'partners': return <MemberListView title="Partners" description="List of all the Partners." icon={Briefcase} members={users.filter(u => u.role === 'Partner')} onUpdateRole={handleUpdateRole} />;
+      case 'donors': return <MemberListView title="Donors" description="List of all the Donors." icon={HandCoins} members={users.filter(u => u.role === 'Donor')} onUpdateRole={handleUpdateRole} />;
+      case 'funds': return <FundsView funds={funds} setFunds={setFunds} addLog={addLog} showToast={showToast} />;
+      case 'settings': return <SettingsView currentUser={currentUser} globalUsers={users} setUsers={setUsers} showToast={showToast} addLog={addLog} twoFactorConfig={twoFactorConfig} setTwoFactorConfig={setTwoFactorConfig} setActiveTab={setActiveTab} />;
+      case 'activity': return (
+          <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
+            <div>
+              <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">Activity Log</h1>
+              <p className="text-stone-500 text-base mt-2 font-medium">System-wide audit trail of all actions.</p>
+            </div>
+            <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm flex-1 overflow-auto p-4">
+              <div className="space-y-4">
+                {logs.length > 0 ? logs.map(log => (
+                  <div key={log.id} className="flex gap-4 items-start p-4 bg-stone-50 rounded-xl border border-stone-100">
+                    <div className="p-2 bg-white rounded-lg border border-stone-200 text-stone-400 shrink-0"><History size={16} /></div>
+                    <div>
+                      <div className="text-stone-800 font-medium">{log.action}</div>
+                      <div className="text-xs text-stone-500 mt-1">{new Date(log.timestamp).toLocaleString()} by {log.user}</div>
+                    </div>
+                  </div>
+                )) : (
+                  <div className="p-12 text-center text-stone-500">No activity logged yet.</div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
       case 'archives': return <ArchivesView archivedHosts={archivedHosts} setArchivedHosts={setArchivedHosts} setHosts={setHosts} hosts={hosts} archivedUsers={archivedUsers} setArchivedUsers={setArchivedUsers} setUsers={setUsers} users={users} archivedBatches={archivedBatches} setArchivedBatches={setArchivedBatches} setBatches={setBatches} batches={batches} archivedRooms={archivedRooms} setArchivedRooms={setArchivedRooms} setRooms={setRooms} rooms={rooms} showToast={showToast} addLog={addLog} />;
-      case 'executive': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Executive Committee</h2><p>The only 7 office bearers.</p></div>;
-      case 'general': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">General Committee</h2><p>Registered members of the NGO other than the Office bearers.</p></div>;
-      case 'volunteers': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Volunteers</h2><p>List of all the Volunteers.</p></div>;
-      case 'ambassadors': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Ambassadors</h2><p>List of all the Ambassadors.</p></div>;
-      case 'partners': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Partners</h2><p>List of all the Partners.</p></div>;
-      case 'activity': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Activity Log</h2><p>Every action would be logged to see what is happening.</p></div>;
-      case 'roles': return <div className="p-8 text-stone-500"><h2 className="text-2xl font-bold mb-4 text-stone-800">Roles</h2><p>Role management and permissions.</p></div>;
-      default: return <div className="p-8 text-stone-500">Select a valid tab</div>;
+      case 'roles': return <UsersView users={users} setUsers={setUsers} showToast={showToast} addLog={addLog} />;
+      default: return <SummaryDashboard funds={funds} currentUser={currentUser} />;
     }
   };
 
+  
+  const mgmtRoles = ['Admin', 'President', 'Vice President', 'General Secretary', 'Joint Secretary', 'Treasurer', 'Executive Member'];
+  
   const navItems = [
-    { id: 'users', icon: Users, label: 'Management', roles: ['Admin', 'President', 'Vice President', 'General Secretary', 'Joint Secretary', 'Treasurer', 'Executive Member', 'General Member', 'Volunteer', 'Ambassador', 'Partner'] },
-    { id: 'executive', icon: Users, label: 'Executive Committee', roles: ['Admin'] },
-    { id: 'general', icon: Users, label: 'General Committee', roles: ['Admin'] },
-    { id: 'volunteers', icon: HeartHandshake, label: 'Volunteers', roles: ['Admin'] },
-    { id: 'ambassadors', icon: Globe, label: 'Ambassadors', roles: ['Admin'] },
-    { id: 'partners', icon: Briefcase, label: 'Partners', roles: ['Admin'] },
-    { id: 'activity', icon: Activity, label: 'Activity Log', roles: ['Admin'] },
-    { id: 'roles', icon: Shield, label: 'Roles', roles: ['Admin'] },
+    { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard', roles: ['Admin', 'President', 'Vice President', 'General Secretary', 'Joint Secretary', 'Treasurer', 'Executive Member', 'General Member', 'Volunteer', 'Ambassador', 'Partner'] },
+    { id: 'general', icon: Users, label: 'General Committee', roles: mgmtRoles },
+    { id: 'volunteers', icon: HeartHandshake, label: 'Volunteers', roles: mgmtRoles },
+    { id: 'ambassadors', icon: Globe, label: 'Ambassadors', roles: mgmtRoles },
+    { id: 'partners', icon: Briefcase, label: 'Partners', roles: mgmtRoles },
+    { id: 'donors', icon: HandCoins, label: 'Donors', roles: mgmtRoles },
+    { id: 'funds', icon: Wallet, label: 'Funds', roles: mgmtRoles },
+    { id: 'roles', icon: Shield, label: 'Roles', roles: mgmtRoles },
   ];
 
   const adminItems = [
-    { id: 'archives', icon: Archive, label: 'Archives', roles: ['Admin'] },
     { id: 'settings', icon: Settings, label: 'Settings', roles: ['Admin', 'President', 'Vice President', 'General Secretary', 'Joint Secretary', 'Treasurer', 'Executive Member', 'General Member', 'Volunteer', 'Ambassador', 'Partner'] }
   ];
+
 
   return (
     <div className="flex h-full bg-[#FDFCFB] overflow-hidden text-stone-800">
@@ -988,7 +1055,7 @@ export default function App() {
           )}
         </div>
 
-        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-8 no-scrollbar pt-20 lg:pt-6">
+        <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 no-scrollbar pt-20 lg:pt-6">
           <div className="space-y-1">
             {navItems.filter(item => item.roles.includes(currentUser.role)).map(item => (
               <button
@@ -1021,7 +1088,7 @@ export default function App() {
         <div className="p-4 border-t border-stone-100 shrink-0 bg-stone-50">
           <button onClick={handleLogout} className={`w-full flex items-center ${isSidebarOpen ? 'justify-center px-4 gap-3' : 'justify-center px-0'} py-3 text-rose-600 hover:bg-rose-50 rounded-xl transition-colors font-semibold shadow-sm border border-rose-100 bg-white`}>
             <LogOut size={18} />
-            {isSidebarOpen && <span>Log Out</span>}
+            {isSidebarOpen && <span className="text-sm">Log Out</span>}
           </button>
         </div>
       </div>

@@ -29,10 +29,9 @@ export default function ArchivesView({
   return (
     <div className="space-y-8 h-full flex flex-col tracking-tight relative">
       <div>
-        <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">
-          <Archive className="text-[#004B36]" size={28} /> Archives
+        <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">Archives
         </h1>
-        <p className="text-stone-500 text-sm mt-2 font-medium">Restore previously archived data.</p>
+        <p className="text-stone-500 text-base mt-2 font-medium">Restore previously archived data.</p>
       </div>
 
       <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm overflow-hidden">

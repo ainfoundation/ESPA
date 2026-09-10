@@ -11,7 +11,17 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<any | null>(() => {
+    try {
+      const stored = window.localStorage.getItem('ain_currentUser');
+      if (stored && stored !== 'null') {
+        return JSON.parse(stored);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  });
 
   const syncUser = () => {
     try {

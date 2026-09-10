@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Save, Shield, Key, Info, CheckCircle2, AlertCircle, Mail, Smartphone, QrCode, Globe, User, Upload } from 'lucide-react';
+import { Settings, Save, Archive, Shield, Key, Info, CheckCircle2, AlertCircle, Mail, Smartphone, QrCode, Globe, User, Upload } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { verifyTOTP } from './ManagementPortal';
 import { AinManagementLogo, AINFoundationLogo } from './ManagementPortal';
@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom';
 const Portal = ({ children }) => { return createPortal(children, document.body); };
 import DraggableModal from './DraggableModal';
 
-export default function SettingsView({ currentUser, globalUsers, setUsers, showToast, addLog, twoFactorConfig, setTwoFactorConfig }) {
+export default function SettingsView({ currentUser, globalUsers, setUsers, showToast, addLog, twoFactorConfig, setTwoFactorConfig, setActiveTab }) {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -30,7 +30,7 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
       return;
     }
     
-    const user = globalUsers.find(u => u.id === currentUser.id);
+    const user = globalUsers?.find(u => u.id === currentUser.id);
     if (!user) {
         if (currentUser.id === 'A01' && (oldPassword === 'adminpass' || oldPassword === '12345' || oldPassword === 'admin')) {
             showToast('Admin password changed successfully', 'success');
@@ -64,8 +64,42 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
     <div className="space-y-8 h-full flex flex-col tracking-tight relative pb-10">
       <div className="flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-semibold text-stone-900">Settings</h1>
-          <p className="text-stone-500 text-sm mt-2 font-medium">Manage Profile Settings, User Preferences, and Authentication.</p>
+          <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">Settings</h1>
+          <p className="text-stone-500 text-base mt-2 font-medium">Manage Profile Settings, User Preferences, and Authentication.</p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm overflow-hidden mt-8">
+        <div className="p-6 border-b border-stone-100 flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-stone-900 flex items-center gap-2">
+              <Archive className="text-[#004B36]" size={20} /> System Archives
+            </h2>
+            <p className="text-stone-500 text-sm mt-1">Access deleted users and previously archived data.</p>
+          </div>
+          <button 
+            onClick={() => setActiveTab('archives')}
+            className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold text-sm transition-colors"
+          >
+            Open Archives
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm overflow-hidden mt-8">
+        <div className="p-6 border-b border-stone-100 flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold text-stone-900 flex items-center gap-2">
+              <Activity className="text-[#004B36]" size={20} /> Activity Log
+            </h2>
+            <p className="text-stone-500 text-sm mt-1">View the complete system audit and activity log.</p>
+          </div>
+          <button 
+            onClick={() => setActiveTab('activity')}
+            className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold text-sm transition-colors"
+          >
+            Open Activity Log
+          </button>
         </div>
       </div>
       
@@ -225,7 +259,7 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
                                     const reader = new FileReader();
                                     reader.onload = (e) => {
                                         const result = e.target.result;
-                                        setUsers(users.map(u => u.id === currentUser.id ? {...u, avatar: result} : u));
+                                        setUsers(globalUsers.map(u => u.id === currentUser.id ? {...u, avatar: result} : u));
                                         showToast('Profile picture updated successfully', 'success');
                                         addLog(`Profile picture updated for ${currentUser.name}`);
                                     };
@@ -246,7 +280,7 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
                         <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Email Address</label>
                         <input type="email" defaultValue={currentUser.email || currentUser.username} onBlur={(e) => {
                             if(e.target.value !== (currentUser.email || currentUser.username)) {
-                                setUsers(users.map(u => u.id === currentUser.id ? {...u, email: e.target.value, username: e.target.value} : u));
+                                setUsers(globalUsers.map(u => u.id === currentUser.id ? {...u, email: e.target.value, username: e.target.value} : u));
                                 showToast('Email address updated', 'success');
                                 addLog(`Email updated for ${currentUser.name}`);
                             }
@@ -256,7 +290,7 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
                         <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Phone Number</label>
                         <input type="tel" defaultValue={currentUser.phone || ''} onBlur={(e) => {
                             if(e.target.value !== currentUser.phone) {
-                                setUsers(users.map(u => u.id === currentUser.id ? {...u, phone: e.target.value} : u));
+                                setUsers(globalUsers.map(u => u.id === currentUser.id ? {...u, phone: e.target.value} : u));
                                 showToast('Phone number updated', 'success');
                                 addLog(`Phone number updated for ${currentUser.name}`);
                             }
