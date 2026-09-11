@@ -82,7 +82,7 @@ export default function ContactUs() {
                 theme="dark"
               />
             </div>
-            <button type="submit" className="w-full bg-white text-[#004B36] py-4 rounded-xl font-bold hover:bg-neutral-200 transition-colors mt-2">
+            <button type="submit" className="w-full bg-white text-[#004B36] py-4 rounded-full font-bold hover:bg-neutral-200 transition-colors mt-2">
               Send Message
             </button>
           </form>

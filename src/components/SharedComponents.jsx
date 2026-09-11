@@ -46,12 +46,12 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, confi
         <h3 className="text-xl font-bold text-stone-900 mb-2">{title}</h3>
         <p className="text-stone-500 mb-6">{message}</p>
         <div className="flex justify-end gap-3">
-          <button onClick={onClose} className="px-5 py-2.5 rounded-xl font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">
+          <button onClick={onClose} className="px-5 py-2.5 rounded-full font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">
             {cancelText}
           </button>
           <button 
             onClick={() => { onConfirm(); onClose(); }} 
-            className={`px-5 py-2.5 rounded-xl font-semibold text-white transition-colors ${type === 'danger' ? 'bg-red-500 hover:bg-red-600' : 'bg-[#004B36] hover:bg-[#003828]'}`}
+            className={`px-5 py-2.5 rounded-full font-semibold text-white transition-colors ${type === 'danger' ? 'bg-red-500 hover:bg-red-600' : 'bg-[#004B36] hover:bg-[#003828]'}`}
           >
             {confirmText}
           </button>
@@ -104,7 +104,7 @@ export const DataModal = ({ isOpen, onClose, title, data, onImport, dateField, s
           />
         </div>
         <div className="flex justify-end gap-3 shrink-0">
-          <button onClick={onClose} className="px-5 py-2.5 rounded-xl font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200">Cancel</button>
+          <button onClick={onClose} className="px-5 py-2.5 rounded-full font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200">Cancel</button>
           <button 
             onClick={() => {
               try {
@@ -115,7 +115,7 @@ export const DataModal = ({ isOpen, onClose, title, data, onImport, dateField, s
                 showToast('Invalid JSON data', 'error');
               }
             }} 
-            className="px-5 py-2.5 rounded-xl font-semibold text-white bg-[#004B36] hover:bg-[#003828]"
+            className="px-5 py-2.5 rounded-full font-semibold text-white bg-[#004B36] hover:bg-[#003828]"
           >
             Import
           </button>
@@ -130,7 +130,7 @@ export const SignaturePad = ({ onSign }) => {
   return (
     <div className="mt-4 p-4 border border-stone-200 rounded-xl bg-stone-50">
       <p className="text-sm text-stone-500 mb-2">Click below to digitally sign</p>
-      <button onClick={() => onSign("Signed digitally")} className="px-4 py-2 bg-[#004B36] text-white rounded-lg font-medium">
+      <button onClick={() => onSign("Signed digitally")} className="px-4 py-2 bg-[#004B36] text-white rounded-full font-medium">
         Sign Agreement
       </button>
     </div>

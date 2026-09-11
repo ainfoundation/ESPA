@@ -88,13 +88,13 @@ export default function EditableImage({ id, defaultSrc, alt, className = '' }: E
  <div className="flex gap-2">
  <button 
  onClick={handleCancel}
- className="p-2 text-[#004B36]/60 hover:bg-[#004B36]/5 :bg-[#003828] rounded-lg transition-colors"
+ className="p-2 text-[#004B36]/60 hover:bg-[#004B36]/5 :bg-[#003828] rounded-full transition-colors"
  >
  <X size={18} />
  </button>
  <button 
  onClick={handleSave}
- className="p-2 text-white bg-[#004B36] hover:bg-[#003828] rounded-lg transition-colors"
+ className="p-2 text-white bg-[#004B36] hover:bg-[#003828] rounded-full transition-colors"
  >
  <Check size={18} />
  </button>

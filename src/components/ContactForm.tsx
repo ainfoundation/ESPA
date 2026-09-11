@@ -112,7 +112,7 @@ export default function ContactForm() {
             <button
               type="submit"
               disabled={status === 'submitting'}
-              className="w-full bg-white text-[#004B36] font-bold text-sm rounded-xl px-4 py-3 hover:bg-neutral-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+              className="w-full bg-white text-[#004B36] font-bold text-sm rounded-full px-4 py-3 hover:bg-neutral-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
             >
               {status === 'submitting' ? (
                 <div className="w-5 h-5 border-2 border-[#004B36]/30 border-t-[#004B36] rounded-full animate-spin" />

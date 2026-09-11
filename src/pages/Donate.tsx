@@ -28,7 +28,7 @@ const DetailRow = ({ label, value, subValue, highlight = false }: { label: strin
       </div>
       <button 
         onClick={handleCopy}
-        className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/90 hover:text-white transition-all flex-shrink-0 ml-4 mt-1 active:scale-95"
+        className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/90 hover:text-white transition-all flex-shrink-0 ml-4 mt-1 active:scale-95"
         title="Copy to clipboard"
       >
         {copied ? <Check size={16} className="text-emerald-300" /> : <Copy size={16} />}

@@ -270,7 +270,7 @@ export default function ElectionPage() {
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="w-full bg-[#004B36] text-white font-bold py-4 px-8 rounded-xl hover:bg-[#003828] transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed mt-4 text-lg"
+                className="w-full bg-[#004B36] text-white font-bold py-4 px-8 rounded-full hover:bg-[#003828] transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed mt-4 text-lg"
               >
                 {status === 'submitting' ? 'Submitting Votes...' : 'Submit Votes'}
               </button>

@@ -68,7 +68,7 @@ export default function MemberDetailsModal({ member, onClose }) {
           </div>
           
           <div className="pt-4 mt-2 border-t border-stone-100 flex justify-end">
-            <button onClick={onClose} className="px-5 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold transition-colors">
+            <button onClick={onClose} className="px-5 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-full font-semibold transition-colors">
               Close
             </button>
           </div>

@@ -63,8 +63,31 @@ export default function LibraryDashboard() {
   ];
 
   // Admin form state
-  const [showAdminForm, setShowAdminForm] = useState(false);
   const [editingBook, setEditingBook] = useState<Partial<Book> | null>(null);
+  const [showAdminForm, setShowAdminForm] = useState(false);
+
+  useEffect(() => {
+    if (showAdminForm && !editingBook?.id) {
+      const draft = window.localStorage.getItem('ain_draft_library_book');
+      if (draft) {
+        try {
+          setEditingBook(JSON.parse(draft));
+        } catch(e) {}
+      }
+    }
+  }, [showAdminForm]);
+
+  useEffect(() => {
+    if (showAdminForm && !editingBook?.id && editingBook && Object.keys(editingBook).length > 0) {
+      window.localStorage.setItem('ain_draft_library_book', JSON.stringify(editingBook));
+    }
+  }, [editingBook, showAdminForm]);
+
+  const handleSaveBookDraft = () => {
+    window.localStorage.setItem('ain_draft_library_book', JSON.stringify(editingBook || {}));
+    alert("Book draft saved!");
+  };
+
 
   useEffect(() => {
     if (!isAuthenticated || (user?.role !== 'libraryAdmin' && user?.role !== 'libraryReader' && user?.role !== 'admin' && user?.role !== 'Admin')) {
@@ -101,6 +124,7 @@ export default function LibraryDashboard() {
     
     saveBook(newBook);
     setBooks(getBooks());
+    window.localStorage.removeItem('ain_draft_library_book');
     setShowAdminForm(false);
     setEditingBook(null);
   };
@@ -143,13 +167,13 @@ export default function LibraryDashboard() {
             </div>
             
             <nav className="flex flex-col gap-2">
-              <button onClick={() => setActiveTab('catalog')} className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === 'catalog' ? 'bg-[#004B36]/5 text-[#004B36] border-l-4 border-[#004B36]' : 'text-[#004B36]/70 hover:bg-stone-50'}`}>
+              <button onClick={() => setActiveTab('catalog')} className={`flex items-center gap-3 px-4 py-3 rounded-full font-medium transition-colors ${activeTab === 'catalog' ? 'bg-[#004B36]/5 text-[#004B36] border-l-4 border-[#004B36]' : 'text-[#004B36]/70 hover:bg-stone-50'}`}>
                 <BookOpen size={18} /> Catalog
               </button>
-              <button onClick={() => setActiveTab('resources')} className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === 'resources' ? 'bg-[#004B36]/5 text-[#004B36] border-l-4 border-[#004B36]' : 'text-[#004B36]/70 hover:bg-stone-50'}`}>
+              <button onClick={() => setActiveTab('resources')} className={`flex items-center gap-3 px-4 py-3 rounded-full font-medium transition-colors ${activeTab === 'resources' ? 'bg-[#004B36]/5 text-[#004B36] border-l-4 border-[#004B36]' : 'text-[#004B36]/70 hover:bg-stone-50'}`}>
                 <FileText size={18} /> Resources
               </button>
-              <button onClick={() => { window.localStorage.removeItem('ain_currentUser'); window.dispatchEvent(new Event('ain_user_changed')); navigate('/library/login'); }} className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-[#004B36]/70 hover:text-red-600 rounded-xl font-medium transition-colors text-left mt-4">
+              <button onClick={() => { window.localStorage.removeItem('ain_currentUser'); window.dispatchEvent(new Event('ain_user_changed')); navigate('/library/login'); }} className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-[#004B36]/70 hover:text-red-600 rounded-full font-medium transition-colors text-left mt-4">
                 <X size={18} /> Logout
               </button>
             </nav>
@@ -205,13 +229,13 @@ export default function LibraryDashboard() {
           <div className="flex bg-white border border-[#004B36]/10 rounded-2xl p-1 shrink-0">
             <button 
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-xl transition-colors ${viewMode === 'grid' ? 'bg-[#004B36]/5 text-[#004B36] ' : 'text-[#004B36]/50 hover:text-[#004B36] '}`}
+              className={`p-2 rounded-full transition-colors ${viewMode === 'grid' ? 'bg-[#004B36]/5 text-[#004B36] ' : 'text-[#004B36]/50 hover:text-[#004B36] '}`}
             >
               <Grid size={20} />
             </button>
             <button 
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded-xl transition-colors ${viewMode === 'list' ? 'bg-[#004B36]/5 text-[#004B36] ' : 'text-[#004B36]/50 hover:text-[#004B36] '}`}
+              className={`p-2 rounded-full transition-colors ${viewMode === 'list' ? 'bg-[#004B36]/5 text-[#004B36] ' : 'text-[#004B36]/50 hover:text-[#004B36] '}`}
             >
               <List size={20} />
             </button>
@@ -244,14 +268,14 @@ export default function LibraryDashboard() {
                   </div>
                   {isLibraryAdmin && (
                     <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                      <button onClick={(e) => openEdit(book, e)} className="p-2 bg-white/90 text-[#004B36] rounded-lg hover:bg-white shadow-sm backdrop-blur-sm"><Edit size={14} /></button>
-                      <button onClick={(e) => handleDelete(book.id, e)} className="p-2 bg-white/90 text-red-600 rounded-lg hover:bg-white shadow-sm backdrop-blur-sm"><Trash2 size={14} /></button>
+                      <button onClick={(e) => openEdit(book, e)} className="p-2 bg-white/90 text-[#004B36] rounded-full hover:bg-white shadow-sm backdrop-blur-sm"><Edit size={14} /></button>
+                      <button onClick={(e) => handleDelete(book.id, e)} className="p-2 bg-white/90 text-red-600 rounded-full hover:bg-white shadow-sm backdrop-blur-sm"><Trash2 size={14} /></button>
                     </div>
                   )}
                   
                   <button 
                     onClick={(e) => toggleBookmark(book.id, e)} 
-                    className={`absolute top-2 ${isLibraryAdmin ? 'left-2' : 'right-2'} p-2 rounded-lg backdrop-blur-sm shadow-sm transition-all z-10 ${bookmarks.includes(book.id) ? 'bg-[#004B36] text-white opacity-100' : 'bg-white/90 text-stone-400 hover:text-[#004B36] opacity-0 group-hover:opacity-100'}`}
+                    className={`absolute top-2 ${isLibraryAdmin ? 'left-2' : 'right-2'} p-2 rounded-full backdrop-blur-sm shadow-sm transition-all z-10 ${bookmarks.includes(book.id) ? 'bg-[#004B36] text-white opacity-100' : 'bg-white/90 text-stone-400 hover:text-[#004B36] opacity-0 group-hover:opacity-100'}`}
                   >
                     <Bookmark size={16} fill={bookmarks.includes(book.id) ? "currentColor" : "none"} />
                   </button>
@@ -288,7 +312,7 @@ export default function LibraryDashboard() {
                   
                   <button 
                     onClick={(e) => toggleBookmark(book.id, e)} 
-                    className={`p-2 rounded-lg transition-colors shrink-0 ${bookmarks.includes(book.id) ? 'text-[#004B36]' : 'text-stone-300 hover:text-[#004B36]'}`}
+                    className={`p-2 rounded-full transition-colors shrink-0 ${bookmarks.includes(book.id) ? 'text-[#004B36]' : 'text-stone-300 hover:text-[#004B36]'}`}
                   >
                     <Bookmark size={20} fill={bookmarks.includes(book.id) ? "currentColor" : "none"} />
                   </button>
@@ -309,7 +333,7 @@ export default function LibraryDashboard() {
                   </div>
                   <h3 className="font-bold text-stone-900 mb-1">{resource.title}</h3>
                   <p className="text-sm font-medium text-stone-500 mb-6">{resource.size}</p>
-                  <button onClick={() => alert("Downloading " + resource.title + "...")} className="mt-auto flex items-center justify-center gap-2 w-full py-2.5 bg-white border border-stone-200 rounded-xl text-sm font-semibold text-stone-700 hover:text-[#004B36] hover:border-[#004B36]/30 transition-colors group-hover:shadow-sm">
+                  <button onClick={() => alert("Downloading " + resource.title + "...")} className="mt-auto flex items-center justify-center gap-2 w-full py-2.5 bg-white border border-stone-200 rounded-full text-sm font-semibold text-stone-700 hover:text-[#004B36] hover:border-[#004B36]/30 transition-colors group-hover:shadow-sm">
                     <Download size={16} /> Download
                   </button>
                 </div>
@@ -343,7 +367,7 @@ export default function LibraryDashboard() {
               </button>
             </div>
             <div className="flex-grow w-full h-full p-0 md:p-6 flex justify-center overflow-hidden">
-              <div className="w-full max-w-5xl h-full bg-stone-100 md:rounded-xl overflow-hidden shadow-2xl relative flex flex-col">
+              <div className="w-full max-w-5xl h-full bg-white md:rounded-xl overflow-hidden shadow-2xl relative flex flex-col">
                 <BookReader book={selectedBook} />
               </div>
             </div>
@@ -398,8 +422,8 @@ export default function LibraryDashboard() {
               </form>
             </div>
             <div className="p-6 border-t border-[#004B36]/10 flex justify-end gap-3 shrink-0">
-              <button onClick={() => setShowAdminForm(false)} className="px-6 py-3 rounded-xl font-bold hover:bg-[#004B36]/5 transition-colors">Cancel</button>
-              <button type="submit" form="book-form" className="px-6 py-3 rounded-xl font-bold bg-[#004B36] text-white hover:bg-[#003828] transition-colors shadow-sm">Save Book</button>
+              <button onClick={() => setShowAdminForm(false)} className="px-6 py-3 rounded-full font-bold hover:bg-[#004B36]/5 transition-colors">Cancel</button>
+              <button type="submit" form="book-form" className="px-6 py-3 rounded-full font-bold bg-[#004B36] text-white hover:bg-[#003828] transition-colors shadow-sm">Save Book</button>
             </div>
           </div>
         </div>

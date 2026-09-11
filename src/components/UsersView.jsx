@@ -146,7 +146,7 @@ export default function UsersView({
         {selectedIds.length > 0 ? (
           <button 
             onClick={handleMassArchive}
-            className="px-5 py-2.5 bg-rose-600 text-white rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-rose-700 transition-colors shadow-sm"
+            className="px-5 py-2.5 bg-rose-600 text-white rounded-full text-sm font-medium flex items-center gap-2 hover:bg-rose-700 transition-colors shadow-sm"
           >
             <Trash2 size={16} /> Archive Selected ({selectedIds.length})
           </button>
@@ -155,7 +155,7 @@ export default function UsersView({
             
             <button 
               onClick={() => { setNewUser({}); setIsEditingUser(false); setIsModalOpen(true); }}
-              className="bg-[#004B36] text-[#FDFCFB] px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2"
+              className="bg-[#004B36] text-[#FDFCFB] px-5 py-2.5 rounded-full text-sm font-medium hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2"
             >
               <Plus size={16} className="text-[#FDFCFB]" /> Add User
             </button>
@@ -427,7 +427,7 @@ export default function UsersView({
                   {newUser.photo ? (
                     <div className="relative w-20 h-20 rounded-xl overflow-hidden border border-stone-200 shrink-0">
                       <img src={newUser.photo} alt="Profile" className="w-full h-full object-cover" />
-                      <button type="button" onClick={() => setNewUser({...newUser, photo: ''})} className="absolute top-1 right-1 bg-stone-900/50 text-white p-1 rounded hover:bg-stone-900 transition-colors">
+                      <button type="button" onClick={() => setNewUser({...newUser, photo: ''})} className="absolute top-1 right-1 bg-stone-900/50 text-white p-1 rounded-full hover:bg-stone-900 transition-colors">
                         <X size={12} />
                       </button>
                     </div>
@@ -458,8 +458,8 @@ export default function UsersView({
               </div>
 
               <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-stone-100 shrink-0">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-xl font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">Cancel</button>
-                <button type="submit" className="px-5 py-2.5 rounded-xl font-semibold text-white bg-[#004B36] hover:bg-[#003828] transition-colors">{isEditingUser ? 'Save Changes' : 'Add User'}</button>
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 rounded-full font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">Cancel</button>
+                <button type="submit" className="px-5 py-2.5 rounded-full font-semibold text-white bg-[#004B36] hover:bg-[#003828] transition-colors">{isEditingUser ? 'Save Changes' : 'Add User'}</button>
               </div>
             </form>
           </DraggableModal>

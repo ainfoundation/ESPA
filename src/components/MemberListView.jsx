@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Download, Plus, Search, FileText, Calendar, Mail, Phone, Eye, History, X, Shield, ChevronDown } from 'lucide-react';
 import DraggableModal from './DraggableModal';
 import MemberDetailsModal from './MemberDetailsModal';
@@ -11,16 +11,42 @@ export default function MemberListView({ title, description, icon: Icon, members
   const [selectedMember, setSelectedMember] = useState(null);
   const [memberToChangeRole, setMemberToChangeRole] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  const draftKey = `ain_draft_${title.toLowerCase()}`;
   const [newMember, setNewMember] = useState({ name: '', email: '', phone: '' });
+  
+  useEffect(() => {
+    if (isAddModalOpen) {
+      const savedDraft = window.localStorage.getItem(draftKey);
+      if (savedDraft) {
+        try {
+          setNewMember(JSON.parse(savedDraft));
+        } catch (e) {}
+      }
+    }
+  }, [isAddModalOpen, draftKey]);
+
+  useEffect(() => {
+    if (isAddModalOpen && Object.keys(newMember).length > 1) { // more than just role
+      window.localStorage.setItem(draftKey, JSON.stringify(newMember));
+    }
+  }, [newMember, isAddModalOpen, draftKey]);
+
+  const handleSaveDraft = () => {
+    window.localStorage.setItem(draftKey, JSON.stringify(newMember));
+    // Optional: could show toast if we had access to it, but we can just let it auto-save
+    alert("Draft saved successfully!");
+  };
+
 
   const handleAddMemberSubmit = (e) => {
     e.preventDefault();
     if (!newMember.name || !newMember.email) return;
     
     // We would need to pass setUsers here, or just mock it or notify parent.
-    // Assuming the user just wanted the button. For now let's just close modal.
+    window.localStorage.removeItem(draftKey);
     setIsAddModalOpen(false);
-    setNewMember({ name: '', email: '', phone: '' });
+    setNewMember({ role: title.endsWith('s') ? title.slice(0, -1) : title });
   };
 
   const availableRoles = ['Admin', 'President', 'Vice President', 'General Secretary', 'Joint Secretary', 'Treasurer', 'Executive Member', 'General Member', 'Volunteer', 'Ambassador', 'Partner'];
@@ -48,6 +74,174 @@ export default function MemberListView({ title, description, icon: Icon, members
     document.body.removeChild(link);
   };
 
+
+  if (isAddModalOpen) {
+    return (
+      <div className="flex flex-col h-full bg-stone-50/50 rounded-tl-3xl shadow-sm border-l border-t border-stone-200/60 leading-tight relative p-4 md:p-8 overflow-hidden">
+        <div className="shrink-0 flex items-center gap-4 mb-6">
+          <button onClick={() => setIsAddModalOpen(false)} className="p-2 bg-white border border-stone-200 text-stone-600 hover:bg-stone-50 rounded-full transition-colors shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <div>
+            <h1 className="text-3xl font-semibold text-stone-900">Add {title.endsWith('s') ? title.slice(0, -1) : title}</h1>
+            <p className="text-stone-500 text-base mt-1 font-medium">Fill in the details below to add a new record.</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm flex flex-col overflow-hidden min-h-0 flex-1">
+          <div className="flex-1 overflow-auto p-6 md:p-8">
+            
+              <form onSubmit={handleAddMemberSubmit} className="space-y-4 max-w-3xl mx-auto pb-12">
+                {/* Basic Fields - Common */}
+                <div>
+                  <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">{title === 'Partners' ? 'Organization Name' : 'Full Name'}<span className="text-red-500 font-medium">*</span></label>
+                  <input required type="text" value={newMember.name || ''} onChange={e => setNewMember({...newMember, name: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder={title === 'Partners' ? 'Organization Name' : 'John Doe'} />
+                </div>
+                <div>
+                  <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Email<span className="text-red-500 font-medium">*</span></label>
+                  <input required type="email" value={newMember.email || ''} onChange={e => setNewMember({...newMember, email: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="email@example.com" />
+                </div>
+                <div>
+                  <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Phone / WhatsApp</label>
+                  <input type="text" value={newMember.phone || ''} onChange={e => setNewMember({...newMember, phone: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="+1 234 567 890" />
+                </div>
+                <div>
+                  <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">City / Country</label>
+                  <input type="text" value={newMember.location || ''} onChange={e => setNewMember({...newMember, location: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="City, Country" />
+                </div>
+
+                {/* Role Specific Fields */}
+                {title === 'Volunteers' && (
+                  <>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Age</label>
+                        <input type="number" value={newMember.age || ''} onChange={e => setNewMember({...newMember, age: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" />
+                        </div>
+                        <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Gender</label>
+                        <select value={newMember.gender || ''} onChange={e => setNewMember({...newMember, gender: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 bg-white">
+                            <option value="">Select...</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Areas of Interest</label>
+                        <input type="text" value={newMember.interests || ''} onChange={e => setNewMember({...newMember, interests: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="Education, Fundraising, etc." />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Skills</label>
+                        <input type="text" value={newMember.skills || ''} onChange={e => setNewMember({...newMember, skills: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="e.g. Graphic Design, Public Speaking" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Availability</label>
+                        <input type="text" value={newMember.availability || ''} onChange={e => setNewMember({...newMember, availability: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="Days / Hours" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Preferred Work Type</label>
+                        <select value={newMember.workType || ''} onChange={e => setNewMember({...newMember, workType: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 bg-white">
+                            <option value="">Select...</option>
+                            <option value="Online">Online</option>
+                            <option value="In-person">In-person</option>
+                            <option value="Both">Both</option>
+                        </select>
+                    </div>
+                  </>
+                )}
+
+                {title === 'Ambassadors' && (
+                  <>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Institution / Organization</label>
+                        <input type="text" value={newMember.institution || ''} onChange={e => setNewMember({...newMember, institution: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="University, Company etc." />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Position / Profession</label>
+                        <input type="text" value={newMember.profession || ''} onChange={e => setNewMember({...newMember, profession: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="Student, Manager etc." />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Social Media Handles</label>
+                        <input type="text" value={newMember.socialMedia || ''} onChange={e => setNewMember({...newMember, socialMedia: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="@username" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Areas of Influence</label>
+                        <input type="text" value={newMember.influenceArea || ''} onChange={e => setNewMember({...newMember, influenceArea: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="Education, Youth, Media" />
+                    </div>
+                  </>
+                )}
+
+                {title === 'Partners' && (
+                  <>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Organization Type</label>
+                        <input type="text" value={newMember.orgType || ''} onChange={e => setNewMember({...newMember, orgType: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="NGO, School, Company etc." />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Website</label>
+                        <input type="url" value={newMember.website || ''} onChange={e => setNewMember({...newMember, website: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="https://" />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Partnership Type</label>
+                        <input type="text" value={newMember.partnershipType || ''} onChange={e => setNewMember({...newMember, partnershipType: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="Educational, Corporate etc." />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Status</label>
+                        <select value={newMember.status || 'Prospect'} onChange={e => setNewMember({...newMember, status: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 bg-white">
+                            <option value="Prospect">Prospect</option>
+                            <option value="Active">Active</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                  </>
+                )}
+
+                {title === 'Donors' && (
+                  <>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Donor Type</label>
+                        <select value={newMember.donorType || 'Individual'} onChange={e => setNewMember({...newMember, donorType: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 bg-white">
+                            <option value="Individual">Individual</option>
+                            <option value="Organization">Organization</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Preferred Cause</label>
+                        <input type="text" value={newMember.preferredCause || ''} onChange={e => setNewMember({...newMember, preferredCause: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="Scholarships, General Fund etc." />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Donation Frequency</label>
+                        <select value={newMember.frequency || 'One-time'} onChange={e => setNewMember({...newMember, frequency: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 bg-white">
+                            <option value="One-time">One-time</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Quarterly">Quarterly</option>
+                            <option value="Annual">Annual</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Recognition Preference</label>
+                        <select value={newMember.recognition || 'Public'} onChange={e => setNewMember({...newMember, recognition: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800 bg-white">
+                            <option value="Public">Public</option>
+                            <option value="Private">Private</option>
+                            <option value="Anonymous">Anonymous</option>
+                        </select>
+                    </div>
+                  </>
+                )}
+
+                <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-stone-100">
+                  <button type="button" onClick={handleSaveDraft} className="px-5 py-2.5 rounded-full font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">Save Draft</button>
+                  <button type="submit" className="px-5 py-2.5 rounded-full font-semibold text-white bg-[#004B36] hover:bg-[#003828] transition-colors">Add</button>
+                </div>
+              </form>
+
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
       <div className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -57,15 +251,10 @@ export default function MemberListView({ title, description, icon: Icon, members
           <p className="text-stone-500 text-base mt-2 font-medium">{description}</p>
         </div>
         <div className="flex items-center gap-2">
-          <button 
-            onClick={handleExportCSV}
-            className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold text-sm transition-colors flex items-center gap-2 border border-stone-200 shadow-sm"
-          >
-            <Download size={16} /> Export to CSV
-          </button>
+          
           <button 
             onClick={() => setIsAddModalOpen(true)}
-            className="px-4 py-2 bg-[#004B36] hover:bg-[#003828] text-white rounded-xl font-semibold text-sm transition-colors flex items-center gap-2 shadow-sm"
+            className="px-4 py-2 bg-[#004B36] hover:bg-[#003828] text-white rounded-full font-semibold text-sm transition-colors flex items-center gap-2 shadow-sm"
           >
             <Plus size={16} /> Add
           </button>
@@ -110,14 +299,14 @@ export default function MemberListView({ title, description, icon: Icon, members
                       <div className="flex items-center justify-end gap-1">
                         <button 
                           onClick={() => setMemberToChangeRole(member)}
-                          className="p-2 text-stone-400 hover:text-[#004B36] hover:bg-[#004B36]/10 rounded-lg transition-colors"
+                          className="p-2 text-stone-400 hover:text-[#004B36] hover:bg-[#004B36]/10 rounded-full transition-colors"
                           title="Change Role"
                         >
                           <Shield size={18} />
                         </button>
                         <button 
                           onClick={() => setSelectedMember(member)}
-                          className="p-2 text-stone-400 hover:text-[#004B36] hover:bg-[#004B36]/10 rounded-lg transition-colors"
+                          className="p-2 text-stone-400 hover:text-[#004B36] hover:bg-[#004B36]/10 rounded-full transition-colors"
                           title="View Details"
                         >
                           <Eye size={18} />
@@ -161,7 +350,7 @@ export default function MemberListView({ title, description, icon: Icon, members
                       if (onUpdateRole) onUpdateRole(memberToChangeRole.id, role);
                       setMemberToChangeRole(null);
                     }}
-                    className={`w-full flex items-center justify-between p-3 rounded-xl border transition-colors ${memberToChangeRole.role === role ? 'bg-[#004B36]/5 border-[#004B36]/20' : 'bg-white border-stone-100 hover:bg-stone-50 hover:border-stone-200'}`}
+                    className={`w-full flex items-center justify-between p-3 rounded-full border transition-colors ${memberToChangeRole.role === role ? 'bg-[#004B36]/5 border-[#004B36]/20' : 'bg-white border-stone-100 hover:bg-stone-50 hover:border-stone-200'}`}
                   >
                     <span className={`font-semibold text-sm ${memberToChangeRole.role === role ? 'text-[#004B36]' : 'text-stone-700'}`}>{role}</span>
                     {memberToChangeRole.role === role && <span className="text-[10px] uppercase font-bold tracking-wider text-[#004B36]/60 bg-[#004B36]/10 px-2 py-0.5 rounded-full">Current</span>}
@@ -173,41 +362,7 @@ export default function MemberListView({ title, description, icon: Icon, members
         </Portal>
       )}
 
-      {isAddModalOpen && (
-        <Portal>
-          <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[190] animate-in fade-in duration-200" onClick={() => setIsAddModalOpen(false)} />
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 pointer-events-none">
-            <DraggableModal className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl flex flex-col pointer-events-auto animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-stone-900 flex items-center gap-2">
-                  <Plus className="text-[#004B36]" size={24} /> Add {title.endsWith('s') ? title.slice(0, -1) : title}
-                </h3>
-                <button onClick={() => setIsAddModalOpen(false)} className="p-2 text-stone-400 hover:text-stone-600 hover:bg-stone-100 rounded-full transition-colors">
-                  <X size={20} />
-                </button>
-              </div>
-              <form onSubmit={handleAddMemberSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Name<span className="text-red-500 font-medium">*</span></label>
-                  <input required type="text" value={newMember.name} onChange={e => setNewMember({...newMember, name: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="John Doe" />
-                </div>
-                <div>
-                  <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Email<span className="text-red-500 font-medium">*</span></label>
-                  <input required type="email" value={newMember.email} onChange={e => setNewMember({...newMember, email: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="john@example.com" />
-                </div>
-                <div>
-                  <label className="block text-xs font-normal text-stone-500 mb-1 uppercase tracking-wider">Phone</label>
-                  <input type="text" value={newMember.phone} onChange={e => setNewMember({...newMember, phone: e.target.value})} className="w-full px-4 py-2.5 bg-white border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#004B36] outline-none text-sm font-medium text-stone-800" placeholder="+1 234 567 890" />
-                </div>
-                <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-stone-100">
-                  <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-5 py-2.5 rounded-xl font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">Cancel</button>
-                  <button type="submit" className="px-5 py-2.5 rounded-xl font-semibold text-white bg-[#004B36] hover:bg-[#003828] transition-colors">Add</button>
-                </div>
-              </form>
-            </DraggableModal>
-          </div>
-        </Portal>
-      )}
+      
 
     </div>
   );

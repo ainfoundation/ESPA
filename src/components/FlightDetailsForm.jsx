@@ -183,7 +183,7 @@ export default function FlightDetailsForm({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h5 className="text-sm font-bold text-stone-800 uppercase tracking-wider">CONNECTION</h5>
-          <button type="button" onClick={addConnectingFlight} className="flex items-center gap-1.5 text-xs font-bold text-[#004B36] bg-[#004B36]/10 px-3 py-1.5 rounded-lg hover:bg-[#004B36]/20 transition-colors">
+          <button type="button" onClick={addConnectingFlight} className="flex items-center gap-1.5 text-xs font-bold text-[#004B36] bg-[#004B36]/10 px-3 py-1.5 rounded-full hover:bg-[#004B36]/20 transition-colors">
             <Plus size={14} /> Add Transit/Layover
           </button>
         </div>

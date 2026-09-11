@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Banknote, ArrowUpRight, ArrowDownRight, Plus, X } from 'lucide-react';
 import DraggableModal from './DraggableModal';
 import { createPortal } from 'react-dom';
@@ -8,72 +8,209 @@ const Portal = ({ children }) => createPortal(children, document.body);
 export default function FundsView({ funds, setFunds, addLog, showToast }) {
   const [isAdding, setIsAdding] = useState(false);
   const [isAllocating, setIsAllocating] = useState(false);
-  
   const [donorName, setDonorName] = useState('');
-  const [currency, setCurrency] = useState('PKR');
-  const [amount, setAmount] = useState('');
-  
+  const [amountPKR, setAmountPKR] = useState('');
+  const [amountUSD, setAmountUSD] = useState('');
   const [allocationReason, setAllocationReason] = useState('');
+
+  useEffect(() => {
+    if (isAdding) {
+      const draft = window.localStorage.getItem('ain_draft_add_fund');
+      if (draft) {
+        try {
+          const parsed = JSON.parse(draft);
+          setDonorName(parsed.donorName || '');
+          setAmountPKR(parsed.amountPKR || '');
+          setAmountUSD(parsed.amountUSD || '');
+        } catch (e) {}
+      }
+    } else if (isAllocating) {
+      const draft = window.localStorage.getItem('ain_draft_allocate_fund');
+      if (draft) {
+        try {
+          const parsed = JSON.parse(draft);
+          setAllocationReason(parsed.allocationReason || '');
+          setAmountPKR(parsed.amountPKR || '');
+          setAmountUSD(parsed.amountUSD || '');
+        } catch (e) {}
+      }
+    }
+  }, [isAdding, isAllocating]);
+
+  useEffect(() => {
+    if (isAdding && (donorName || amountPKR || amountUSD)) {
+      window.localStorage.setItem('ain_draft_add_fund', JSON.stringify({ donorName, amountPKR, amountUSD }));
+    }
+  }, [donorName, amountPKR, amountUSD, isAdding]);
+
+  useEffect(() => {
+    if (isAllocating && (allocationReason || amountPKR || amountUSD)) {
+      window.localStorage.setItem('ain_draft_allocate_fund', JSON.stringify({ allocationReason, amountPKR, amountUSD }));
+    }
+  }, [allocationReason, amountPKR, amountUSD, isAllocating]);
+
+  const handleSaveAddDraft = () => {
+    window.localStorage.setItem('ain_draft_add_fund', JSON.stringify({ donorName, amountPKR, amountUSD }));
+    showToast("Add Fund draft saved!", "success");
+  };
+
+  const handleSaveAllocateDraft = () => {
+    window.localStorage.setItem('ain_draft_allocate_fund', JSON.stringify({ allocationReason, amountPKR, amountUSD }));
+    showToast("Allocate Fund draft saved!", "success");
+  };
+
+  
+  
+  
 
   const handleAddFunds = (e) => {
     e.preventDefault();
-    const numAmount = parseFloat(amount);
-    if (!numAmount || numAmount <= 0) return;
+    if (!amountPKR && !amountUSD) {
+      showToast('Please enter an amount in PKR or USD.', 'error');
+      return;
+    }
+    const valPKR = Number(amountPKR) || 0;
+    const valUSD = Number(amountUSD) || 0;
     
-    const newTransaction = {
+    if (valPKR <= 0 && valUSD <= 0) return;
+    
+    const newTx = {
       id: Date.now(),
       type: 'donation',
       donorName,
-      currency,
-      amount: numAmount,
+      amountPKR: valPKR,
+      amountUSD: valUSD,
       date: new Date().toISOString()
     };
     
-    setFunds({
+    const updatedFunds = {
       ...funds,
-      [currency.toLowerCase()]: funds[currency.toLowerCase()] + numAmount,
-      transactions: [newTransaction, ...funds.transactions]
-    });
+      pkr: funds.pkr + valPKR,
+      usd: funds.usd + valUSD,
+      transactions: [newTx, ...funds.transactions]
+    };
     
-    addLog(`Added ${currency} ${numAmount} donation from ${donorName}`);
-    showToast('Funds added successfully', 'success');
+    setFunds(updatedFunds);
     setIsAdding(false);
     setDonorName('');
-    setAmount('');
+    setAmountPKR('');
+    setAmountUSD('');
+    window.localStorage.removeItem('ain_draft_add_fund');
+    showToast('Donation added successfully', 'success');
+    addLog(`Donation of PKR ${valPKR} / USD ${valUSD} added from ${donorName}`);
   };
 
   const handleAllocateFunds = (e) => {
     e.preventDefault();
-    const numAmount = parseFloat(amount);
-    if (!numAmount || numAmount <= 0) return;
+    if (!amountPKR && !amountUSD) {
+      showToast('Please enter an amount in PKR or USD.', 'error');
+      return;
+    }
+    const valPKR = Number(amountPKR) || 0;
+    const valUSD = Number(amountUSD) || 0;
     
-    if (funds[currency.toLowerCase()] < numAmount) {
-      showToast(`Insufficient ${currency} funds`, 'error');
+    if (valPKR <= 0 && valUSD <= 0) return;
+    
+    if (valPKR > funds.pkr || valUSD > funds.usd) {
+      showToast('Insufficient funds available', 'error');
       return;
     }
     
-    const newTransaction = {
+    const newTx = {
       id: Date.now(),
       type: 'allocation',
       reason: allocationReason,
-      currency,
-      amount: numAmount,
+      amountPKR: valPKR,
+      amountUSD: valUSD,
       date: new Date().toISOString()
     };
     
-    setFunds({
+    const updatedFunds = {
       ...funds,
-      [currency.toLowerCase()]: funds[currency.toLowerCase()] - numAmount,
-      transactions: [newTransaction, ...funds.transactions]
-    });
+      pkr: funds.pkr - valPKR,
+      usd: funds.usd - valUSD,
+      transactions: [newTx, ...funds.transactions]
+    };
     
-    addLog(`Allocated ${currency} ${numAmount} for ${allocationReason}`);
-    showToast('Funds allocated successfully', 'success');
+    setFunds(updatedFunds);
     setIsAllocating(false);
     setAllocationReason('');
-    setAmount('');
+    setAmountPKR('');
+    setAmountUSD('');
+    window.localStorage.removeItem('ain_draft_allocate_fund');
+    showToast('Funds allocated successfully', 'success');
+    addLog(`Allocated PKR ${valPKR} / USD ${valUSD} for ${allocationReason}`);
   };
 
+
+  if (isAdding || isAllocating) {
+    return (
+      <div className="flex flex-col h-full bg-stone-50/50 rounded-tl-3xl shadow-sm border-l border-t border-stone-200/60 leading-tight relative p-4 md:p-8 overflow-hidden">
+        <div className="shrink-0 flex items-center gap-4 mb-6">
+          <button onClick={() => { setIsAdding(false); setIsAllocating(false); }} className="p-2 bg-white border border-stone-200 text-stone-600 hover:bg-stone-50 rounded-full transition-colors shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <div>
+            <h1 className="text-3xl font-semibold text-stone-900">{isAdding ? 'Add Funds' : 'Allocate Funds'}</h1>
+            <p className="text-stone-500 text-base mt-1 font-medium">Fill in the details below to {isAdding ? 'record a new donation' : 'allocate funds'}.</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm flex flex-col overflow-hidden min-h-0 flex-1">
+          <div className="flex-1 overflow-auto p-6 md:p-8">
+            {isAdding ? (
+                <form onSubmit={handleAddFunds} className="space-y-4 max-w-2xl mx-auto pb-12">
+
+                <div>
+                  <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Donor Name</label>
+                  <input type="text" required value={donorName} onChange={e => setDonorName(e.target.value)} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="Name of donor" />
+                </div>
+                <div className="flex gap-4">
+                    <div className="flex-1">
+                      <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Amount (PKR)</label>
+                      <input type="number" min="0" value={amountPKR} onChange={e => { setAmountPKR(e.target.value); if(!amountUSD && e.target.value) setAmountUSD((Number(e.target.value)/278).toFixed(2)) }} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="0.00" />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Amount (USD)</label>
+                      <input type="number" min="0" value={amountUSD} onChange={e => { setAmountUSD(e.target.value); if(!amountPKR && e.target.value) setAmountPKR((Number(e.target.value)*278).toFixed(0)) }} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="0.00" />
+                    </div>
+                </div>
+                <div className="text-xs text-stone-500 flex justify-end">Available: Rs {funds.pkr.toLocaleString()} | $ {funds.usd.toLocaleString()}</div>
+                <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-stone-100">
+                  <button type="button" onClick={handleSaveAddDraft} className="px-5 py-2.5 rounded-full font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">Save Draft</button>
+                  <button type="submit" className="px-5 py-2.5 rounded-full font-semibold text-white bg-[#004B36] hover:bg-[#003828] transition-colors">Add Donation</button>
+                </div>
+
+                </form>
+            ) : (
+                <form onSubmit={handleAllocateFunds} className="space-y-4 max-w-2xl mx-auto pb-12">
+
+                <div>
+                  <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Allocation Reason / Destination</label>
+                  <input type="text" required value={allocationReason} onChange={e => setAllocationReason(e.target.value)} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="Where are these funds going?" />
+                </div>
+                <div className="flex gap-4">
+                    <div className="flex-1">
+                      <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Amount (PKR)</label>
+                      <input type="number" min="0" value={amountPKR} onChange={e => { setAmountPKR(e.target.value); if(!amountUSD && e.target.value) setAmountUSD((Number(e.target.value)/278).toFixed(2)) }} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="0.00" />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Amount (USD)</label>
+                      <input type="number" min="0" value={amountUSD} onChange={e => { setAmountUSD(e.target.value); if(!amountPKR && e.target.value) setAmountPKR((Number(e.target.value)*278).toFixed(0)) }} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="0.00" />
+                    </div>
+                </div>
+                <div className="text-xs text-stone-500 flex justify-end">Available: Rs {funds.pkr.toLocaleString()} | $ {funds.usd.toLocaleString()}</div>
+                <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-stone-100">
+                  <button type="button" onClick={handleSaveAllocateDraft} className="px-5 py-2.5 rounded-full font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">Save Draft</button>
+                  <button type="submit" className="px-5 py-2.5 rounded-full font-semibold text-white bg-[#004B36] hover:bg-[#003828] transition-colors">Allocate Funds</button>
+                </div>
+
+                </form>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
       <div className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -84,14 +221,14 @@ export default function FundsView({ funds, setFunds, addLog, showToast }) {
         </div>
         <div className="flex gap-2">
           <button 
-            onClick={() => { setIsAdding(true); setAmount(''); setCurrency('PKR'); }}
-            className="px-4 py-2 bg-[#004B36] hover:bg-[#003828] text-white rounded-xl font-semibold text-sm transition-colors flex items-center gap-2 shadow-sm"
+            onClick={() => { setIsAdding(true); setAmountPKR(''); setAmountUSD(''); }}
+            className="px-4 py-2 bg-[#004B36] hover:bg-[#003828] text-white rounded-full font-semibold text-sm transition-colors flex items-center gap-2 shadow-sm"
           >
             <ArrowDownRight size={16} /> Add Funds
           </button>
           <button 
-            onClick={() => { setIsAllocating(true); setAmount(''); setCurrency('PKR'); }}
-            className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold text-sm transition-colors flex items-center gap-2 border border-stone-200 shadow-sm"
+            onClick={() => { setIsAllocating(true); setAmountPKR(''); setAmountUSD(''); }}
+            className="px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-full font-semibold text-sm transition-colors flex items-center gap-2 border border-stone-200 shadow-sm"
           >
             <ArrowUpRight size={16} /> Allocate Funds
           </button>
@@ -141,8 +278,14 @@ export default function FundsView({ funds, setFunds, addLog, showToast }) {
                             {tx.type === 'donation' ? `From: ${tx.donorName}` : `For: ${tx.reason}`}
                         </div>
                     </td>
-                    <td className={`px-6 py-4 text-right font-bold ${tx.type === 'donation' ? 'text-green-600' : 'text-stone-900'}`}>
-                      {tx.type === 'donation' ? '+' : '-'}{tx.currency === 'PKR' ? 'Rs ' : '\$\ '}{tx.amount.toLocaleString()}
+                    <td className={`px-6 py-4 text-right font-bold ${tx.type === 'donation' ? 'text-green-600' : 'text-red-600'}`}>
+                      {tx.type === 'donation' ? '+' : '-'} {tx.amountPKR !== undefined ? (
+                        (tx.amountPKR ? `Rs ${tx.amountPKR.toLocaleString()}` : '') + 
+                        (tx.amountPKR && tx.amountUSD ? ' | ' : '') + 
+                        (tx.amountUSD ? `$${tx.amountUSD.toLocaleString()}` : '')
+                      ) : (
+                        tx.currency === 'PKR' ? `Rs ${tx.amount?.toLocaleString()}` : `$${tx.amount?.toLocaleString()}`
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -157,86 +300,7 @@ export default function FundsView({ funds, setFunds, addLog, showToast }) {
         </div>
       </div>
 
-      {isAdding && (
-        <Portal>
-          <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[190] animate-in fade-in duration-200" onClick={() => setIsAdding(false)} />
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 pointer-events-none">
-            <DraggableModal className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl flex flex-col pointer-events-auto animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-stone-900 flex items-center gap-2">
-                  <ArrowDownRight className="text-green-600" size={24} /> Add Funds
-                </h3>
-                <button onClick={() => setIsAdding(false)} className="p-2 text-stone-400 hover:text-stone-600 hover:bg-stone-100 rounded-full transition-colors">
-                  <X size={20} />
-                </button>
-              </div>
-              <form onSubmit={handleAddFunds} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Donor Name</label>
-                  <input type="text" required value={donorName} onChange={e => setDonorName(e.target.value)} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="Name of donor" />
-                </div>
-                <div className="flex gap-4">
-                    <div className="w-1/3">
-                      <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Currency</label>
-                      <select value={currency} onChange={e => setCurrency(e.target.value)} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36] bg-white">
-                        <option value="PKR">PKR</option>
-                        <option value="USD">USD</option>
-                      </select>
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Amount</label>
-                      <input type="number" required min="1" value={amount} onChange={e => setAmount(e.target.value)} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="0.00" />
-                    </div>
-                </div>
-                <button type="submit" className="w-full py-3 mt-4 bg-[#004B36] text-white rounded-xl font-semibold shadow-sm hover:bg-[#003828] transition-colors">
-                  Add Donation
-                </button>
-              </form>
-            </DraggableModal>
-          </div>
-        </Portal>
-      )}
-
-      {isAllocating && (
-        <Portal>
-          <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[190] animate-in fade-in duration-200" onClick={() => setIsAllocating(false)} />
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 pointer-events-none">
-            <DraggableModal className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl flex flex-col pointer-events-auto animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-stone-900 flex items-center gap-2">
-                  <ArrowUpRight className="text-stone-600" size={24} /> Allocate Funds
-                </h3>
-                <button onClick={() => setIsAllocating(false)} className="p-2 text-stone-400 hover:text-stone-600 hover:bg-stone-100 rounded-full transition-colors">
-                  <X size={20} />
-                </button>
-              </div>
-              <form onSubmit={handleAllocateFunds} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Allocation Reason / Destination</label>
-                  <input type="text" required value={allocationReason} onChange={e => setAllocationReason(e.target.value)} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="Where are these funds going?" />
-                </div>
-                <div className="flex gap-4">
-                    <div className="w-1/3">
-                      <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Currency</label>
-                      <select value={currency} onChange={e => setCurrency(e.target.value)} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36] bg-white">
-                        <option value="PKR">PKR</option>
-                        <option value="USD">USD</option>
-                      </select>
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1.5">Amount</label>
-                      <input type="number" required min="1" value={amount} onChange={e => setAmount(e.target.value)} className="w-full px-3 py-2 border border-stone-200 rounded-xl focus:outline-none focus:border-[#004B36] focus:ring-1 focus:ring-[#004B36]" placeholder="0.00" />
-                    </div>
-                </div>
-                <div className="text-xs text-stone-500 flex justify-end">Available: {currency === 'PKR' ? 'Rs' : '$'} {funds[currency.toLowerCase()].toLocaleString()}</div>
-                <button type="submit" className="w-full py-3 mt-4 bg-stone-900 text-white rounded-xl font-semibold shadow-sm hover:bg-stone-800 transition-colors">
-                  Allocate Funds
-                </button>
-              </form>
-            </DraggableModal>
-          </div>
-        </Portal>
-      )}
+      
     </div>
   );
 }

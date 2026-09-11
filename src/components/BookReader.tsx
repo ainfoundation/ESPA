@@ -4,8 +4,9 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
+
 // Set up the worker for pdfjs
-pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export default function BookReader({ book }) {
   const [twoPageView, setTwoPageView] = useState(false);
@@ -102,14 +103,14 @@ export default function BookReader({ book }) {
             <div className="flex gap-2 bg-stone-100 p-1 rounded-lg">
               <button 
                 onClick={() => setScale(s => Math.max(0.5, s - 0.2))}
-                className="p-1.5 rounded-md transition-colors text-stone-400 hover:text-stone-600"
+                className="p-1.5 rounded-full transition-colors text-stone-400 hover:text-stone-600"
                 title="Zoom Out"
               >
                 <ZoomOut size={18} />
               </button>
               <button 
                 onClick={() => setScale(s => Math.min(3.0, s + 0.2))}
-                className="p-1.5 rounded-md transition-colors text-stone-400 hover:text-stone-600"
+                className="p-1.5 rounded-full transition-colors text-stone-400 hover:text-stone-600"
                 title="Zoom In"
               >
                 <ZoomIn size={18} />
@@ -118,14 +119,14 @@ export default function BookReader({ book }) {
             <div className="flex gap-2 bg-stone-100 p-1 rounded-lg">
               <button 
                 onClick={() => { setTwoPageView(false); setPageNumber(p => Math.max(1, p - (p % 2 === 0 ? 1 : 0))); }}
-                className={`p-1.5 rounded-md transition-colors ${!twoPageView ? 'bg-white shadow-sm text-[#004B36]' : 'text-stone-400 hover:text-stone-600'}`}
+                className={`p-1.5 rounded-full transition-colors ${!twoPageView ? 'bg-white shadow-sm text-[#004B36]' : 'text-stone-400 hover:text-stone-600'}`}
                 title="Single Page View"
               >
                 <Columns size={18} />
               </button>
               <button 
                 onClick={() => { setTwoPageView(true); setPageNumber(p => p % 2 === 0 ? Math.max(1, p - 1) : p); }}
-                className={`p-1.5 rounded-md transition-colors ${twoPageView ? 'bg-white shadow-sm text-[#004B36]' : 'text-stone-400 hover:text-stone-600'}`}
+                className={`p-1.5 rounded-full transition-colors ${twoPageView ? 'bg-white shadow-sm text-[#004B36]' : 'text-stone-400 hover:text-stone-600'}`}
                 title="Two Page View"
               >
                 <Columns2 size={18} />
@@ -226,14 +227,14 @@ export default function BookReader({ book }) {
         <div className="flex gap-2 bg-stone-100 p-1 rounded-lg">
           <button 
             onClick={() => { setTwoPageView(false); setCurrentTextPage(Math.floor(currentTextPage/2)*2); }}
-            className={`p-1.5 rounded-md transition-colors ${!twoPageView ? 'bg-white shadow-sm text-[#004B36]' : 'text-stone-400 hover:text-stone-600'}`}
+            className={`p-1.5 rounded-full transition-colors ${!twoPageView ? 'bg-white shadow-sm text-[#004B36]' : 'text-stone-400 hover:text-stone-600'}`}
             title="Single Page View"
           >
             <Columns size={18} />
           </button>
           <button 
             onClick={() => setTwoPageView(true)}
-            className={`p-1.5 rounded-md transition-colors ${twoPageView ? 'bg-white shadow-sm text-[#004B36]' : 'text-stone-400 hover:text-stone-600'}`}
+            className={`p-1.5 rounded-full transition-colors ${twoPageView ? 'bg-white shadow-sm text-[#004B36]' : 'text-stone-400 hover:text-stone-600'}`}
             title="Two Page View"
           >
             <Columns2 size={18} />

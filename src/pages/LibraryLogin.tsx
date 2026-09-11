@@ -202,7 +202,7 @@ export default function LibraryLogin() {
                   </div>
                 )}
                 
-                <button disabled={isVerifying} type="submit" className="w-full py-3.5 bg-[#004B36] text-[#FDFCFB] rounded-xl font-bold hover:bg-[#003828] transition-all transform hover:-translate-y-0.5 shadow-md flex items-center justify-center gap-2 text-sm mt-8 disabled:opacity-70 disabled:transform-none">
+                <button disabled={isVerifying} type="submit" className="w-full py-3.5 bg-[#004B36] text-[#FDFCFB] rounded-full font-bold hover:bg-[#003828] transition-all transform hover:-translate-y-0.5 shadow-md flex items-center justify-center gap-2 text-sm mt-8 disabled:opacity-70 disabled:transform-none">
                   {isVerifying ? (
                     <span className="flex items-center gap-2">
                       <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -297,7 +297,7 @@ export default function LibraryLogin() {
                   </div>
                 )}
 
-                <button disabled={isSending} type="submit" className="w-full py-3.5 bg-[#004B36] text-[#FDFCFB] rounded-xl font-bold hover:bg-[#003828] transition-all transform hover:-translate-y-0.5 shadow-md flex items-center justify-center gap-2 text-sm mt-8 disabled:opacity-70 disabled:transform-none">
+                <button disabled={isSending} type="submit" className="w-full py-3.5 bg-[#004B36] text-[#FDFCFB] rounded-full font-bold hover:bg-[#003828] transition-all transform hover:-translate-y-0.5 shadow-md flex items-center justify-center gap-2 text-sm mt-8 disabled:opacity-70 disabled:transform-none">
                   {isSending ? (
                     <span className="flex items-center gap-2">
                       <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

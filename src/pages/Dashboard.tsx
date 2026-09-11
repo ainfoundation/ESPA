@@ -142,18 +142,18 @@ export default function Dashboard() {
  <a href="#overview" className="flex items-center gap-3 px-4 py-3 bg-[#004B36]/5 text-indigo-700 border-l-4 border-indigo-600 rounded-r-xl font-medium transition-colors">
  <LayoutDashboard size={18} /> Overview
  </a>
- <a href="#donations" className="flex items-center gap-3 px-4 py-3 hover:bg-white :bg-[#003828]/50 rounded-xl font-medium text-[#004B36]/70 transition-colors">
+ <a href="#donations" className="flex items-center gap-3 px-4 py-3 hover:bg-white :bg-[#003828]/50 rounded-full font-medium text-[#004B36]/70 transition-colors">
  <FileText size={18} /> My Donations
  </a>
- <a href="#impact" className="flex items-center gap-3 px-4 py-3 hover:bg-white :bg-[#003828]/50 rounded-xl font-medium text-[#004B36]/70 transition-colors">
+ <a href="#impact" className="flex items-center gap-3 px-4 py-3 hover:bg-white :bg-[#003828]/50 rounded-full font-medium text-[#004B36]/70 transition-colors">
  <Activity size={18} /> My Impact
  </a>
- <a href="#profile" className="flex items-center gap-3 px-4 py-3 hover:bg-white :bg-[#003828]/50 rounded-xl font-medium text-[#004B36]/70 transition-colors">
+ <a href="#profile" className="flex items-center gap-3 px-4 py-3 hover:bg-white :bg-[#003828]/50 rounded-full font-medium text-[#004B36]/70 transition-colors">
  <User size={18} /> Profile
  </a>
  <button 
  onClick={logout}
- className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 :bg-red-900/20 hover:text-red-600 :text-red-400 rounded-xl font-medium text-[#004B36]/70 transition-colors text-left mt-4"
+ className="flex items-center gap-3 px-4 py-3 hover:bg-red-50 :bg-red-900/20 hover:text-red-600 :text-red-400 rounded-full font-medium text-[#004B36]/70 transition-colors text-left mt-4"
  >
  <LogOut size={18} /> Logout
  </button>
@@ -421,12 +421,7 @@ export default function Dashboard() {
  <h2 className="font-display text-2xl font-bold mb-2">My Donations</h2>
  <p className="text-sm text-[#004B36]/60">View and download your official tax receipts.</p>
  </div>
- <button 
- onClick={exportCSV}
- className="flex items-center gap-2 px-4 py-2 bg-[#004B36]/5 hover:bg-neutral-200 :bg-neutral-700 rounded-xl text-sm font-medium transition-colors border border-[#004B36]/10 "
- >
- <Download size={16} /> Export CSV
- </button>
+ 
  </div>
  
  <div className="overflow-x-auto">
@@ -446,7 +441,7 @@ export default function Dashboard() {
  <td className="py-4 text-[#004B36]/70 px-2">{donation.category}</td>
  <td className="py-4 font-bold px-2">${donation.amount.toLocaleString()}</td>
  <td className="py-4 text-right px-2">
- <button className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-[#004B36]/10 hover:bg-white :bg-[#003828] rounded-lg text-sm font-medium transition-colors shadow-sm">
+ <button className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-[#004B36]/10 hover:bg-white :bg-[#003828] rounded-full text-sm font-medium transition-colors shadow-sm">
  <Download size={14} /> PDF
  </button>
  </td>

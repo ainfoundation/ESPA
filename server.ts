@@ -493,18 +493,46 @@ app.get('/api/proxy-pdf', (req, res) => {
 
   const httpClient = url.startsWith('https') ? https : http;
   
-  const makeRequest = (targetUrl: string) => {
-    httpClient.get(targetUrl, (response) => {
+  const makeRequest = (targetUrl: string, cookie: string = '') => {
+    const options = cookie ? { headers: { Cookie: cookie } } : {};
+    httpClient.get(targetUrl, options, (response) => {
       // Handle redirects
       if (response.statusCode === 301 || response.statusCode === 302 || response.statusCode === 307 || response.statusCode === 308) {
         if (response.headers.location) {
-          return makeRequest(response.headers.location);
+          // Pass along cookies if provided by Google Drive
+          let nextCookie = cookie;
+          if (response.headers['set-cookie']) {
+            nextCookie = response.headers['set-cookie'].map(c => c.split(';')[0]).join('; ');
+          }
+          return makeRequest(response.headers.location, nextCookie);
         }
       }
       
       // If it's a 4xx or 5xx
       if (response.statusCode && response.statusCode >= 400) {
         return res.status(response.statusCode).send('Failed to fetch PDF');
+      }
+      
+      // Google Drive virus scan bypass
+      if (targetUrl.includes('drive.google.com') && response.headers['content-type'] && response.headers['content-type'].includes('text/html')) {
+        let body = '';
+        response.on('data', chunk => body += chunk);
+        response.on('end', () => {
+          const confirmMatch = body.match(/confirm=([a-zA-Z0-9_-]+)/);
+          if (confirmMatch) {
+            const confirmToken = confirmMatch[1];
+            const newUrl = targetUrl + (targetUrl.includes('?') ? '&' : '?') + 'confirm=' + confirmToken;
+            let nextCookie = cookie;
+            if (response.headers['set-cookie']) {
+              nextCookie = response.headers['set-cookie'].map(c => c.split(';')[0]).join('; ');
+            }
+            makeRequest(newUrl, nextCookie);
+          } else {
+             // Not a virus scan page, or unable to find token
+             res.status(500).send('Unable to bypass Google Drive virus scan');
+          }
+        });
+        return;
       }
       
       res.setHeader('Content-Type', 'application/pdf');

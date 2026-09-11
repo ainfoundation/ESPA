@@ -100,13 +100,13 @@ export default function EditableText({ id, defaultText, as: Component = 'span', 
  <div className="flex gap-2">
  <button 
  onClick={handleCancel}
- className="px-4 py-2 text-[#004B36]/70 hover:bg-[#004B36]/5 :bg-[#003828] rounded-lg transition-colors font-medium flex items-center gap-2"
+ className="px-4 py-2 text-[#004B36]/70 hover:bg-[#004B36]/5 :bg-[#003828] rounded-full transition-colors font-medium flex items-center gap-2"
  >
  <X size={16} /> Cancel
  </button>
  <button 
  onClick={handleSave}
- className="px-4 py-2 text-white bg-[#004B36] hover:bg-[#003828] rounded-lg transition-colors font-medium flex items-center gap-2 shadow-sm"
+ className="px-4 py-2 text-white bg-[#004B36] hover:bg-[#003828] rounded-full transition-colors font-medium flex items-center gap-2 shadow-sm"
  >
  <Check size={16} /> Save
  </button>

@@ -128,12 +128,12 @@ export default function FormsView({ forms, setForms, currentUser, globalUsers, a
           <p className="text-stone-500 text-sm mt-2 font-medium">Manage Customizable Forms, Collect Information, and Monitor Responses.</p>
         </div>
         {selectedIds.length > 0 ? (
-          <button onClick={handleMassArchive} className="px-5 py-2.5 bg-rose-600 text-white rounded-xl font-semibold flex items-center gap-2 hover:bg-rose-700 transition-colors shadow-sm">
+          <button onClick={handleMassArchive} className="px-5 py-2.5 bg-rose-600 text-white rounded-full font-semibold flex items-center gap-2 hover:bg-rose-700 transition-colors shadow-sm">
             <Trash2 size={18} /> Archive Selected ({selectedIds.length})
           </button>
         ) : (
           canCreate && (
-            <button onClick={() => { setNewForm({ title: '', description: '', fields: [] }); setIsCreateModalOpen(true); }} className="bg-[#004B36] text-[#FDFCFB] px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2">
+            <button onClick={() => { setNewForm({ title: '', description: '', fields: [] }); setIsCreateModalOpen(true); }} className="bg-[#004B36] text-[#FDFCFB] px-5 py-2.5 rounded-full text-sm font-medium hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2">
               <Plus size={16} className="text-[#FDFCFB]" /> Create Form
             </button>
           )
@@ -215,19 +215,19 @@ export default function FormsView({ forms, setForms, currentUser, globalUsers, a
                 <div className="flex-1 overflow-y-auto p-0 flex flex-col md:flex-row">
                   <div className="md:w-1/3 lg:w-1/4 bg-stone-50 border-r border-stone-200/60 p-5 flex flex-col gap-3 shrink-0">
                     <h3 className="block text-xs font-bold text-stone-500 tracking-wider uppercase mb-2">Add Fields</h3>
-                    <button onClick={() => addField('text')} className="flex items-center gap-3 w-full text-left p-3 rounded-xl bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
+                    <button onClick={() => addField('text')} className="flex items-center gap-3 w-full text-left p-3 rounded-full bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
                       <Type size={18} /> Short Text
                     </button>
-                    <button onClick={() => addField('textarea')} className="flex items-center gap-3 w-full text-left p-3 rounded-xl bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
+                    <button onClick={() => addField('textarea')} className="flex items-center gap-3 w-full text-left p-3 rounded-full bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
                       <AlignLeft size={18} /> Long Text
                     </button>
-                    <button onClick={() => addField('checkbox')} className="flex items-center gap-3 w-full text-left p-3 rounded-xl bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
+                    <button onClick={() => addField('checkbox')} className="flex items-center gap-3 w-full text-left p-3 rounded-full bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
                       <CheckSquare size={18} /> Checkbox
                     </button>
-                    <button onClick={() => addField('select')} className="flex items-center gap-3 w-full text-left p-3 rounded-xl bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
+                    <button onClick={() => addField('select')} className="flex items-center gap-3 w-full text-left p-3 rounded-full bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
                       <ClipboardList size={18} /> Dropdown
                     </button>
-                    <button onClick={() => addField('date')} className="flex items-center gap-3 w-full text-left p-3 rounded-xl bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
+                    <button onClick={() => addField('date')} className="flex items-center gap-3 w-full text-left p-3 rounded-full bg-white border border-stone-200 hover:border-[#004B36] hover:text-[#004B36] transition-all font-medium text-sm text-stone-600 shadow-sm">
                       <FileText size={18} /> Date
                     </button>
                   </div>
@@ -288,8 +288,8 @@ export default function FormsView({ forms, setForms, currentUser, globalUsers, a
                 </div>
                 
                 <div className="px-5 sm:px-8 py-4 sm:py-5 border-t border-stone-100 bg-[#FDFCFB] flex-shrink-0 flex justify-end gap-3 pointer-events-auto">
-                  <button onClick={() => setIsCreateModalOpen(false)} className="px-5 py-2.5 text-sm font-medium text-[#004B36] border border-[#004B36] hover:bg-stone-50 rounded-xl transition-colors">Cancel</button>
-                  <button onClick={handleCreateForm} className="bg-[#004B36] text-[#FDFCFB] px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2">
+                  <button onClick={() => setIsCreateModalOpen(false)} className="px-5 py-2.5 text-sm font-medium text-[#004B36] border border-[#004B36] hover:bg-stone-50 rounded-full transition-colors">Cancel</button>
+                  <button onClick={handleCreateForm} className="bg-[#004B36] text-[#FDFCFB] px-6 py-2.5 rounded-full text-sm font-bold hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2">
                     <Check size={16} /> Save Form
                   </button>
                 </div>
@@ -385,8 +385,8 @@ export default function FormsView({ forms, setForms, currentUser, globalUsers, a
                 </div>
                 
                 <div className="px-5 sm:px-8 py-4 sm:py-5 border-t border-stone-100 bg-[#FDFCFB] flex-shrink-0 flex justify-end gap-3 pointer-events-auto">
-                  <button onClick={() => setIsRespondModalOpen(false)} className="px-5 py-2.5 text-sm font-medium text-[#004B36] border border-[#004B36] hover:bg-stone-50 rounded-xl transition-colors">Cancel</button>
-                  <button onClick={handleSubmitResponse} disabled={(currentForm.responses || []).some(r => r.userId === currentUser.id) && !canCreate} className="bg-[#004B36] text-[#FDFCFB] px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                  <button onClick={() => setIsRespondModalOpen(false)} className="px-5 py-2.5 text-sm font-medium text-[#004B36] border border-[#004B36] hover:bg-stone-50 rounded-full transition-colors">Cancel</button>
+                  <button onClick={handleSubmitResponse} disabled={(currentForm.responses || []).some(r => r.userId === currentUser.id) && !canCreate} className="bg-[#004B36] text-[#FDFCFB] px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#003828] transition-colors shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                     <Save size={16} /> Submit Response
                   </button>
                 </div>

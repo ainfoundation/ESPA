@@ -56,7 +56,7 @@ function DonationModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => vo
                           type="button" 
                           key={val} 
                           onClick={() => setAmount(val)} 
-                          className={`py-3 rounded-xl border font-bold transition-all ${amount === val ? 'bg-[#004B36] text-white border-[#004B36]' : 'border-[#004B36]/10 text-[#004B36] hover:border-[#004B36]/30'}`}
+                          className={`py-3 rounded-full border font-bold transition-all ${amount === val ? 'bg-[#004B36] text-white border-[#004B36]' : 'border-[#004B36]/10 text-[#004B36] hover:border-[#004B36]/30'}`}
                         >
                           ${val}
                         </button>

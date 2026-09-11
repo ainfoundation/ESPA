@@ -46,7 +46,7 @@ export default function ServiceLogin() {
           </div>
 
           <button 
-            className="w-full mt-2 bg-[#004B36] text-white font-bold py-3.5 rounded-xl hover:bg-[#003828] transition-colors"
+            className="w-full mt-2 bg-[#004B36] text-white font-bold py-3.5 rounded-full hover:bg-[#003828] transition-colors"
           >
             Login
           </button>

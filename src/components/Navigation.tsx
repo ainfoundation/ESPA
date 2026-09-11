@@ -114,7 +114,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
               Login
             </Link>
           )}
-          <button className="md:hidden ml-2 p-2 rounded-lg transition-colors text-[#004B36] hover:bg-[#004B36]/5" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <button className="md:hidden ml-2 p-2 rounded-full transition-colors text-[#004B36] hover:bg-[#004B36]/5" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X size={24} color="#004B36" /> : <Menu size={24} color="#004B36" />}
           </button>
         </div>
@@ -126,21 +126,21 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
           className="absolute top-full left-0 right-0 bg-white border-b border-[#004B36]/10 shadow-xl flex flex-col py-4 px-6 gap-4 md:hidden"
         >
           <div className="flex flex-col gap-2">
-            <Link to="/donate" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-xl hover:bg-[#003828] transition-colors text-center mb-2 block">Donate</Link>
+            <Link to="/donate" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-white bg-[#004B36] px-4 py-3 rounded-full hover:bg-[#003828] transition-colors text-center mb-2 block">Donate</Link>
             {isAuthenticated ? (
               <div className="flex flex-col gap-2">
-                <Link to={user?.role?.includes("library") ? "/library/dashboard" : "/management"} onClick={() => { setIsMobileMenuOpen(false); if (typeof window !== 'undefined') window.localStorage.removeItem('ain_activeTab'); }} className="text-sm font-medium text-[#004B36] bg-white border border-[#004B36] px-4 py-3 rounded-xl hover:bg-[#004B36]/5 transition-colors text-center">
+                <Link to={user?.role?.includes("library") ? "/library/dashboard" : "/management"} onClick={() => { setIsMobileMenuOpen(false); if (typeof window !== 'undefined') window.localStorage.removeItem('ain_activeTab'); }} className="text-sm font-medium text-[#004B36] bg-white border border-[#004B36] px-4 py-3 rounded-full hover:bg-[#004B36]/5 transition-colors text-center">
                   {user?.name || "Dashboard"}
                 </Link>
                 <button 
                   onClick={() => { setIsMobileMenuOpen(false); logout(); }}
-                  className="text-sm font-medium text-red-600 bg-red-50 px-4 py-3 rounded-xl hover:bg-red-100 transition-colors text-center"
+                  className="text-sm font-medium text-red-600 bg-red-50 px-4 py-3 rounded-full hover:bg-red-100 transition-colors text-center"
                 >
                   Log out
                 </button>
               </div>
             ) : (
-              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] bg-white border border-[#004B36] px-4 py-3 rounded-xl hover:bg-[#004B36]/5 transition-colors text-center mb-2">
+              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] bg-white border border-[#004B36] px-4 py-3 rounded-full hover:bg-[#004B36]/5 transition-colors text-center mb-2">
                 Login
               </Link>
             )}
