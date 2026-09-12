@@ -26,11 +26,33 @@ export default function MemberListView({ title, description, icon: Icon, members
     }
   }, [isAddModalOpen, draftKey]);
 
+  
+
+  
+  const isDirty = Object.values(newMember).some(v => typeof v === 'string' && v.trim() !== '') || (newMember.role && newMember.role !== '');
+  
   useEffect(() => {
-    if (isAddModalOpen && Object.keys(newMember).length > 1) { // more than just role
-      window.localStorage.setItem(draftKey, JSON.stringify(newMember));
+    window.ain_isFormDirty = isAddModalOpen && isDirty;
+    return () => { window.ain_isFormDirty = false; };
+  }, [isAddModalOpen, isDirty]);
+
+  const [showDiscardModal, setShowDiscardModal] = useState(false);
+
+  const confirmDiscard = () => {
+    window.localStorage.removeItem(draftKey);
+    setNewMember({ name: '', email: '', phone: '' });
+    window.ain_isFormDirty = false;
+    setIsAddModalOpen(false);
+    setShowDiscardModal(false);
+  };
+
+  const handleBackClick = () => {
+    if (isDirty) {
+      setShowDiscardModal(true);
+    } else {
+      setIsAddModalOpen(false);
     }
-  }, [newMember, isAddModalOpen, draftKey]);
+  };
 
   const handleSaveDraft = () => {
     window.localStorage.setItem(draftKey, JSON.stringify(newMember));
@@ -77,14 +99,17 @@ export default function MemberListView({ title, description, icon: Icon, members
 
   if (isAddModalOpen) {
     return (
-      <div className="flex flex-col h-full bg-stone-50/50 rounded-tl-3xl shadow-sm border-l border-t border-stone-200/60 leading-tight relative p-4 md:p-8 overflow-hidden">
-        <div className="shrink-0 flex items-center gap-4 mb-6">
-          <button onClick={() => setIsAddModalOpen(false)} className="p-2 bg-white border border-stone-200 text-stone-600 hover:bg-stone-50 rounded-full transition-colors shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
+      <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
+        <div className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
             <h1 className="text-3xl font-semibold text-stone-900">Add {title.endsWith('s') ? title.slice(0, -1) : title}</h1>
-            <p className="text-stone-500 text-base mt-1 font-medium">Fill in the details below to add a new record.</p>
+            <p className="text-stone-500 text-base mt-2 font-medium">Fill in the details below to add a new record.</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button type="button" onClick={handleBackClick} className="px-4 py-2 bg-white border border-stone-200 text-stone-600 hover:bg-stone-50 rounded-full font-semibold text-sm transition-colors shadow-sm flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              Back
+            </button>
           </div>
         </div>
         <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm flex flex-col overflow-hidden min-h-0 flex-1">
@@ -232,8 +257,8 @@ export default function MemberListView({ title, description, icon: Icon, members
                 )}
 
                 <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-stone-100">
-                  <button type="button" onClick={handleSaveDraft} className="px-5 py-2.5 rounded-full font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">Save Draft</button>
-                  <button type="submit" className="px-5 py-2.5 rounded-full font-semibold text-white bg-[#004B36] hover:bg-[#003828] transition-colors">Add</button>
+                  <button type="button" onClick={handleSaveDraft} className="px-5 py-2 rounded-full text-sm font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors">Save Draft</button>
+                  <button type="submit" className="px-5 py-2 rounded-full text-sm font-semibold text-white bg-[#004B36] hover:bg-[#003828] transition-colors">Add</button>
                 </div>
               </form>
 

@@ -29,22 +29,22 @@ function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-import Home from './pages/Home';
-import AboutUs from './pages/AboutUs';
-import ContactUs from './pages/ContactUs';
-import Donate from './pages/Donate';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import LibraryLogin from './pages/LibraryLogin';
-import LibraryDashboard from './pages/LibraryDashboard';
-import VCardLogin from './pages/VCardLogin';
-import DigitalSignature from './pages/DigitalSignature';
-import POSPlaceholder from './pages/POSPlaceholder';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfService from './pages/TermsOfService';
+const Home = React.lazy(() => import('./pages/Home'));
+const AboutUs = React.lazy(() => import('./pages/AboutUs'));
+const ContactUs = React.lazy(() => import('./pages/ContactUs'));
+const Donate = React.lazy(() => import('./pages/Donate'));
+const Login = React.lazy(() => import('./pages/Login'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const LibraryLogin = React.lazy(() => import('./pages/LibraryLogin'));
+const LibraryDashboard = React.lazy(() => import('./pages/LibraryDashboard'));
+const VCardLogin = React.lazy(() => import('./pages/VCardLogin'));
+const DigitalSignature = React.lazy(() => import('./pages/DigitalSignature'));
+const POSPlaceholder = React.lazy(() => import('./pages/POSPlaceholder'));
+const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
+const TermsOfService = React.lazy(() => import('./pages/TermsOfService'));
 import ElectionPage from './pages/ElectionPage';
-import ServicesPage from './pages/ServicesPage';
-import ManagementApp from './pages/ManagementApp';
+const ServicesPage = React.lazy(() => import('./pages/ServicesPage'));
+const ManagementApp = React.lazy(() => import('./pages/ManagementApp'));
 function AnimatedRoutes() {
   const location = useLocation();
   return (
@@ -94,7 +94,7 @@ export default function App() {
         <AuthProvider>
           <BrowserRouter>
             <Layout>
-              <AnimatedRoutes />
+              <React.Suspense fallback={<div className="flex h-screen w-full items-center justify-center bg-stone-50"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#004B36]"></div></div>}><AnimatedRoutes /></React.Suspense>
             </Layout>
           </BrowserRouter>
         </AuthProvider>

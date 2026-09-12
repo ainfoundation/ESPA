@@ -59,12 +59,12 @@ export default function SummaryDashboard({ funds, currentUser }) {
         <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm p-6 flex flex-col items-center justify-center text-center">
           <Wallet size={32} className="text-[#004B36] mb-4" />
           <h2 className="text-xl font-bold text-stone-500 mb-2">Current Funds (PKR)</h2>
-          <div className="text-4xl font-bold text-stone-900">PKR {funds.pkr.toLocaleString()}</div>
+          <div className="text-4xl font-bold text-stone-900">PKR {(funds?.pkr || 0).toLocaleString()}</div>
         </div>
         <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm p-6 flex flex-col items-center justify-center text-center">
           <Wallet size={32} className="text-[#004B36] mb-4" />
           <h2 className="text-xl font-bold text-stone-500 mb-2">Current Funds (USD)</h2>
-          <div className="text-4xl font-bold text-stone-900">${funds.usd.toLocaleString()}</div>
+          <div className="text-4xl font-bold text-stone-900">${(funds?.usd || 0).toLocaleString()}</div>
         </div>
         
         <div className="bg-stone-50 rounded-2xl border border-stone-200/60 shadow-sm p-6">
@@ -72,11 +72,11 @@ export default function SummaryDashboard({ funds, currentUser }) {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-stone-600 font-medium">PKR</span>
-              <span className="text-stone-900 font-bold">PKR {totalDonationsPKR.toLocaleString()}</span>
+              <span className="text-stone-900 font-bold">PKR {(totalDonationsPKR || 0).toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-stone-600 font-medium">USD</span>
-              <span className="text-stone-900 font-bold">${totalDonationsUSD.toLocaleString()}</span>
+              <span className="text-stone-900 font-bold">${(totalDonationsUSD || 0).toLocaleString()}</span>
             </div>
           </div>
         </div>
@@ -86,11 +86,11 @@ export default function SummaryDashboard({ funds, currentUser }) {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-stone-600 font-medium">PKR</span>
-              <span className="text-stone-900 font-bold">PKR {totalAllocationsPKR.toLocaleString()}</span>
+              <span className="text-stone-900 font-bold">PKR {(totalAllocationsPKR || 0).toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-stone-600 font-medium">USD</span>
-              <span className="text-stone-900 font-bold">${totalAllocationsUSD.toLocaleString()}</span>
+              <span className="text-stone-900 font-bold">${(totalAllocationsUSD || 0).toLocaleString()}</span>
             </div>
           </div>
         </div>

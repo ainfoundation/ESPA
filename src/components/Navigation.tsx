@@ -83,7 +83,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
           </motion.div>
           {(!isAuthenticated || (user?.role && user.role !== "libraryReader")) && (
             <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.15 }}>
-              <Link to="/library/login" className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
+              <Link to={isAuthenticated ? "/library/dashboard" : "/library/login"} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/60 transition-colors flex items-center gap-1 py-2">
                 Digital Library
               </Link>
             </motion.div>
@@ -149,7 +149,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
               <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#004B36] transition-colors">Services</Link>
             </span>
             <Link to="/pos" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Point-of-Sale</Link>
-            <Link to="/library/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Digital Library</Link>
+            <Link to={isAuthenticated ? "/library/dashboard" : "/library/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Digital Library</Link>
             <Link to="/management" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Management Portal</Link>
             <Link to="/vcard/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Virtual Card</Link>
             <Link to="/signature" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors">Digital Signature</Link>
@@ -162,7 +162,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             </motion.div>
             {(!isAuthenticated || (user?.role && user.role !== "libraryReader")) && (
               <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: 0.12 }}>
-                <Link to="/library/login" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors font-bold">Digital Library</Link>
+                <Link to={isAuthenticated ? "/library/dashboard" : "/library/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium text-[#004B36] hover:text-[#004B36]/80 transition-colors font-bold">Digital Library</Link>
               </motion.div>
             )}
             <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: 0.15 }}>

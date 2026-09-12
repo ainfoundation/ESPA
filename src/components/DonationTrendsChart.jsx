@@ -29,8 +29,8 @@ export default function DonationTrendsChart({ transactions = [] }) {
                   <stop offset="95%" stopColor="#004B36" stopOpacity={0}/>
                 </linearGradient>
                 <linearGradient id="colorUsd" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#008080" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#008080" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#78716c', fontSize: 12 }} dy={10} />
@@ -39,11 +39,11 @@ export default function DonationTrendsChart({ transactions = [] }) {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e7e5e4" />
               <Tooltip 
                 contentStyle={{ borderRadius: '12px', border: '1px solid #e7e5e4', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                formatter={(value, name) => [name === 'pkr' ? `PKR ${value.toLocaleString()}` : `$${value.toLocaleString()}`, name === 'pkr' ? 'PKR Donations' : 'USD Donations']}
+                formatter={(value, name) => [name === 'PKR' ? `PKR ${(value || 0).toLocaleString()}` : `$${(value || 0).toLocaleString()}`, name === 'PKR' ? 'PKR Donations' : 'USD Donations']}
               />
               <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
-              <Area yAxisId="left" type="monotone" dataKey="pkr" name="pkr" stroke="#004B36" strokeWidth={2} fillOpacity={1} fill="url(#colorPkr)" />
-              <Area yAxisId="right" type="monotone" dataKey="usd" name="usd" stroke="#0ea5e9" strokeWidth={2} fillOpacity={1} fill="url(#colorUsd)" />
+              <Area yAxisId="left" type="monotone" dataKey="pkr" name="PKR" stroke="#004B36" strokeWidth={2} fillOpacity={1} fill="url(#colorPkr)" />
+              <Area yAxisId="right" type="monotone" dataKey="usd" name="USD" stroke="#008080" strokeWidth={2} fillOpacity={1} fill="url(#colorUsd)" />
             </AreaChart>
           </ResponsiveContainer>
         ) : (

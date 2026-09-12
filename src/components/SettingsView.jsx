@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Settings, Save, Archive, Shield, Key, Info, CheckCircle2, AlertCircle, Mail, Smartphone, QrCode, Globe, User, Upload, Activity, Wallet, Trash2 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { verifyTOTP } from './ManagementPortal';
-import { AinManagementLogo, AINFoundationLogo } from './ManagementPortal';
 import { ToggleSwitch } from './SharedComponents';
 import { createPortal } from 'react-dom';
-const Portal = ({ children }) => { return createPortal(children, document.body); };
 import DraggableModal from './DraggableModal';
 
-export default function SettingsView({ currentUser, globalUsers, setUsers, showToast, addLog, twoFactorConfig, setTwoFactorConfig, setActiveTab, funds, setFunds }) {
+const Portal = ({ children }) => { return createPortal(children, document.body); };
+
+export default function SettingsView({ currentUser, setCurrentUser, globalUsers, setUsers, showToast, addLog, twoFactorConfig, setTwoFactorConfig, setActiveTab, funds, setFunds }) {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,9 +17,8 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationError, setVerificationError] = useState('');
+  const [settingsTab, setSettingsTab] = useState('profile');
 
-
-  
   const handlePasswordChange = () => {
     if (!oldPassword || !newPassword || !confirmPassword) {
       showToast('Please fill all password fields', 'error');
@@ -40,156 +39,245 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
             addLog('Admin changed their password');
             return;
         }
-        showToast('User not found', 'error');
+        showToast('Authentication failed', 'error');
         return;
     }
-    
-    if (user.password !== oldPassword && user.password !== undefined && !(user.password === '' && oldPassword === '12345')) {
-       if (user.password !== oldPassword) {
-           showToast('Incorrect old password', 'error');
-           return;
-       }
+
+    if (user.password !== oldPassword) {
+      showToast('Incorrect current password', 'error');
+      return;
     }
-    
-    const updatedUsers = globalUsers.map(u => u.id === user.id ? { ...u, password: newPassword } : u);
-    setUsers(updatedUsers);
+
+    setUsers(globalUsers.map(u => u.id === currentUser.id ? {...u, password: newPassword} : u));
     showToast('Password updated successfully', 'success');
-    addLog(`${currentUser.name} changed their password`);
+    addLog(`Password changed for ${currentUser.name}`);
     setOldPassword('');
     setNewPassword('');
     setConfirmPassword('');
   };
 
   return (
-    <div className="space-y-8 h-full flex flex-col tracking-tight relative pb-10">
+    <div className="space-y-8 h-full flex flex-col tracking-tight relative pb-10 max-w-4xl mx-auto">
       <div className="flex flex-col gap-6">
         <div>
           <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">Settings</h1>
           <p className="text-stone-500 text-base mt-2 font-medium">Manage Profile Settings, User Preferences, and Authentication.</p>
         </div>
       </div>
+      
+      <div className="flex items-center gap-3 border-b border-stone-200 mb-8 shrink-0 overflow-x-auto pb-4">
+        {['profile', 'security', 'data', 'funds', 'system'].map(tab => (
+          <button 
+            key={tab}
+            onClick={() => setSettingsTab(tab)}
+            className={`px-5 py-2.5 font-semibold text-sm rounded-full transition-colors whitespace-nowrap ${settingsTab === tab ? 'bg-[#004B36] text-white shadow-sm' : 'bg-stone-100 text-stone-600 hover:text-stone-900 hover:bg-stone-200'}`}
+          >
+            {tab === 'profile' ? 'Profile Info' : tab === 'security' ? 'Security' : tab === 'data' ? 'Data' : tab === 'funds' ? 'Funds' : 'System Actions'}
+          </button>
+        ))}
+      </div>
+      
+      <div className="flex-1 w-full">
+        {settingsTab === 'profile' && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="bg-white rounded-3xl border border-stone-200/60 shadow-sm p-8 flex flex-col h-full">
+            <h2 className="text-lg font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4 flex items-center gap-2">
+                <User size={20} className="text-[#004B36]" /> Profile
+            </h2>
+            <div className="flex-1 flex flex-col gap-6">
+                <div className="flex flex-col sm:flex-row items-center gap-6">
+                    <div className="w-24 h-24 rounded-full bg-[#004B36] text-white flex items-center justify-center font-bold text-3xl shadow-sm border-4 border-stone-50 shrink-0 relative overflow-hidden group">
+                        {currentUser.avatar ? (
+                            <img src={currentUser.avatar} alt="Profile" className="w-full h-full object-cover" />
+                        ) : (
+                            currentUser.name.charAt(0)
+                        )}
+                        <div className="absolute inset-0 bg-black/50 hidden group-hover:flex flex-col items-center justify-center transition-colors">
+                            <label className="cursor-pointer p-1 hover:bg-white/20 rounded-full transition-colors mb-1" title="Upload Photo">
+                                <Upload size={18} className="text-white" />
+                                <input type="file" className="hidden" accept="image/*" onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => {
+                                        const result = e.target.result;
+                                        const updatedUsers = globalUsers.map(u => u.id === currentUser.id ? {...u, avatar: result} : u);
+                                        setUsers(updatedUsers);
+                                        if (setCurrentUser) setCurrentUser(updatedUsers.find(u => u.id === currentUser.id));
+                                        showToast('Profile picture updated successfully', 'success');
+                                        addLog(`Profile picture updated for ${currentUser.name}`);
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            }} />
+                        </label>
+                            {currentUser.avatar && (
+                                <button 
+                                    onClick={() => {
+                                        const updatedUsers = globalUsers.map(u => u.id === currentUser.id ? {...u, avatar: null} : u);
+                                        setUsers(updatedUsers);
+                                        if (setCurrentUser) setCurrentUser(updatedUsers.find(u => u.id === currentUser.id));
+                                        showToast('Profile picture removed', 'info');
+                                        addLog(`Profile picture removed for ${currentUser.name}`);
+                                    }}
+                                    className="cursor-pointer p-1 hover:bg-white/20 rounded-full transition-colors text-white" 
+                                    title="Remove Photo"
+                                >
+                                    <Trash2 size={18} />
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex-1 text-center sm:text-left w-full">
+                        <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Full Name</label>
+                        <input type="text" value={currentUser.name} disabled className="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50 text-stone-500 cursor-not-allowed font-medium" />
+                        <p className="text-[10px] text-stone-400 mt-1">Name changes are not permitted.</p>
+                    </div>
+                </div>
+                
+                <div className="grid grid-cols-1 gap-6">
+                    <div>
+                        <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Email Address</label>
+                        <input type="email" defaultValue={currentUser.email || currentUser.username} onBlur={(e) => {
+                            if(e.target.value !== (currentUser.email || currentUser.username)) {
+                                const updatedUsers = globalUsers.map(u => u.id === currentUser.id ? {...u, email: e.target.value, username: e.target.value} : u);
+                                setUsers(updatedUsers);
+                                if (setCurrentUser) setCurrentUser(updatedUsers.find(u => u.id === currentUser.id));
+                                showToast('Email address updated', 'success');
+                                addLog(`Email updated for ${currentUser.name}`);
+                            }
+                        }} className="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#004B36] font-medium text-stone-800" placeholder="Enter email address" />
+                    </div>
+                    <div>
+                        <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Phone Number</label>
+                        <input type="tel" defaultValue={currentUser.phone || ''} onBlur={(e) => {
+                            if(e.target.value !== currentUser.phone) {
+                                const updatedUsers = globalUsers.map(u => u.id === currentUser.id ? {...u, phone: e.target.value} : u);
+                                setUsers(updatedUsers);
+                                if (setCurrentUser) setCurrentUser(updatedUsers.find(u => u.id === currentUser.id));
+                                showToast('Phone number updated', 'success');
+                                addLog(`Phone number updated for ${currentUser.name}`);
+                            }
+                        }} className="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#004B36] font-medium text-stone-800" placeholder="+1 (555) 000-0000" />
+                    </div>
+                </div>
+            </div>
+          </div>
+          </div>
+        )}
 
-      
-
-      
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-8 items-stretch">
-          {/* Security */}
+        {settingsTab === 'security' && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="bg-white rounded-3xl border border-stone-200/60 shadow-sm p-8 flex flex-col h-full">
             <h2 className="text-lg font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4 flex items-center gap-2">
                 <Shield size={20} className="text-[#004B36]" /> Security
             </h2>
             <div className="space-y-4 flex-1">
-                {/* Email 2FA */}
-                <div className="flex items-center justify-between p-4 bg-stone-50 border border-stone-200 rounded-xl">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-white border border-stone-200 flex items-center justify-center shrink-0">
-                            <Mail size={18} className="text-stone-600" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-bold text-stone-900">Email Address</p>
-                            <p className="text-xs text-stone-500 mt-1">Receive OTP for Verification via Email.</p>
-                        </div>
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="font-bold text-stone-800 flex items-center gap-2"><Key size={16} /> Two-Factor Authentication</h3>
+                      <p className="text-xs text-stone-500 mt-1">Add an extra layer of security to your account.</p>
                     </div>
-                    <ToggleSwitch 
-                        enabled={twoFactorConfig?.emailEnabled || false} 
-                        onChange={(val) => {
-                            if (val) {
-                                setIsEmailModalOpen(true);
-                            } else {
-                                setTwoFactorConfig({...twoFactorConfig, emailEnabled: false, enabled: twoFactorConfig?.authEnabled});
-                                addLog(`Email 2FA disabled for ${currentUser.name}`);
-                                showToast('Email 2FA Disabled', 'success');
-                            }
+                  </div>
+                  <div className="space-y-3 pl-6 border-l-2 border-stone-100">
+                    <div className="flex items-center justify-between p-3 rounded-xl border border-stone-100 bg-stone-50/50">
+                      <div className="flex items-center gap-3">
+                        <Mail size={18} className={twoFactorConfig.emailEnabled ? "text-[#004B36]" : "text-stone-400"} />
+                        <div>
+                          <p className="font-semibold text-sm text-stone-800">Email Verification</p>
+                          <p className="text-xs text-stone-500">Receive codes via email</p>
+                        </div>
+                      </div>
+                      <ToggleSwitch 
+                        checked={twoFactorConfig.emailEnabled} 
+                        onChange={(checked) => {
+                          if (checked) {
+                            setIsEmailModalOpen(true);
+                          } else {
+                            setTwoFactorConfig({...twoFactorConfig, emailEnabled: false, enabled: twoFactorConfig.authEnabled});
+                            showToast('Email 2FA disabled', 'info');
+                            addLog(`Email 2FA disabled for ${currentUser.name}`);
+                          }
                         }} 
-                    />
-                </div>
-
-                {/* Authenticator 2FA */}
-                <div className="flex items-center justify-between p-4 bg-stone-50 border border-stone-200 rounded-xl">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-white border border-stone-200 flex items-center justify-center shrink-0">
-                            <Smartphone size={18} className="text-stone-600" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-bold text-stone-900">Authenticator</p>
-                            <p className="text-xs text-stone-500 mt-1">Receive OTP for Verification via Authenticator.</p>
-                        </div>
+                      />
                     </div>
-                    <ToggleSwitch 
-                        enabled={twoFactorConfig?.authEnabled || false} 
-                        onChange={(val) => {
-                            if (val) {
-                                setIsAuthModalOpen(true);
-                            } else {
-                                setTwoFactorConfig({...twoFactorConfig, authEnabled: false, enabled: twoFactorConfig?.emailEnabled});
-                                addLog(`Authenticator 2FA disabled for ${currentUser.name}`);
-                                showToast('Authenticator 2FA Disabled', 'success');
-                            }
+                    <div className="flex items-center justify-between p-3 rounded-xl border border-stone-100 bg-stone-50/50">
+                      <div className="flex items-center gap-3">
+                        <Smartphone size={18} className={twoFactorConfig.authEnabled ? "text-[#004B36]" : "text-stone-400"} />
+                        <div>
+                          <p className="font-semibold text-sm text-stone-800">Authenticator App</p>
+                          <p className="text-xs text-stone-500">Use Google/Microsoft Authenticator</p>
+                        </div>
+                      </div>
+                      <ToggleSwitch 
+                        checked={twoFactorConfig.authEnabled} 
+                        onChange={(checked) => {
+                          if (checked) {
+                            setIsAuthModalOpen(true);
+                          } else {
+                            setTwoFactorConfig({...twoFactorConfig, authEnabled: false, enabled: twoFactorConfig.emailEnabled});
+                            showToast('Authenticator 2FA disabled', 'info');
+                            addLog(`Authenticator 2FA disabled for ${currentUser.name}`);
+                          }
                         }} 
-                    />
-                </div>
-
-                {/* Password Change row */}
-                <div className="flex items-center justify-between p-4 bg-stone-50 border border-stone-200 rounded-xl">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-white border border-stone-200 flex items-center justify-center shrink-0">
-                            <Key size={18} className="text-stone-600" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-bold text-stone-900">Password</p>
-                            <p className="text-xs text-stone-500 mt-1">Update Your Account Password.</p>
-                        </div>
+                      />
                     </div>
+                  </div>
+                </div>
+                
+                <div className="pt-4 mt-4 border-t border-stone-100">
                     <button 
-                        onClick={() => setIsChangingPassword(!isChangingPassword)} 
-                        className="px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-semibold text-stone-700 hover:bg-stone-50 transition-colors"
+                      onClick={() => setIsChangingPassword(true)}
+                      className="w-full px-4 py-3 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
                     >
-                        Change
+                      <Key size={16} /> Change Password
                     </button>
                 </div>
                 
                 {isChangingPassword && (
                   <Portal>
-                    <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[190] animate-in fade-in duration-200" aria-hidden="true" onClick={() => setIsChangingPassword(false)} />
+                    <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[190] animate-in fade-in duration-200" onClick={() => setIsChangingPassword(false)} />
                     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 pointer-events-none">
                       <DraggableModal className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl flex flex-col animate-in zoom-in-95 duration-200 pointer-events-auto" onClick={e => e.stopPropagation()}>
-                        <h3 className="text-xl font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4 flex items-center gap-3 drag-handle cursor-grab active:cursor-grabbing touch-none">
-                          <Key className="text-[#004B36] pointer-events-none" size={24} /> <span className="pointer-events-none font-medium">Change Password</span>
+                        <h3 className="text-xl font-bold text-stone-900 mb-6 flex items-center gap-2">
+                          <Shield className="text-[#004B36]" size={24} /> Change Password
                         </h3>
+                        
                         <div className="space-y-4">
                           <div>
-                            <label className="block text-xs font-semibold text-stone-500 mb-1 uppercase tracking-wider">Old Password</label>
+                            <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Current Password</label>
                             <input 
                               type="password" 
                               value={oldPassword}
                               onChange={(e) => setOldPassword(e.target.value)}
-                              className="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#004B36] focus:border-[#004B36] text-sm"
-                              placeholder="Enter old password"
+                              className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#004B36]"
+                              placeholder="Enter current password"
                             />
                           </div>
                           <div>
-                            <label className="block text-xs font-semibold text-stone-500 mb-1 uppercase tracking-wider">New Password</label>
+                            <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">New Password</label>
                             <input 
                               type="password" 
                               value={newPassword}
                               onChange={(e) => setNewPassword(e.target.value)}
-                              className="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#004B36] focus:border-[#004B36] text-sm"
+                              className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#004B36]"
                               placeholder="Enter new password"
                             />
                           </div>
                           <div>
-                            <label className="block text-xs font-semibold text-stone-500 mb-1 uppercase tracking-wider">Confirm New Password</label>
+                            <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Confirm New Password</label>
                             <input 
                               type="password" 
                               value={confirmPassword}
                               onChange={(e) => setConfirmPassword(e.target.value)}
-                              className="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-[#004B36] focus:border-[#004B36] text-sm"
+                              className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#004B36]"
                               placeholder="Confirm new password"
                             />
                           </div>
                         </div>
-                        <div className="mt-8 pt-4 border-t border-stone-100 flex justify-end gap-3 shrink-0">
+                        
+                        <div className="flex justify-end gap-3 mt-8">
                           <button onClick={() => setIsChangingPassword(false)} className="px-5 py-2.5 text-sm font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-full transition-colors">Cancel</button>
                           <button 
                             onClick={() => {
@@ -207,72 +295,11 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
                 )}
             </div>
           </div>
-          
-          {/* Profile Section */}
-          <div className="bg-white rounded-3xl border border-stone-200/60 shadow-sm p-8 flex flex-col h-full">
-            <h2 className="text-lg font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4 flex items-center gap-2">
-                <User size={20} className="text-[#004B36]" /> Profile
-            </h2>
-            <div className="flex-1 flex flex-col gap-6">
-                <div className="flex flex-col sm:flex-row items-center gap-6">
-                    <div className="w-24 h-24 rounded-full bg-[#004B36] text-white flex items-center justify-center font-bold text-3xl shadow-sm border-4 border-stone-50 shrink-0 relative overflow-hidden group">
-                        {currentUser.avatar ? (
-                            <img src={currentUser.avatar} alt="Profile" className="w-full h-full object-cover" />
-                        ) : (
-                            currentUser.name.charAt(0)
-                        )}
-                        <label className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-colors">
-                            <Upload size={20} className="text-white" />
-                            <input type="file" className="hidden" accept="image/*" onChange={(e) => {
-                                const file = e.target.files[0];
-                                if (file) {
-                                    const reader = new FileReader();
-                                    reader.onload = (e) => {
-                                        const result = e.target.result;
-                                        setUsers(globalUsers.map(u => u.id === currentUser.id ? {...u, avatar: result} : u));
-                                        showToast('Profile picture updated successfully', 'success');
-                                        addLog(`Profile picture updated for ${currentUser.name}`);
-                                    };
-                                    reader.readAsDataURL(file);
-                                }
-                            }} />
-                        </label>
-                    </div>
-                    <div className="flex-1 text-center sm:text-left w-full">
-                        <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Full Name</label>
-                        <input type="text" value={currentUser.name} disabled className="w-full px-4 py-2.5 rounded-xl border border-stone-200 bg-stone-50 text-stone-500 cursor-not-allowed font-medium" />
-                        <p className="text-[10px] text-stone-400 mt-1">Name changes are not permitted.</p>
-                    </div>
-                </div>
-                
-                <div className="grid grid-cols-1 gap-6">
-                    <div>
-                        <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Email Address</label>
-                        <input type="email" defaultValue={currentUser.email || currentUser.username} onBlur={(e) => {
-                            if(e.target.value !== (currentUser.email || currentUser.username)) {
-                                setUsers(globalUsers.map(u => u.id === currentUser.id ? {...u, email: e.target.value, username: e.target.value} : u));
-                                showToast('Email address updated', 'success');
-                                addLog(`Email updated for ${currentUser.name}`);
-                            }
-                        }} className="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#004B36] font-medium text-stone-800" placeholder="Enter email address" />
-                    </div>
-                    <div>
-                        <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Phone Number</label>
-                        <input type="tel" defaultValue={currentUser.phone || ''} onBlur={(e) => {
-                            if(e.target.value !== currentUser.phone) {
-                                setUsers(globalUsers.map(u => u.id === currentUser.id ? {...u, phone: e.target.value} : u));
-                                showToast('Phone number updated', 'success');
-                                addLog(`Phone number updated for ${currentUser.name}`);
-                            }
-                        }} className="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#004B36] font-medium text-stone-800" placeholder="+1 (555) 000-0000" />
-                    </div>
-                </div>
-            </div>
-</div>
-</div>
+          </div>
+        )}
 
-
-                    {/* Universal Data Management */}
+        {settingsTab === 'data' && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="bg-white rounded-3xl p-8 shadow-sm border border-stone-200 col-span-1 lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center">
@@ -288,9 +315,14 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
               <div className="space-y-4">
                 <label className="text-xs font-bold text-stone-500 uppercase tracking-wider block">Data Section</label>
                 <select id="data-section-select" className="w-full px-4 py-2.5 rounded-full border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#004B36] font-medium text-stone-800 bg-white">
-                  <option value="ain_users">Members (Committee, Volunteers, Ambassadors, Partners, Donors)</option>
-                  <option value="ain_funds">Funds Data</option>
                   <option value="entire">Entire System Data (All Sections)</option>
+                  <option value="ain_users">All Members</option>
+                  <option value="role_General Member">General Committee</option>
+                  <option value="role_Volunteer">Volunteers</option>
+                  <option value="role_Ambassador">Ambassadors</option>
+                  <option value="role_Partner">Partners</option>
+                  <option value="role_Donor">Donors</option>
+                  <option value="ain_funds">Funds Data</option>
                 </select>
               </div>
               <div className="flex items-end gap-3">
@@ -323,28 +355,38 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
                         return;
                     }
 
-                    // For CSV exports (Users, Funds)
-                    let data = [];
-                    if (section === 'ain_funds') {
-                      const fundsObj = JSON.parse(window.localStorage.getItem('ain_funds') || '{"transactions":[]}');
-                      data = fundsObj.transactions || [];
+                    let parsedData = [];
+                    if (section.startsWith('role_')) {
+                        const role = section.split('_')[1];
+                        const allUsers = JSON.parse(localStorage.getItem('ain_users') || '[]');
+                        parsedData = allUsers.filter(u => u.role === role);
                     } else {
-                      data = JSON.parse(window.localStorage.getItem(section) || '[]');
-                    }
-
-                    if (data.length === 0) {
-                      showToast('No data available to export in this section.', 'error');
-                      return;
+                        const data = localStorage.getItem(section);
+                        if (!data) {
+                            showToast('No data found for this section', 'error');
+                            return;
+                        }
+                        parsedData = JSON.parse(data);
                     }
                     
-                    const keys = Object.keys(data[0]).filter(k => typeof data[0][k] !== 'object');
+                    // Convert to CSV
+                    if (!Array.isArray(parsedData) || parsedData.length === 0) {
+                        showToast('Data is not in a valid format for export', 'error');
+                        return;
+                    }
+                    
+                    const headers = Object.keys(parsedData[0]);
                     const csvContent = "data:text/csv;charset=utf-8," 
-                      + keys.join(",") + "\n"
-                      + data.map(row => keys.map(k => {
-                          let val = row[k] === null || row[k] === undefined ? '' : String(row[k]);
-                          return `"${val.replace(/"/g, '""')}"`;
-                        }).join(",")).join("\n");
-                    
+                        + headers.join(",") + "\n" 
+                        + parsedData.map(row => {
+                            return headers.map(header => {
+                                let val = row[header];
+                                if (val === null || val === undefined) return '""';
+                                if (typeof val === 'object') return `"${JSON.stringify(val).replace(/"/g, '""')}"`;
+                                return `"${String(val).replace(/"/g, '""')}"`;
+                            }).join(",");
+                        }).join("\n");
+                        
                     const encodedUri = encodeURI(csvContent);
                     const link = document.createElement("a");
                     link.setAttribute("href", encodedUri);
@@ -355,183 +397,170 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
                     addLog(`Exported ${section} to CSV`);
                     showToast('Export successful', 'success');
                   }}
-                  className="flex-1 px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-full font-semibold text-sm transition-colors flex items-center justify-center gap-2"
+                  className="px-6 py-2.5 bg-stone-900 hover:bg-stone-800 text-white rounded-full font-semibold transition-colors flex items-center justify-center gap-2 flex-1"
                 >
-                  <Upload size={16} className="rotate-180" /> Export
+                  <Archive size={18} /> Export
                 </button>
-                <label className="flex-1 cursor-pointer">
-                  <input 
-                    type="file" 
-                    accept=".csv,.json" 
-                    className="hidden" 
-                    onChange={(e) => {
+                
+                <label className="px-6 py-2.5 bg-[#004B36] hover:bg-[#003828] text-white rounded-full font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer flex-1">
+                  <Upload size={18} /> Import
+                  <input type="file" className="hidden" accept=".csv,.json" onChange={(e) => {
                       const file = e.target.files[0];
                       if (!file) return;
+                      
                       const section = document.getElementById('data-section-select').value;
                       
                       const reader = new FileReader();
                       reader.onload = (event) => {
-                        const fileData = event.target.result;
-                        
-                        // Strict entire import
-                        if (section === 'entire') {
-                            try {
-                                const parsed = JSON.parse(fileData);
-                                if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-                                    throw new Error("Invalid JSON structure for full backup.");
-                                }
-                                // Basic validation for "Entire" import
-                                if (!parsed.ain_users && !parsed.ain_funds) {
-                                    throw new Error("File does not contain valid ESPA backup keys.");
-                                }
-                                for (const key in parsed) {
-                                    if (key.startsWith('ain_') || key === 'library_books') {
-                                        window.localStorage.setItem(key, JSON.stringify(parsed[key]));
-                                    }
-                                }
-                                addLog(`Imported Entire System Data from ${file.name}`);
-                                showToast('Import successful. Refreshing...', 'success');
-                                setTimeout(() => window.location.reload(), 1500);
-                            } catch(err) {
-                                showToast(`Failed to parse JSON backup: ${err.message}`, 'error');
-                            }
-                            e.target.value = '';
-                            return;
-                        }
+                          try {
+                              if (file.name.endsWith('.json')) {
+                                  if (section !== 'entire') {
+                                      showToast('Please select "Entire System Data" to import JSON backups', 'error');
+                                      return;
+                                  }
+                                  const parsed = JSON.parse(event.target.result);
+                                  for (const key in parsed) {
+                                      localStorage.setItem(key, JSON.stringify(parsed[key]));
+                                  }
+                                  showToast('System data restored successfully', 'success');
+                                  addLog(`Restored Entire System Data from JSON backup`);
+                                  setTimeout(() => window.location.reload(), 1500);
+                                  return;
+                              }
 
-                        // Strict CSV import
-                        const lines = fileData.split('\n').filter(l => l.trim() !== '');
-                        if (lines.length < 2) {
-                          showToast(`Error: ${file.name} does not contain valid data.`, 'error');
-                          e.target.value = '';
-                          return;
-                        }
-                        const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-                        
-                        let expectedKeys = [];
-                        if (section === 'ain_users') {
-                            expectedKeys = ['id', 'name', 'email', 'role'];
-                        } else if (section === 'ain_funds') {
-                            expectedKeys = ['id', 'type', 'amount', 'currency'];
-                        }
-                        
-                        const missingKeys = expectedKeys.filter(k => !headers.includes(k));
-                        if (missingKeys.length > 0) {
-                          showToast(`Error: File is missing required columns: ${missingKeys.join(', ')}. Strict matching failed.`, 'error');
-                          e.target.value = '';
-                          return;
-                        }
-                        
-                        try {
-                          const importedArray = [];
-                          for (let i = 1; i < lines.length; i++) {
-                            let values = [];
-                            let inQuotes = false;
-                            let val = '';
-                            for (let c = 0; c < lines[i].length; c++) {
-                                const char = lines[i][c];
-                                if (char === '"') {
-                                    inQuotes = !inQuotes;
-                                } else if (char === ',' && !inQuotes) {
-                                    values.push(val.trim());
-                                    val = '';
-                                } else {
-                                    val += char;
-                                }
-                            }
-                            values.push(val.trim());
-                            
-                            const obj = {};
-                            headers.forEach((h, index) => {
-                              obj[h] = values[index] !== undefined ? values[index].replace(/^"|"$/g, '') : '';
-                            });
-                            
-                            if (section === 'ain_funds') {
-                                obj.amount = parseFloat(obj.amount) || 0;
-                            }
-                            importedArray.push(obj);
+                              const text = event.target.result;
+                              const rows = text.split('\n').filter(row => row.trim().length > 0);
+                              if (rows.length < 2) {
+                                  showToast('Invalid CSV file', 'error');
+                                  return;
+                              }
+                              
+                              const headers = rows[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+                              
+                              // Strict structure checking based on target section
+                              let expectedHeaders = [];
+                              const isRole = section.startsWith('role_');
+                              if (section === 'ain_users' || isRole) {
+                                  expectedHeaders = ['id', 'name', 'username', 'email', 'role'];
+                              } else if (section === 'ain_funds') {
+                                  expectedHeaders = ['pkr', 'usd', 'transactions'];
+                              }
+                              
+                              const isValid = expectedHeaders.every(h => headers.includes(h));
+                              if (!isValid && section !== 'ain_funds') {
+                                  showToast('Invalid file structure for the selected section', 'error');
+                                  return;
+                              }
+
+                              const data = rows.slice(1).map(row => {
+                                  // Simple CSV parser that respects quotes
+                                  const values = [];
+                                  let inQuote = false;
+                                  let currentVal = '';
+                                  for (let i = 0; i < row.length; i++) {
+                                      if (row[i] === '"') {
+                                          inQuote = !inQuote;
+                                      } else if (row[i] === ',' && !inQuote) {
+                                          values.push(currentVal);
+                                          currentVal = '';
+                                      } else {
+                                          currentVal += row[i];
+                                      }
+                                  }
+                                  values.push(currentVal);
+                                  
+                                  const obj = {};
+                                  headers.forEach((header, i) => {
+                                      let val = values[i] ? values[i].trim() : '';
+                                      if (val.startsWith('"') && val.endsWith('"')) {
+                                          val = val.substring(1, val.length - 1).replace(/""/g, '"');
+                                      }
+                                      try {
+                                          obj[header] = JSON.parse(val);
+                                      } catch(e) {
+                                          obj[header] = val;
+                                      }
+                                  });
+                                  return obj;
+                              });
+                              
+                              if (isRole) {
+                                  const role = section.split('_')[1];
+                                  const existingUsers = JSON.parse(localStorage.getItem('ain_users') || '[]');
+                                  const otherUsers = existingUsers.filter(u => u.role !== role);
+                                  const newUsersList = [...otherUsers, ...data];
+                                  localStorage.setItem('ain_users', JSON.stringify(newUsersList));
+                                  setUsers(newUsersList);
+                                  showToast(`${role} data imported successfully`, 'success');
+                                  addLog(`Imported ${data.length} records into ${role}`);
+                              } else {
+                                  localStorage.setItem(section, JSON.stringify(data));
+                                  showToast('Data imported successfully', 'success');
+                                  addLog(`Imported ${data.length} records into ${section}`);
+                                  if (section === 'ain_users') setUsers(data);
+                              }
+                          } catch (err) {
+                              showToast('Error parsing file', 'error');
+                              console.error(err);
                           }
-                          
-                          if (section === 'ain_funds') {
-                            const fundsObj = JSON.parse(window.localStorage.getItem('ain_funds') || '{"pkr": 0, "usd": 0, "transactions":[]}');
-                            fundsObj.transactions = importedArray;
-                            // Recalculate totals
-                            let pkr = 0;
-                            let usd = 0;
-                            importedArray.forEach(tx => {
-                                if(tx.currency === 'USD') {
-                                    usd += tx.type === 'in' ? tx.amount : -tx.amount;
-                                } else {
-                                    pkr += tx.type === 'in' ? tx.amount : -tx.amount;
-                                }
-                            });
-                            fundsObj.pkr = pkr;
-                            fundsObj.usd = usd;
-                            window.localStorage.setItem('ain_funds', JSON.stringify(fundsObj));
-                            if (typeof setFunds === 'function') setFunds(fundsObj);
-                          } else {
-                            window.localStorage.setItem(section, JSON.stringify(importedArray));
-                            if (section === 'ain_users' && typeof setUsers === 'function') {
-                                setUsers(importedArray);
-                            }
-                          }
-                          
-                          addLog(`Imported ${file.name} to ${section}`);
-                          showToast('Import successful.', 'success');
-                          
-                        } catch(err) {
-                          showToast(`Failed to parse CSV: ${err.message}`, 'error');
-                        }
-                        e.target.value = '';
                       };
                       reader.readAsText(file);
-                    }}
-                  />
-                  <div className="w-full px-4 py-2.5 bg-[#004B36] hover:bg-[#003828] text-white rounded-full font-semibold text-sm transition-colors flex items-center justify-center gap-2">
-                    <Upload size={16} /> Import
-                  </div>
+                  }} />
                 </label>
               </div>
             </div>
           </div>
+          </div>
+        )}
 
-          {/* Funds Management */}
+        {settingsTab === 'funds' && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
           <div className="bg-white rounded-3xl border border-stone-200/60 shadow-sm p-8 col-span-1 lg:col-span-2">
             <h2 className="text-lg font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4 flex items-center gap-2">
                 <Wallet size={20} className="text-[#004B36]" /> Funds Management
             </h2>
-            <div className="space-y-4">
-                <p className="text-sm text-stone-500 mb-4">View recent fund transactions and remove them if added by mistake.</p>
-                
+            <p className="text-stone-500 text-sm mb-6">Manage recent transactions and remove accidental entries.</p>
+            
+            <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
                 {funds?.transactions?.length > 0 ? (
                     <div className="space-y-3">
-                        {[...funds.transactions].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5).map(tx => (
-                            <div key={tx.id} className="flex items-center justify-between p-4 bg-stone-50 border border-stone-100 rounded-xl">
+                        {[...funds.transactions].reverse().map(tx => (
+                            <div key={tx.id} className="flex items-center justify-between p-4 rounded-xl border border-stone-100 bg-stone-50 hover:bg-stone-100/50 transition-colors">
                                 <div>
-                                    <p className="text-sm font-semibold text-stone-900">{tx.description || 'Fund Added'}</p>
-                                    <p className="text-xs text-stone-500">{new Date(tx.date).toLocaleString()} • Processed by {tx.processedBy || 'Admin'}</p>
+                                    <p className="font-semibold text-sm text-stone-800">{tx.description}</p>
+                                    <p className="text-xs text-stone-500 mt-1">{new Date(tx.date || tx.timestamp).toLocaleString()}</p>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <span className={`font-bold ${tx.type === 'in' ? 'text-green-600' : 'text-red-600'}`}>
-                                        {tx.type === 'in' ? '+' : '-'}{tx.currency === 'USD' ? '$' : 'Rs'} {tx.amount.toLocaleString()}
+                                    <span className={`font-bold ${tx.type === 'donation' ? 'text-[#004B36]' : 'text-red-600'}`}>
+                                        {tx.type === 'donation' ? '+' : '-'}{tx.currency === 'USD' ? '$' : 'Rs'} {(tx.amount || 0).toLocaleString()}
                                     </span>
                                     <button 
                                         onClick={() => {
-                                            if (window.confirm("Are you sure you want to remove this transaction? This will undo the fund amount.")) {
-                                                const newTx = funds.transactions.filter(t => t.id !== tx.id);
-                                                const amount = parseFloat(tx.amount) || 0;
-                                                const isUsd = tx.currency === 'USD';
-                                                const typeMult = tx.type === 'in' ? -1 : 1;
-                                                const newFunds = {
-                                                    ...funds,
-                                                    pkr: isUsd ? funds.pkr : (funds.pkr + (amount * typeMult)),
-                                                    usd: isUsd ? (funds.usd + (amount * typeMult)) : funds.usd,
-                                                    transactions: newTx
-                                                };
-                                                setFunds(newFunds);
-                                                addLog(`Removed fund transaction: ${tx.id}`);
-                                                showToast("Transaction removed successfully", "success");
+                                            // Removed window.confirm due to iframe limitations
+                                            const updatedTransactions = funds.transactions.filter(t => t.id !== tx.id);
+                                            const typeMult = tx.type === 'donation' ? -1 : 1;
+                                            
+                                            // Handle both old dummy format (amount/currency) and new format (amountPKR/amountUSD)
+                                            let pkrDiff = 0;
+                                            let usdDiff = 0;
+                                            
+                                            if (tx.amountPKR !== undefined || tx.amountUSD !== undefined) {
+                                                pkrDiff = (tx.amountPKR || 0) * typeMult;
+                                                usdDiff = (tx.amountUSD || 0) * typeMult;
+                                            } else {
+                                                if (tx.currency === 'PKR') pkrDiff = (tx.amount || 0) * typeMult;
+                                                if (tx.currency === 'USD') usdDiff = (tx.amount || 0) * typeMult;
                                             }
+                                            
+                                            const newFunds = {
+                                                ...funds,
+                                                pkr: funds.pkr + pkrDiff,
+                                                usd: funds.usd + usdDiff,
+                                                transactions: updatedTransactions
+                                            };
+                                            setFunds(newFunds);
+                                            addLog(`Removed fund transaction: ${tx.id}`);
+                                            showToast("Transaction removed successfully", "success");
                                         }}
                                         className="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
                                         title="Remove Transaction"
@@ -547,10 +576,32 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
                 )}
             </div>
           </div>
+          </div>
+        )}
 
-{/* Modals for 2FA */}
+        {settingsTab === 'system' && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div onClick={() => setActiveTab('activity')} className="bg-white rounded-3xl border border-stone-200/60 shadow-sm p-8 flex flex-col hover:border-[#004B36] hover:shadow-md transition-all cursor-pointer group">
+                <div className="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#004B36]/10 transition-colors">
+                  <Activity size={24} className="text-stone-600 group-hover:text-[#004B36] transition-colors" />
+                </div>
+                <h3 className="text-xl font-bold text-stone-900 mb-2">Activity Log</h3>
+                <p className="text-sm text-stone-500 font-medium">View a detailed system-wide audit trail of all actions performed by users.</p>
+              </div>
+              <div onClick={() => setActiveTab('archives')} className="bg-white rounded-3xl border border-stone-200/60 shadow-sm p-8 flex flex-col hover:border-[#004B36] hover:shadow-md transition-all cursor-pointer group">
+                <div className="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center mb-6 group-hover:bg-[#004B36]/10 transition-colors">
+                  <Archive size={24} className="text-stone-600 group-hover:text-[#004B36] transition-colors" />
+                </div>
+                <h3 className="text-xl font-bold text-stone-900 mb-2">System Archives</h3>
+                <p className="text-sm text-stone-500 font-medium">Access and restore previously deleted or archived system records.</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
       <Portal>
-
         {isEmailModalOpen && (
           <>
             <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[190] animate-in fade-in duration-200" aria-hidden="true" onClick={() => setIsEmailModalOpen(false)} />
@@ -684,7 +735,6 @@ export default function SettingsView({ currentUser, globalUsers, setUsers, showT
           </>
         )}
       </Portal>
-
     </div>
   );
 }

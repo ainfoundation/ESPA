@@ -1,5 +1,6 @@
+import { LibraryLogo } from "../components/LibraryLogo";
 import { Helmet } from 'react-helmet-async';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, User, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -34,6 +35,13 @@ export default function LibraryLogin() {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const userStr = window.localStorage.getItem('ain_currentUser');
+    if (userStr && userStr !== 'null') {
+      navigate('/library/dashboard');
+    }
+  }, [navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,7 +151,7 @@ export default function LibraryLogin() {
 
 
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-[#FDFCFB] flex font-main">
+    <div className="w-full h-[calc(100dvh-80px)] overflow-hidden m-0 p-0 bg-white"><div className="min-h-full flex bg-[#FDFCFB]">
       <Helmet>
         <title>Login | ESPA Digital Library</title>
       </Helmet>
@@ -151,10 +159,8 @@ export default function LibraryLogin() {
       
       <div className="hidden lg:flex w-1/2 bg-[#004B36] relative overflow-hidden flex-col justify-between p-12">
           <div className="relative z-10">
-              <AINLogo className="text-white w-48 mb-8" />
-              <h1 className="text-white text-5xl font-semibold leading-tight tracking-tight mt-12 max-w-xl">
-                Welcome to<br/>Digital Library
-              </h1>
+              <LibraryLogo className="text-white w-96 mb-8" />
+              
           </div>
           
           <div className="relative z-10 flex gap-4 text-white/60 text-sm">
@@ -170,7 +176,7 @@ export default function LibraryLogin() {
       <div className="w-full lg:w-[70%] flex items-center justify-center p-8 lg:p-24 relative bg-[#FDFCFB]">
         <div className="w-full max-w-[400px]">
           <div className="lg:hidden mb-12 flex justify-center">
-              <AINLogo className="text-[#004B36] w-40" />
+              <LibraryLogo className="text-[#004B36] w-96" />
           </div>
           <div className="mb-10 text-center lg:text-left">
             <h2 className="text-3xl font-bold text-stone-900 tracking-tight">{isSignUp ? 'Sign Up' : 'Login'}</h2>
@@ -324,6 +330,7 @@ export default function LibraryLogin() {
             )}
           </div>
         </div>
+      </div>
     </div>
   );
 }

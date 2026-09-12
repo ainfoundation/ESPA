@@ -44,7 +44,7 @@ export const AINFoundationLogo = ({ width = 599, height = 296, className = "" })
 
 
 export const AINLogo = ({ className = "" }) => (
-<svg width="100%" height="100%" viewBox="0 0 671 213" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+<svg width="100%" height="100%" viewBox="0 42 460 148" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
 <path d="M23.3 58.5V72.7H46.2V85.9H23.3V101.3H49.2V115H6.2V44.8H49.2V58.5H23.3ZM85.7016 115.7C80.5682 115.7 75.9682 114.867 71.9016 113.2C67.8349 111.533 64.5682 109.067 62.1016 105.8C59.7016 102.533 58.4349 98.6 58.3016 94H76.5016C76.7682 96.6 77.6682 98.6 79.2016 100C80.7349 101.333 82.7349 102 85.2016 102C87.7349 102 89.7349 101.433 91.2016 100.3C92.6682 99.1 93.4016 97.4667 93.4016 95.4C93.4016 93.6667 92.8016 92.2333 91.6016 91.1C90.4682 89.9667 89.0349 89.0333 87.3016 88.3C85.6349 87.5667 83.2349 86.7333 80.1016 85.8C75.5682 84.4 71.8682 83 69.0016 81.6C66.1349 80.2 63.6682 78.1333 61.6016 75.4C59.5349 72.6667 58.5016 69.1 58.5016 64.7C58.5016 58.1667 60.8682 53.0667 65.6016 49.4C70.3349 45.6667 76.5016 43.8 84.1016 43.8C91.8349 43.8 98.0682 45.6667 102.802 49.4C107.535 53.0667 110.068 58.2 110.402 64.8H91.9016C91.7682 62.5333 90.9349 60.7667 89.4016 59.5C87.8682 58.1667 85.9016 57.5 83.5016 57.5C81.4349 57.5 79.7682 58.0667 78.5016 59.2C77.2349 60.2667 76.6016 61.8333 76.6016 63.9C76.6016 66.1667 77.6682 67.9333 79.8016 69.2C81.9349 70.4667 85.2682 71.8333 89.8016 73.3C94.3349 74.8333 98.0016 76.3 100.802 77.7C103.668 79.1 106.135 81.1333 108.202 83.8C110.268 86.4667 111.302 89.9 111.302 94.1C111.302 98.1 110.268 101.733 108.202 105C106.202 108.267 103.268 110.867 99.4016 112.8C95.5349 114.733 90.9682 115.7 85.7016 115.7ZM175.325 67.4C175.325 71.4667 174.392 75.2 172.525 78.6C170.658 81.9333 167.792 84.6333 163.925 86.7C160.058 88.7667 155.258 89.8 149.525 89.8H138.925V115H121.825V44.8H149.525C155.125 44.8 159.858 45.7667 163.725 47.7C167.592 49.6333 170.492 52.3 172.425 55.7C174.358 59.1 175.325 63 175.325 67.4ZM148.225 76.2C151.492 76.2 153.925 75.4333 155.525 73.9C157.125 72.3667 157.925 70.2 157.925 67.4C157.925 64.6 157.125 62.4333 155.525 60.9C153.925 59.3667 151.492 58.6 148.225 58.6H138.925V76.2H148.225ZM227.927 102.6H201.727L197.527 115H179.627L205.027 44.8H224.827L250.227 115H232.127L227.927 102.6ZM223.527 89.4L214.827 63.7L206.227 89.4H223.527Z" fill="currentColor"/>
 <path d="M34.296 178.08H14.84L11.256 188H5.112L21.24 143.648H27.96L44.024 188H37.88L34.296 178.08ZM32.632 173.344L24.568 150.816L16.504 173.344H32.632ZM56.877 140.64V188H51.053V140.64H56.877ZM72.627 140.64V188H66.803V140.64H72.627ZM85.561 147.232C84.4517 147.232 83.513 146.848 82.745 146.08C81.977 145.312 81.593 144.373 81.593 143.264C81.593 142.155 81.977 141.216 82.745 140.448C83.513 139.68 84.4517 139.296 85.561 139.296C86.6277 139.296 87.5237 139.68 88.249 140.448C89.017 141.216 89.401 142.155 89.401 143.264C89.401 144.373 89.017 145.312 88.249 146.08C87.5237 146.848 86.6277 147.232 85.561 147.232ZM88.377 152.928V188H82.553V152.928H88.377ZM96.127 170.336C96.127 166.752 96.8523 163.616 98.303 160.928C99.7537 158.197 101.738 156.085 104.255 154.592C106.815 153.099 109.652 152.352 112.767 152.352C115.839 152.352 118.506 153.013 120.767 154.336C123.028 155.659 124.714 157.323 125.823 159.328V152.928H131.711V188H125.823V181.472C124.671 183.52 122.943 185.227 120.639 186.592C118.378 187.915 115.732 188.576 112.703 188.576C109.588 188.576 106.772 187.808 104.255 186.272C101.738 184.736 99.7537 182.581 98.303 179.808C96.8523 177.035 96.127 173.877 96.127 170.336ZM125.823 170.4C125.823 167.755 125.29 165.451 124.223 163.488C123.156 161.525 121.706 160.032 119.871 159.008C118.079 157.941 116.095 157.408 113.919 157.408C111.743 157.408 109.759 157.92 107.967 158.944C106.175 159.968 104.746 161.461 103.679 163.424C102.612 165.387 102.079 167.691 102.079 170.336C102.079 173.024 102.612 175.371 103.679 177.376C104.746 179.339 106.175 180.853 107.967 181.92C109.759 182.944 111.743 183.456 113.919 183.456C116.095 183.456 118.079 182.944 119.871 181.92C121.706 180.853 123.156 179.339 124.223 177.376C125.29 175.371 125.823 173.045 125.823 170.4ZM158.641 152.288C162.908 152.288 166.364 153.589 169.009 156.192C171.654 158.752 172.977 162.464 172.977 167.328V188H167.217V168.16C167.217 164.661 166.342 161.995 164.593 160.16C162.844 158.283 160.454 157.344 157.425 157.344C154.353 157.344 151.9 158.304 150.065 160.224C148.273 162.144 147.377 164.939 147.377 168.608V188H141.553V152.928H147.377V157.92C148.529 156.128 150.086 154.741 152.049 153.76C154.054 152.779 156.252 152.288 158.641 152.288ZM180.315 170.4C180.315 166.773 181.04 163.616 182.491 160.928C183.941 158.197 185.947 156.085 188.507 154.592C191.109 153.099 194.075 152.352 197.403 152.352C201.712 152.352 205.253 153.397 208.027 155.488C210.843 157.579 212.699 160.48 213.595 164.192H207.323C206.725 162.059 205.552 160.373 203.803 159.136C202.096 157.899 199.963 157.28 197.403 157.28C194.075 157.28 191.387 158.432 189.339 160.736C187.291 162.997 186.267 166.219 186.267 170.4C186.267 174.624 187.291 177.888 189.339 180.192C191.387 182.496 194.075 183.648 197.403 183.648C199.963 183.648 202.096 183.051 203.803 181.856C205.509 180.661 206.683 178.955 207.323 176.736H213.595C212.656 180.32 210.779 183.2 207.963 185.376C205.147 187.509 201.627 188.576 197.403 188.576C194.075 188.576 191.109 187.829 188.507 186.336C185.947 184.843 183.941 182.731 182.491 180C181.04 177.269 180.315 174.069 180.315 170.4ZM253.366 169.12C253.366 170.229 253.302 171.403 253.174 172.64H225.142C225.355 176.096 226.528 178.805 228.662 180.768C230.838 182.688 233.462 183.648 236.534 183.648C239.051 183.648 241.142 183.072 242.806 181.92C244.512 180.725 245.707 179.147 246.39 177.184H252.662C251.723 180.555 249.846 183.307 247.03 185.44C244.214 187.531 240.715 188.576 236.534 188.576C233.206 188.576 230.219 187.829 227.574 186.336C224.971 184.843 222.923 182.731 221.43 180C219.936 177.227 219.19 174.027 219.19 170.4C219.19 166.773 219.915 163.595 221.366 160.864C222.816 158.133 224.843 156.043 227.446 154.592C230.091 153.099 233.12 152.352 236.534 152.352C239.862 152.352 242.806 153.077 245.366 154.528C247.926 155.979 249.888 157.984 251.254 160.544C252.662 163.061 253.366 165.92 253.366 169.12ZM247.35 167.904C247.35 165.685 246.859 163.787 245.878 162.208C244.896 160.587 243.552 159.371 241.846 158.56C240.182 157.707 238.326 157.28 236.278 157.28C233.334 157.28 230.816 158.219 228.726 160.096C226.678 161.973 225.504 164.576 225.206 167.904H247.35ZM307.94 156.448C307.94 160.16 306.66 163.253 304.1 165.728C301.582 168.16 297.721 169.376 292.516 169.376H283.94V188H278.116V143.392H292.516C297.55 143.392 301.369 144.608 303.972 147.04C306.617 149.472 307.94 152.608 307.94 156.448ZM292.516 164.576C295.758 164.576 298.148 163.872 299.684 162.464C301.22 161.056 301.988 159.051 301.988 156.448C301.988 150.944 298.83 148.192 292.516 148.192H283.94V164.576H292.516ZM330.474 188.576C327.189 188.576 324.202 187.829 321.514 186.336C318.869 184.843 316.778 182.731 315.242 180C313.749 177.227 313.002 174.027 313.002 170.4C313.002 166.816 313.77 163.659 315.306 160.928C316.885 158.155 319.018 156.043 321.706 154.592C324.394 153.099 327.402 152.352 330.73 152.352C334.058 152.352 337.066 153.099 339.754 154.592C342.442 156.043 344.554 158.133 346.09 160.864C347.669 163.595 348.458 166.773 348.458 170.4C348.458 174.027 347.647 177.227 346.026 180C344.447 182.731 342.293 184.843 339.562 186.336C336.831 187.829 333.802 188.576 330.474 188.576ZM330.474 183.456C332.565 183.456 334.527 182.965 336.362 181.984C338.197 181.003 339.669 179.531 340.778 177.568C341.93 175.605 342.506 173.216 342.506 170.4C342.506 167.584 341.951 165.195 340.842 163.232C339.733 161.269 338.282 159.819 336.49 158.88C334.698 157.899 332.757 157.408 330.666 157.408C328.533 157.408 326.57 157.899 324.778 158.88C323.029 159.819 321.621 161.269 320.554 163.232C319.487 165.195 318.954 167.584 318.954 170.4C318.954 173.259 319.466 175.669 320.49 177.632C321.557 179.595 322.965 181.067 324.714 182.048C326.463 182.987 328.383 183.456 330.474 183.456ZM361.94 158.624C362.964 156.619 364.414 155.061 366.292 153.952C368.212 152.843 370.537 152.288 373.268 152.288V158.304H371.732C365.204 158.304 361.94 161.845 361.94 168.928V188H356.116V152.928H361.94V158.624ZM387.095 157.728V178.4C387.095 180.107 387.457 181.323 388.183 182.048C388.908 182.731 390.167 183.072 391.958 183.072H396.247V188H390.999C387.756 188 385.324 187.253 383.703 185.76C382.081 184.267 381.271 181.813 381.271 178.4V157.728H376.727V152.928H381.271V144.096H387.095V152.928H396.247V157.728H387.095ZM401.127 170.336C401.127 166.752 401.852 163.616 403.303 160.928C404.754 158.197 406.738 156.085 409.255 154.592C411.815 153.099 414.652 152.352 417.767 152.352C420.839 152.352 423.506 153.013 425.767 154.336C428.028 155.659 429.714 157.323 430.823 159.328V152.928H436.711V188H430.823V181.472C429.671 183.52 427.943 185.227 425.639 186.592C423.378 187.915 420.732 188.576 417.703 188.576C414.588 188.576 411.772 187.808 409.255 186.272C406.738 184.736 404.754 182.581 403.303 179.808C401.852 177.035 401.127 173.877 401.127 170.336ZM430.823 170.4C430.823 167.755 430.29 165.451 429.223 163.488C428.156 161.525 426.706 160.032 424.871 159.008C423.079 157.941 421.095 157.408 418.919 157.408C416.743 157.408 414.759 157.92 412.967 158.944C411.175 159.968 409.746 161.461 408.679 163.424C407.612 165.387 407.079 167.691 407.079 170.336C407.079 173.024 407.612 175.371 408.679 177.376C409.746 179.339 411.175 180.853 412.967 181.92C414.759 182.944 416.743 183.456 418.919 183.456C421.095 183.456 423.079 182.944 424.871 181.92C426.706 180.853 428.156 179.339 429.223 177.376C430.29 175.371 430.823 173.045 430.823 170.4ZM452.377 140.64V188H446.553V140.64H452.377Z" fill="currentColor"/>
 </svg>
@@ -143,6 +143,32 @@ export const ActionMenu = ({ children, id, activeDropdown, setActiveDropdown }) 
       {isOpen && (
         <div className="origin-top-right absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] border border-stone-200 z-[9999] py-1 overflow-hidden">
           {children}
+        </div>
+      )}
+
+      {showTabChangeConfirm && (
+        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl animate-in zoom-in-95">
+            <h3 className="text-xl font-bold text-stone-900 mb-2">Discard Changes?</h3>
+            <p className="text-stone-500 mb-6 text-sm">You have unsaved changes. Are you sure you want to discard them and leave this page?</p>
+            <div className="flex justify-end gap-3">
+              <button onClick={() => setShowTabChangeConfirm(false)} className="px-4 py-2 font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-full text-sm">Cancel</button>
+              <button onClick={confirmTabChange} className="px-4 py-2 font-semibold text-white bg-red-600 hover:bg-red-700 rounded-full text-sm">Discard</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl animate-in zoom-in-95">
+            <h3 className="text-xl font-bold text-stone-900 mb-2">Log Out</h3>
+            <p className="text-stone-500 mb-6 text-sm">Are you sure you want to log out of the portal?</p>
+            <div className="flex justify-end gap-3">
+              <button onClick={() => setShowLogoutConfirm(false)} className="px-4 py-2 font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-full text-sm">Cancel</button>
+              <button onClick={() => { setShowLogoutConfirm(false); handleLogout(); }} className="px-4 py-2 font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-full text-sm">Log Out</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -709,30 +735,32 @@ export default function App() {
   const [tempUser, setTempUser] = useState(null);
 
   const [users, setUsers] = useLocalStorage("ain_users", [
-    { 
-      id: 'A01', 
-      name: 'Admin', 
-      email: 'admin@ainmanagement.com', 
-      role: 'Admin', 
-      username: 'admin', 
-      password: '12345', 
-      active: true, 
-      dateAdded: new Date().toISOString() 
-    }
+    { id: 'A01', name: 'Admin', email: 'admin@ainmanagement.com', role: 'Admin', username: 'admin', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'P01', name: 'Dummy President', email: 'president@espa.com', role: 'President', username: 'president', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'VP01', name: 'Dummy VP', email: 'vp@espa.com', role: 'Vice President', username: 'vp', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'GS01', name: 'Dummy Gen Sec', email: 'gensec@espa.com', role: 'General Secretary', username: 'gensec', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'JS01', name: 'Dummy Joint Sec', email: 'jointsec@espa.com', role: 'Joint Secretary', username: 'jointsec', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'T01', name: 'Dummy Treasurer', email: 'treasurer@espa.com', role: 'Treasurer', username: 'treasurer', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'EM01', name: 'Dummy Exec Member', email: 'exec@espa.com', role: 'Executive Member', username: 'exec', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'GM01', name: 'Dummy Gen Member', email: 'genmember@espa.com', role: 'General Member', username: 'genmember', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'V01', name: 'Dummy Volunteer', email: 'volunteer@espa.com', role: 'Volunteer', username: 'volunteer', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'AM01', name: 'Dummy Ambassador', email: 'ambassador@espa.com', role: 'Ambassador', username: 'ambassador', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'PA01', name: 'Dummy Partner', email: 'partner@espa.com', role: 'Partner', username: 'partner', password: '12345', active: true, dateAdded: new Date().toISOString() },
+    { id: 'D01', name: 'Dummy Donor', email: 'donor@espa.com', role: 'Donor', username: 'donor', password: '12345', active: true, dateAdded: new Date().toISOString() }
   ]);
-  const [hosts, setHosts] = useLocalStorage("ain_hosts", []);
-  const [batches, setBatches] = useLocalStorage("ain_batches", []);
-  const [rooms, setRooms] = useLocalStorage("ain_rooms", []);
+  const [hosts, setHosts] = useLocalStorage("ain_hosts", [{ id: 'H01', name: 'Sheraton Grand', type: 'Hotel', location: 'Dubai, UAE', status: 'Active', contact: 'manager@sheraton.com', dateAdded: new Date().toISOString() }]);
+  const [batches, setBatches] = useLocalStorage("ain_batches", [{ id: 'B01', name: 'Winter 2026 Batch', status: 'Upcoming', startDate: '2026-11-01', endDate: '2026-11-15', participants: 45, dateAdded: new Date().toISOString() }]);
+  const [rooms, setRooms] = useLocalStorage("ain_rooms", [{ id: 'R01', number: '101', type: 'Deluxe Suite', hostId: 'H01', status: 'Available', capacity: 2, dateAdded: new Date().toISOString() }]);
   
   const [archivedUsers, setArchivedUsers] = useLocalStorage("ain_archivedUsers", []);
   const [archivedHosts, setArchivedHosts] = useLocalStorage("ain_archivedHosts", []);
   const [archivedBatches, setArchivedBatches] = useLocalStorage("ain_archivedBatches", []);
   const [archivedRooms, setArchivedRooms] = useLocalStorage("ain_archivedRooms", []);
   
-  const [forms, setForms] = useLocalStorage("ain_forms", []);
+  const [forms, setForms] = useLocalStorage("ain_forms", [{ id: 'F01', title: 'Membership Application', type: 'Registration', status: 'Active', responses: 12, dateAdded: new Date().toISOString() }]);
   const [archivedForms, setArchivedForms] = useLocalStorage("ain_archivedForms", []);
-  const [agreements, setAgreements] = useLocalStorage("ain_agreements", []);
-  const [flights, setFlights] = useLocalStorage("ain_flights", []);
+  const [agreements, setAgreements] = useLocalStorage("ain_agreements", [{ id: 'AG01', title: 'Non-Disclosure Agreement', parties: 'ESPA & TechCorp', status: 'Signed', validUntil: '2028-01-01', dateAdded: new Date().toISOString() }]);
+  const [flights, setFlights] = useLocalStorage("ain_flights", [{ id: 'FL01', airline: 'Emirates', flightNumber: 'EK202', origin: 'JFK', destination: 'DXB', departure: '2026-10-10T15:30', arrival: '2026-10-11T12:00', status: 'Scheduled' }]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [globalUser, setGlobalUser] = useState(null); 
 
@@ -772,6 +800,7 @@ export default function App() {
             setLoginError('');
         } else {
             setCurrentUser(user);
+            setActiveTab('dashboard');
             addLog(`${user.name} logged in`);
             setLoginError('');
         }
@@ -786,6 +815,7 @@ export default function App() {
           const isValid = await verifyTOTP(otpCode);
           if (isValid) {
               setCurrentUser(tempUser);
+              setActiveTab('dashboard');
               addLog(`${tempUser.name} logged in via 2FA`);
               setRequires2FA(false);
               setTempUser(null);
@@ -798,6 +828,35 @@ export default function App() {
           setOtpError('Please enter a valid 6-digit code');
       }
   };
+
+  const [pendingTab, setPendingTab] = useState(null);
+  const [showTabChangeConfirm, setShowTabChangeConfirm] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const handleTabChange = (id) => {
+    if (window.ain_isFormDirty) {
+      setPendingTab(id);
+      setShowTabChangeConfirm(true);
+    } else {
+      setActiveTab(id);
+      setIsMobileMenuOpen(false);
+    }
+  };
+  
+  const confirmTabChange = () => {
+    window.ain_isFormDirty = false;
+    const keys = Object.keys(window.localStorage);
+    keys.forEach(k => {
+      if (k.startsWith('ain_draft_')) {
+        window.localStorage.removeItem(k);
+      }
+    });
+    setActiveTab(pendingTab);
+    setShowTabChangeConfirm(false);
+    setIsMobileMenuOpen(false);
+    setPendingTab(null);
+  };
+
 
   const handleLogout = () => {
     addLog(`${currentUser.name} logged out`);
@@ -860,10 +919,8 @@ export default function App() {
         <FontStyles />
         <div className="hidden lg:flex w-1/2 bg-[#004B36] relative overflow-hidden flex-col justify-between p-12">
             <div className="relative z-10">
-               <AINLogo className="text-white w-48 mb-8" />
-               <h1 className="text-white text-5xl font-semibold leading-tight tracking-tight mt-12 max-w-xl">
-                 Welcome to<br/>Alliance Portal
-               </h1>
+               <AINLogo className="text-white w-96 mb-8" />
+               
             </div>
             
             <div className="relative z-10 flex gap-4 text-white/60 text-sm">
@@ -880,7 +937,7 @@ export default function App() {
           
           <div className="w-full max-w-[400px]">
             <div className="lg:hidden mb-12 flex justify-center">
-                <AINLogo className="text-[#004B36] w-48" />
+                <AINLogo className="text-[#004B36] w-96" />
             </div>
             <div className="mb-10 text-center lg:text-left">
               <h2 className="text-3xl font-bold text-stone-900 tracking-tight">Login</h2>
@@ -976,32 +1033,61 @@ export default function App() {
       case 'partners': return <MemberListView key="Partners" title="Partners" description="List of all the Partners." icon={Briefcase} members={users.filter(u => u.role === 'Partner')} onUpdateRole={handleUpdateRole} />;
       case 'donors': return <MemberListView key="Donors" title="Donors" description="List of all the Donors." icon={HandCoins} members={users.filter(u => u.role === 'Donor')} onUpdateRole={handleUpdateRole} />;
       case 'funds': return <FundsView key="funds" funds={funds} setFunds={setFunds} addLog={addLog} showToast={showToast} />;
-      case 'settings': return <SettingsView key="settings" currentUser={currentUser} globalUsers={users} setUsers={setUsers} showToast={showToast} addLog={addLog} twoFactorConfig={twoFactorConfig} setTwoFactorConfig={setTwoFactorConfig} setActiveTab={setActiveTab} funds={funds} setFunds={setFunds} />;
+      case 'settings': return <SettingsView key="settings" currentUser={currentUser} setCurrentUser={setCurrentUser} globalUsers={users} setUsers={setUsers} showToast={showToast} addLog={addLog} twoFactorConfig={twoFactorConfig} setTwoFactorConfig={setTwoFactorConfig} setActiveTab={setActiveTab} funds={funds} setFunds={setFunds} />;
       case 'activity': return (
           <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
-            <div>
-              <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">Activity Log</h1>
+            <div className="flex items-center gap-4">
+              <button onClick={() => handleTabChange('settings')} className="p-2 bg-white border border-stone-200 text-stone-600 hover:bg-stone-50 rounded-full transition-colors shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <div>
+                <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">Activity Log</h1>
               <p className="text-stone-500 text-base mt-2 font-medium">System-wide audit trail of all actions.</p>
             </div>
-            <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm flex-1 overflow-auto p-4">
-              <div className="space-y-4">
-                {logs.length > 0 ? logs.map(log => (
-                  <div key={log.id} className="flex gap-4 items-start p-4 bg-stone-50 rounded-xl border border-stone-100">
-                    <div className="p-2 bg-white rounded-lg border border-stone-200 text-stone-400 shrink-0"><History size={16} /></div>
-                    <div>
-                      <div className="text-stone-800 font-medium">{log.action}</div>
-                      <div className="text-xs text-stone-500 mt-1">{new Date(log.timestamp).toLocaleString()} by {log.user}</div>
-                    </div>
-                  </div>
-                )) : (
-                  <div className="p-12 text-center text-stone-500">No activity logged yet.</div>
-                )}
+            </div>
+            <div className="bg-white rounded-2xl border border-stone-200/60 shadow-sm flex-1 overflow-hidden flex flex-col min-h-0">
+              <div className="flex-1 overflow-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead className="bg-white sticky top-0 z-10 border-b border-stone-100 backdrop-blur-sm">
+                    <tr>
+                      <th className="px-6 py-4 font-semibold text-stone-400 text-xs uppercase tracking-wider whitespace-nowrap">User</th>
+                      <th className="px-6 py-4 font-semibold text-stone-400 text-xs uppercase tracking-wider whitespace-nowrap">Action</th>
+                      <th className="px-6 py-4 font-semibold text-stone-400 text-xs uppercase tracking-wider whitespace-nowrap">Date</th>
+                      <th className="px-6 py-4 font-semibold text-stone-400 text-xs uppercase tracking-wider whitespace-nowrap">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-stone-100">
+                    {logs.length > 0 ? logs.map(log => {
+                      const logDate = new Date(log.timestamp);
+                      const userObj = users.find(u => u.name === log.user);
+                      return (
+                        <tr key={log.id} className="hover:bg-stone-50/80 transition-colors">
+                          <td className="px-6 py-4">
+                            <button 
+                              onClick={() => { if(userObj) setGlobalUser(userObj); }}
+                              className={`font-semibold text-sm ${userObj ? 'text-[#004B36] hover:underline cursor-pointer' : 'text-stone-900 cursor-default'}`}
+                            >
+                              {log.user}
+                            </button>
+                          </td>
+                          <td className="px-6 py-4 text-stone-600 text-sm">{log.action}</td>
+                          <td className="px-6 py-4 text-stone-600 text-sm font-medium">{logDate.toLocaleDateString()}</td>
+                          <td className="px-6 py-4 text-stone-600 text-sm font-medium">{logDate.toLocaleTimeString()}</td>
+                        </tr>
+                      );
+                    }) : (
+                      <tr>
+                        <td colSpan="4" className="p-12 text-center text-stone-500 font-medium">No activity logged yet.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
         );
-      case 'archives': return <ArchivesView archivedHosts={archivedHosts} setArchivedHosts={setArchivedHosts} setHosts={setHosts} hosts={hosts} archivedUsers={archivedUsers} setArchivedUsers={setArchivedUsers} setUsers={setUsers} users={users} archivedBatches={archivedBatches} setArchivedBatches={setArchivedBatches} setBatches={setBatches} batches={batches} archivedRooms={archivedRooms} setArchivedRooms={setArchivedRooms} setRooms={setRooms} rooms={rooms} showToast={showToast} addLog={addLog} />;
-      case 'roles': return <UsersView users={users} setUsers={setUsers} showToast={showToast} addLog={addLog} />;
+      case 'archives': return <ArchivesView archivedHosts={archivedHosts} setArchivedHosts={setArchivedHosts} setHosts={setHosts} hosts={hosts} archivedUsers={archivedUsers} setArchivedUsers={setArchivedUsers} setUsers={setUsers} users={users} archivedBatches={archivedBatches} setArchivedBatches={setArchivedBatches} setBatches={setBatches} batches={batches} archivedRooms={archivedRooms} setArchivedRooms={setArchivedRooms} setRooms={setRooms} rooms={rooms} showToast={showToast} addLog={addLog} setActiveTab={setActiveTab} />;
+      case 'roles': return <UsersView users={users} setUsers={setUsers} showToast={showToast} addLog={addLog} setActiveTab={setActiveTab} />;
       default: return <SummaryDashboard funds={funds} currentUser={currentUser} />;
     }
   };
@@ -1021,8 +1107,6 @@ export default function App() {
   ];
 
   const adminItems = [
-    { id: 'archives', icon: Archive, label: 'System Archives', roles: ['Admin'] },
-    { id: 'activity', icon: Activity, label: 'Activity Log', roles: ['Admin'] },
     { id: 'settings', icon: Settings, label: 'Settings', roles: ['Admin', 'President', 'Vice President', 'General Secretary', 'Joint Secretary', 'Treasurer', 'Executive Member', 'General Member', 'Volunteer', 'Ambassador', 'Partner'] }
   ];
 
@@ -1032,7 +1116,7 @@ export default function App() {
       <FontStyles />
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-stone-200 z-50 flex items-center justify-between px-4 shadow-sm">
-        <AINLogo className="text-[#004B36] w-32" />
+        <AINLogo className="text-[#004B36] w-[100px]" />
         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 text-stone-600 hover:bg-stone-100 rounded-full">
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -1041,7 +1125,7 @@ export default function App() {
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-40 bg-white border-r border-stone-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} w-64 shadow-[4px_0_24px_-8px_rgba(0,0,0,0.05)]`}>
         <div className="py-8 pl-8 pr-4 flex items-center border-b border-stone-100 hidden lg:flex shrink-0 w-full">
-            <AINLogo className="text-[#004B36] w-48 " />
+            <AINLogo className="text-[#004B36] w-[150px] " />
         </div>
 
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 no-scrollbar pt-20 lg:pt-6">
@@ -1049,7 +1133,7 @@ export default function App() {
             {navItems.filter(item => item.roles.includes(currentUser.role)).map(item => (
               <button
                 key={item.id}
-                onClick={() => { setActiveTab(item.id); setIsMobileMenuOpen(false); }}
+                onClick={() => handleTabChange(item.id)}
                 className={`w-full flex items-center px-4 py-3 rounded-full transition-all duration-200 group ${activeTab === item.id ? 'bg-[#004B36] text-[#FDFCFB] shadow-md font-semibold' : 'text-stone-600 hover:bg-stone-100 font-medium'}`}
               >
                 <item.icon size={20} strokeWidth={activeTab === item.id ? 2.5 : 2} className={`shrink-0 ${activeTab === item.id ? 'text-[#FDFCFB]' : 'text-stone-500 group-hover:text-stone-800'}`} />
@@ -1063,7 +1147,7 @@ export default function App() {
             {adminItems.filter(item => item.roles.includes(currentUser.role)).map(item => (
               <button
                 key={item.id}
-                onClick={() => { setActiveTab(item.id); setIsMobileMenuOpen(false); }}
+                onClick={() => handleTabChange(item.id)}
                 className={`w-full flex items-center px-4 py-3 rounded-full transition-all duration-200 group ${activeTab === item.id ? 'bg-[#004B36] text-[#FDFCFB] shadow-md font-semibold' : 'text-stone-600 hover:bg-stone-100 font-medium'}`}
               >
                 <item.icon size={20} strokeWidth={activeTab === item.id ? 2.5 : 2} className={`shrink-0 ${activeTab === item.id ? 'text-[#FDFCFB]' : 'text-stone-500 group-hover:text-stone-800'}`} />
@@ -1075,7 +1159,7 @@ export default function App() {
 
       
         <div className="p-4 border-t border-stone-100 shrink-0 bg-stone-50">
-          <button onClick={handleLogout} className={`w-full flex items-center justify-center px-4 gap-3 py-3 text-rose-600 hover:bg-rose-50 rounded-full transition-colors font-semibold shadow-sm border border-rose-100 bg-white`}>
+          <button onClick={() => setShowLogoutConfirm(true)} className={`w-full flex items-center justify-center px-4 gap-3 py-3 text-rose-600 hover:bg-rose-50 rounded-full transition-colors font-semibold shadow-sm border border-rose-100 bg-white`}>
             <LogOut size={18} />
             <span className="text-sm">Log Out</span>
           </button>
@@ -1106,6 +1190,32 @@ export default function App() {
       
       {globalUser && (
         <GlobalUserModal user={globalUser} onClose={() => setGlobalUser(null)} globalUsers={users} currentUserRole={currentUser.role} onLogout={handleLogout} showToast={showToast} hosts={hosts} batches={batches} />
+      )}
+
+      {showTabChangeConfirm && (
+        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl animate-in zoom-in-95">
+            <h3 className="text-xl font-bold text-stone-900 mb-2">Discard Changes?</h3>
+            <p className="text-stone-500 mb-6 text-sm">You have unsaved changes. Are you sure you want to discard them and leave this page?</p>
+            <div className="flex justify-end gap-3">
+              <button onClick={() => setShowTabChangeConfirm(false)} className="px-4 py-2 font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-full text-sm">Cancel</button>
+              <button onClick={confirmTabChange} className="px-4 py-2 font-semibold text-white bg-red-600 hover:bg-red-700 rounded-full text-sm">Discard</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl animate-in zoom-in-95">
+            <h3 className="text-xl font-bold text-stone-900 mb-2">Log Out</h3>
+            <p className="text-stone-500 mb-6 text-sm">Are you sure you want to log out of the portal?</p>
+            <div className="flex justify-end gap-3">
+              <button onClick={() => setShowLogoutConfirm(false)} className="px-4 py-2 font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-full text-sm">Cancel</button>
+              <button onClick={() => { setShowLogoutConfirm(false); handleLogout(); }} className="px-4 py-2 font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-full text-sm">Log Out</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
