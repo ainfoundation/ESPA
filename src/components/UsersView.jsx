@@ -41,7 +41,7 @@ export default function UsersView({
 
   const handleMassArchive = () => {
     if (selectedIds.length === 0) return;
-    const usersToArchive = users.filter(u => selectedIds.includes(u.id)).map(u => ({ ...u, archivedAt: new Date().toISOString() }));
+    const usersToArchive = (users || []).filter(u => selectedIds.includes(u.id)).map(u => ({ ...u, archivedAt: new Date().toISOString() }));
     setArchivedUsers([...archivedUsers, ...usersToArchive]);
     setUsers(globalUsers.filter(u => !selectedIds.includes(u.id)));
     addLog(`Archived ${selectedIds.length} users`);
@@ -53,7 +53,7 @@ export default function UsersView({
     if (selectedIds.length === filteredUsers.length && filteredUsers.length > 0) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(filteredUsers.map(u => u.id));
+      setSelectedIds((filteredUsers || []).map(u => u.id));
     }
   };
 
@@ -73,7 +73,7 @@ export default function UsersView({
   }), []);
 
   const filteredUsers = useMemo(() => {
-    return users.filter(user => 
+    return (users || []).filter(user => 
       user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.role?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -111,7 +111,7 @@ export default function UsersView({
     }
     
     if (isEditingUser) {
-      setUsers(globalUsers.map(u => u.id === newUser.id ? { ...newUser, name: `${newUser.firstName} ${newUser.lastName}` } : u));
+      setUsers((globalUsers || []).map(u => u.id === newUser.id ? { ...newUser, name: `${newUser.firstName} ${newUser.lastName}` } : u));
       addLog(`Updated user ${newUser.firstName} ${newUser.lastName}`);
       showToast('User updated successfully', 'success');
     } else {
@@ -185,7 +185,7 @@ export default function UsersView({
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
-              {filteredUsers.map(user => {
+              {(filteredUsers || []).map(user => {
                 const host = hosts?.find(h => h.id === user.hostId);
                 return (
                   <tr key={user.id} className="hover:bg-[#FDFCFB] transition-colors">

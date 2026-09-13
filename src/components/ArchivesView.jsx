@@ -50,7 +50,7 @@ export default function ArchivesView({
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100">
-            {archivedUsers?.map(user => (
+            {(archivedUsers || []).map(user => (
               <tr key={user.id} className="hover:bg-stone-50">
                 <td className="px-6 py-4 text-sm font-semibold text-stone-900">{user.name} <span className="text-stone-500 font-medium">({user.email})</span></td>
                 <td className="px-6 py-4 text-right">

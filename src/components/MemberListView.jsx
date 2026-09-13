@@ -83,7 +83,7 @@ export default function MemberListView({ title, description, icon: Icon, members
     const headers = ['Name', 'Email', 'Role', 'Join Date', 'Phone'];
     const csvContent = [
       headers.join(','),
-      ...filteredMembers.map(m => `"${m.name}","${m.email}","${m.role}","${m.joinDate || ''}","${m.phone || ''}"`)
+      ...(filteredMembers || []).map(m => `"${m.name}","${m.email}","${m.role}","${m.joinDate || ''}","${m.phone || ''}"`)
     ].join('\n');
     
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -312,7 +312,7 @@ export default function MemberListView({ title, description, icon: Icon, members
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {filteredMembers.map((member, idx) => (
+                {(filteredMembers || []).map((member, idx) => (
                   <tr key={idx} className="hover:bg-stone-50/80 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="font-semibold text-stone-900 text-sm">{member.name}</div>

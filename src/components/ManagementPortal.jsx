@@ -1019,7 +1019,7 @@ export default function App() {
   const handleUpdateRole = (userId, newRole) => {
     const userToUpdate = users?.find(u => u.id === userId);
     if (!userToUpdate) return;
-    setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
+    setUsers((users || []).map(u => u.id === userId ? { ...u, role: newRole } : u));
     showToast(`Role updated to ${newRole} for ${userToUpdate.name}`, 'success');
     addLog(`Changed role of ${userToUpdate.name} to ${newRole}`);
   };
@@ -1057,7 +1057,7 @@ export default function App() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-stone-100">
-                    {logs.length > 0 ? logs.map(log => {
+                    {Array.isArray(logs) && logs.length > 0 ? logs.map(log => {
                       const logDate = new Date(log.timestamp);
                       const userObj = users.find(u => u.name === log.user);
                       return (
@@ -1130,7 +1130,7 @@ export default function App() {
 
         <div className="flex-1 overflow-y-auto py-6 px-4 space-y-1 no-scrollbar pt-20 lg:pt-6">
           <div className="space-y-1">
-            {navItems.filter(item => item.roles.includes(currentUser.role)).map(item => (
+            {(navItems || []).filter(item => item.roles.includes(currentUser.role)).map(item => (
               <button
                 key={item.id}
                 onClick={() => handleTabChange(item.id)}
@@ -1144,7 +1144,7 @@ export default function App() {
 
           <div className="space-y-1">
             
-            {adminItems.filter(item => item.roles.includes(currentUser.role)).map(item => (
+            {(adminItems || []).filter(item => item.roles.includes(currentUser.role)).map(item => (
               <button
                 key={item.id}
                 onClick={() => handleTabChange(item.id)}

@@ -48,7 +48,7 @@ export default function SettingsView({ currentUser, setCurrentUser, globalUsers,
       return;
     }
 
-    setUsers(globalUsers.map(u => u.id === currentUser.id ? {...u, password: newPassword} : u));
+    setUsers((globalUsers || []).map(u => u.id === currentUser.id ? {...u, password: newPassword} : u));
     showToast('Password updated successfully', 'success');
     addLog(`Password changed for ${currentUser.name}`);
     setOldPassword('');
@@ -101,7 +101,7 @@ export default function SettingsView({ currentUser, setCurrentUser, globalUsers,
                                     const reader = new FileReader();
                                     reader.onload = (e) => {
                                         const result = e.target.result;
-                                        const updatedUsers = globalUsers.map(u => u.id === currentUser.id ? {...u, avatar: result} : u);
+                                        const updatedUsers = (globalUsers || []).map(u => u.id === currentUser.id ? {...u, avatar: result} : u);
                                         setUsers(updatedUsers);
                                         if (setCurrentUser) setCurrentUser(updatedUsers.find(u => u.id === currentUser.id));
                                         showToast('Profile picture updated successfully', 'success');
@@ -114,7 +114,7 @@ export default function SettingsView({ currentUser, setCurrentUser, globalUsers,
                             {currentUser.avatar && (
                                 <button 
                                     onClick={() => {
-                                        const updatedUsers = globalUsers.map(u => u.id === currentUser.id ? {...u, avatar: null} : u);
+                                        const updatedUsers = (globalUsers || []).map(u => u.id === currentUser.id ? {...u, avatar: null} : u);
                                         setUsers(updatedUsers);
                                         if (setCurrentUser) setCurrentUser(updatedUsers.find(u => u.id === currentUser.id));
                                         showToast('Profile picture removed', 'info');
@@ -140,7 +140,7 @@ export default function SettingsView({ currentUser, setCurrentUser, globalUsers,
                         <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Email Address</label>
                         <input type="email" defaultValue={currentUser.email || currentUser.username} onBlur={(e) => {
                             if(e.target.value !== (currentUser.email || currentUser.username)) {
-                                const updatedUsers = globalUsers.map(u => u.id === currentUser.id ? {...u, email: e.target.value, username: e.target.value} : u);
+                                const updatedUsers = (globalUsers || []).map(u => u.id === currentUser.id ? {...u, email: e.target.value, username: e.target.value} : u);
                                 setUsers(updatedUsers);
                                 if (setCurrentUser) setCurrentUser(updatedUsers.find(u => u.id === currentUser.id));
                                 showToast('Email address updated', 'success');
@@ -152,7 +152,7 @@ export default function SettingsView({ currentUser, setCurrentUser, globalUsers,
                         <label className="text-xs font-bold text-stone-500 uppercase tracking-wider mb-1 block">Phone Number</label>
                         <input type="tel" defaultValue={currentUser.phone || ''} onBlur={(e) => {
                             if(e.target.value !== currentUser.phone) {
-                                const updatedUsers = globalUsers.map(u => u.id === currentUser.id ? {...u, phone: e.target.value} : u);
+                                const updatedUsers = (globalUsers || []).map(u => u.id === currentUser.id ? {...u, phone: e.target.value} : u);
                                 setUsers(updatedUsers);
                                 if (setCurrentUser) setCurrentUser(updatedUsers.find(u => u.id === currentUser.id));
                                 showToast('Phone number updated', 'success');

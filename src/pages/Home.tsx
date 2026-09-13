@@ -27,6 +27,7 @@ export default function Home() {
       <Programs />
       <Team />
       {/* Hidden for now: <Partners /> */}
+      <div className="h-[3cm] bg-white w-full"></div>
       <GetInvolved />
       <FAQ />
       </div>
