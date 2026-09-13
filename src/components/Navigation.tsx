@@ -44,7 +44,7 @@ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <nav 
-      className="fixed top-0 left-0 right-0 z-[999] px-[34px] md:px-[58px] py-4 flex items-center justify-between bg-white shadow-sm border-b border-[#004B36]/5"
+      className="fixed top-0 left-0 right-0 z-[999] px-8 py-4 flex items-center justify-between bg-white shadow-sm border-b border-[#004B36]/5"
     >
       <Link to="/" className="flex items-center gap-2 z-50 relative"><svg className="h-7 md:h-9 text-[#004B36] w-auto" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clipPath="url(#clip0_350_59)">

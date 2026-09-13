@@ -99,7 +99,7 @@ export default function MemberListView({ title, description, icon: Icon, members
 
   if (isAddModalOpen) {
     return (
-      <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
+      <div className="space-y-8 h-full flex flex-col tracking-tight relative overflow-hidden">
         <div className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
             <h1 className="text-3xl font-semibold text-stone-900">Add {title.endsWith('s') ? title.slice(0, -1) : title}</h1>
@@ -268,7 +268,7 @@ export default function MemberListView({ title, description, icon: Icon, members
     );
   }
   return (
-    <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
+    <div className="space-y-8 h-full flex flex-col tracking-tight relative overflow-hidden">
       <div className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">{title}

@@ -200,7 +200,7 @@ export default function FundsView({ funds, setFunds, addLog, showToast }) {
 
   if (isAdding || isAllocating) {
     return (
-      <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
+      <div className="space-y-8 h-full flex flex-col tracking-tight relative overflow-hidden">
         <div className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
             <h1 className="text-3xl font-semibold text-stone-900">{isAdding ? 'Add Funds' : 'Allocate Funds'}</h1>
@@ -286,7 +286,7 @@ export default function FundsView({ funds, setFunds, addLog, showToast }) {
     );
   }
   return (
-    <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
+    <div className="space-y-8 h-full flex flex-col tracking-tight relative overflow-hidden">
       <div className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">Funds & Allocations

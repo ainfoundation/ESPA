@@ -1035,7 +1035,7 @@ export default function App() {
       case 'funds': return <FundsView key="funds" funds={funds} setFunds={setFunds} addLog={addLog} showToast={showToast} />;
       case 'settings': return <SettingsView key="settings" currentUser={currentUser} setCurrentUser={setCurrentUser} globalUsers={users} setUsers={setUsers} showToast={showToast} addLog={addLog} twoFactorConfig={twoFactorConfig} setTwoFactorConfig={setTwoFactorConfig} setActiveTab={setActiveTab} funds={funds} setFunds={setFunds} />;
       case 'activity': return (
-          <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-hidden">
+          <div className="space-y-8 h-full flex flex-col tracking-tight relative overflow-hidden">
             <div className="flex items-center gap-4">
               <button onClick={() => handleTabChange('settings')} className="p-2 bg-white border border-stone-200 text-stone-600 hover:bg-stone-50 rounded-full transition-colors shadow-sm">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
@@ -1171,8 +1171,8 @@ export default function App() {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-full overflow-hidden bg-stone-50/50 pt-16 lg:pt-0 relative z-10">
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8 no-scrollbar scroll-smooth">
-          <div className="max-w-[1400px] mx-auto h-full">
+        <div className="flex-1 overflow-y-auto no-scrollbar scroll-smooth">
+          <div className="h-full">
              {renderContent()}
           </div>
         </div>

@@ -9,7 +9,7 @@ export default function SummaryDashboard({ funds, currentUser }) {
 
   if (!isAdmin) {
     return (
-      <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-y-auto">
+      <div className="space-y-8 h-full flex flex-col tracking-tight relative overflow-y-auto">
         <div>
           <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">
             Dashboard
@@ -47,7 +47,7 @@ export default function SummaryDashboard({ funds, currentUser }) {
   const totalAllocationsUSD = funds.transactions.filter(t => t.type === 'allocation' && t.currency === 'USD').reduce((sum, t) => sum + t.amount, 0);
 
   return (
-    <div className="space-y-8 h-full flex flex-col tracking-tight relative p-4 md:p-8 overflow-y-auto">
+    <div className="space-y-8 h-full flex flex-col tracking-tight relative overflow-y-auto">
       <div>
         <h1 className="text-3xl font-semibold text-stone-900 flex items-center gap-2">
           Dashboard
